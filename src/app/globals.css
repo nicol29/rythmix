@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  background-color: #171717;
+  background-color: #1c1c1c;
   color: #bababa;
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 .default-input-field {
-  @apply  bg-neutral-700 
+  @apply  bg-neutral-750 
           h-8 rounded border
           border-neutral-600 
           focus:border-neutral-400 
