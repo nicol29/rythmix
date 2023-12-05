@@ -1,16 +1,16 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import registrationSchema from "@/schemas/registrationSchema";
+import { registrationSchema, TRegistrationSchema } from "@/schemas/registrationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 
 export default function RegistrationForm() {
-  const { handleSubmit, register, reset, formState: { errors } } = useForm({
+  const { handleSubmit, register, reset, formState: { errors } } = useForm<TRegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
 
-  const processForm = (data: any) => {
+  const processForm = (data: TRegistrationSchema) => {
     console.log("fdbdfb");
 
     reset();

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 
-const registrationSchema = z
+export const registrationSchema = z
   .object ({
     userName: z.string().min(1, {message: "Must provide a username"}),
     email: z.string().email({message: "Must provide a valid email address"}),
@@ -17,6 +17,4 @@ const registrationSchema = z
     path: ["confirmPassword"]
 });
 
-
-
-export default registrationSchema;
+export type TRegistrationSchema = z.infer<typeof registrationSchema>;
