@@ -10,10 +10,16 @@ export default function RegistrationForm() {
     resolver: zodResolver(registrationSchema),
   });
 
-  const processForm = (data: TRegistrationSchema) => {
-    console.log("fdbdfb");
+  const processForm = async (formData: TRegistrationSchema) => {
+    const res = await fetch("/api/auth/register", {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    reset();
+    // reset();
   }
 
   return (

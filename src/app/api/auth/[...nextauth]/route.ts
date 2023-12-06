@@ -1,9 +1,14 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
-import bcrypt from "bcrypt";
+import { compare } from "bcrypt";
+import Users from "@/models/Users";
+import connectMongoDB from "@/config/mongoDBConnection";
 
 
 const handler = NextAuth({
+  session: {
+    strategy: "jwt"
+  },
   providers: [
     CredentialsProvider({
       credentials: {
@@ -11,21 +16,27 @@ const handler = NextAuth({
         password: {}
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
-  
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null
-  
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
-        }
-      }
-    })
-  ]
+
+        connectMongoDB();
+        const user = await Users.findOne({ email: credentials?.email });
+
+        if (!user) return null;
+
+        const passwordMatch = await compare(credentials?.password || "", user.password);
+        
+        console.log(user._id.toString(), passwordMatch);
+
+        if (passwordMatch) {
+          return {
+            id: user._id.toString(),
+            email: user.email,
+          }
+        } 
+
+        return null;
+      },
+    }),
+  ],
 });
 
 export { handler as GET, handler as POST };

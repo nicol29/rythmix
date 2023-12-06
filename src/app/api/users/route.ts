@@ -2,6 +2,7 @@ import connectMongoDB from "@/config/mongoDBConnection";
 import { NextResponse } from "next/server";
 import Users from "@/models/Users";
 
+
 export async function POST (request: Request) {
   const { userName, email, userType, password } = await request.json();
 

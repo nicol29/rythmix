@@ -3,17 +3,24 @@
 import { useForm } from "react-hook-form";
 import { loginSchema, TLogInSchema } from "@/schemas/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TLogInSchema>({
     resolver: zodResolver(loginSchema),
   });
 
-  const processForm = (data: TLogInSchema) => {
-    console.log("fdbdfb");
+  const processForm = async (formData: TLogInSchema) => {
+    // console.log(formData);
 
-    reset();
+    const res = await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirect: false,
+    });
+
+    console.log(res);
+    // reset();
   }
 
   return (
@@ -29,7 +36,7 @@ export default function LoginForm() {
         {errors.password && <p className="text-red-400 text-sm">{`${errors.password.message}`}</p>}
       </div>
       <button type="submit" className="bg-orange-500 text-orange-100 w-4/5 rounded h-8 mt-8">
-        Sign Up
+        Log In
       </button>
     </form>
   )
