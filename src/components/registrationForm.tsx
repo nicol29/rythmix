@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { registrationSchema, TRegistrationSchema } from "@/schemas/registrationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 
 export default function RegistrationForm() {
@@ -10,8 +11,11 @@ export default function RegistrationForm() {
     resolver: zodResolver(registrationSchema),
   });
 
+  const router = useRouter();
+
   const processForm = async (formData: TRegistrationSchema) => {
-    const res = await fetch("/api/auth/register", {
+
+    const response = await fetch("/api/auth/register", {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
@@ -19,11 +23,18 @@ export default function RegistrationForm() {
       },
     });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      if (data.errorCode === "EMAIL_EXISTS") router.push(`/login?email=${encodeURIComponent(data.email)}`);
+    }
+
+
     // reset();
   }
 
   return (
-    <form onSubmit={handleSubmit(processForm)} className="w-4/5 py-8 bg-neutral-800 rounded border border-neutral-600 flex flex-col items-center gap-3">
+    <form onSubmit={handleSubmit(processForm)} className="w-4/5 py-8 bg-neutral-800 rounded border border-neutral-600 flex flex-col items-center gap-3 max-w-sm">
       <div className="default-field-container w-4/5">
         <label htmlFor="userName">Username</label>
         <input className="default-input-field" type="text" {...register("userName", {required: "Username is required"})} />

@@ -20,7 +20,8 @@ const handler = NextAuth({
         connectMongoDB();
         const user = await Users.findOne({ email: credentials?.email });
 
-        if (!user) return null;
+        // if (!user) return null;
+        if (!user) throw new Error("User does not exist");
 
         const passwordMatch = await compare(credentials?.password || "", user.password);
         
@@ -31,9 +32,9 @@ const handler = NextAuth({
             id: user._id.toString(),
             email: user.email,
           }
-        } 
-
-        return null;
+        } else {
+          throw new Error('Invalid credentials');
+        }
       },
     }),
   ],
