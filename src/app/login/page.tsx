@@ -7,6 +7,8 @@ import LogOutButton from "@/components/logOutButton";
 export default async function Login() {
   const session = await getServerSession();
 
+  console.log(session?.user);
+
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-3">
       <div className="w-4/5 mt-8 max-w-sm">
