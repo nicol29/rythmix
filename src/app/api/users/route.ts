@@ -9,21 +9,21 @@ export async function POST (request: Request) {
   await connectMongoDB();
 
   try {
-    const { userName, email, userType, password } = registrationSchema.parse(await request.json());
+    // const { userName, email, userType, password } = registrationSchema.parse(await request.json());
 
-    await Users.create({
-      userName,
-      email,
-      userType,
-      password
-    });
+    // await Users.create({
+    //   userName,
+    //   email,
+    //   userType,
+    //   password
+    // });
 
-    return NextResponse.json({
-      userName,
-      email,
-      userType,
-      password
-    }, {status: 201});
+    // return NextResponse.json({
+    //   userName,
+    //   email,
+    //   userType,
+    //   password
+    // }, {status: 201});
   } catch (error) {
     if (error instanceof MongoError && error.code === 11000) {
       return NextResponse.json({ message: 'Email already exists', errorCode: 'EMAIL_EXISTS' }, { status: 400 });

@@ -51,11 +51,11 @@ export default function LoginForm({ searchParams } : any) {
             <input className="default-input-field" type="password" {...register("password", {required: "Must include a password"})} />
             {errors.password && <p className="text-red-400 text-sm">{`${errors.password.message}`}</p>}
           </div>
-          <button type="submit" className="bg-orange-500 text-orange-100 w-full rounded h-8 mt-6 font-semibold">Log In</button>
+          <button type="submit" className="bg-orange-500 text-orange-100 w-full rounded h-10 mt-6 font-semibold">Log In</button>
         </form>
         <div className="w-4/5 h-px relative bg-neutral-600 before:content-['OR'] before:absolute before:-top-2.5 before:bg-neutral-800 before:w-8 before:flex before:justify-center before:left-1/2 before:right-1/2 before:-translate-x-1/2"></div>
-        <button onClick={() => signIn("google")} className="bg-white w-4/5 rounded h-8 text-neutral-600 flex items-center justify-center relative font-semibold">
-          <GoogleIcon className="h-4/6 absolute left-1" /> 
+        <button onClick={() => signIn("google")} className="bg-white w-4/5 rounded h-10 text-neutral-600 flex items-center justify-center relative font-semibold">
+          <GoogleIcon className="absolute left-2 h-3/6" /> 
           Continue with Google
         </button>
       </div>

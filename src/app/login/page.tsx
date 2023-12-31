@@ -2,12 +2,13 @@ import LoginForm from "@/components/loginForm";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import LogOutButton from "@/components/logOutButton";
+import { handler } from "../api/auth/[...nextauth]/route";
+
 
 
 export default async function Login() {
-  const session = await getServerSession();
-
-  console.log(session?.user);
+  const session = await getServerSession(handler);
+  console.log(session);
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-3">

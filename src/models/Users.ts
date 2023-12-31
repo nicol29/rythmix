@@ -2,14 +2,15 @@ import mongoose from "mongoose";
   
 
 const userSchema = new mongoose.Schema({
-  userName: { type: String, required: true, },
-  userType: { type: String, required: true },
+  userName: { type: String, },
+  userType: { type: String, },
   email: { type: String, required: true, unique: true, },
-  password: { type: String, required: true, },
-  profilePicture: { type: String, required: false, },
-  profileUrl: { type: String, required: true, unique: true },
+  password: { type: String, },
+  profilePicture: { type: String, default: null, },
+  profileUrl: { type: String, required: true, unique: true, },
   createdAt: { type: Date, required: true, default: Date.now, },
-  walletAddress: { type: String },
+  walletAddress: { type: String, },
+  isProfileCompleted: { type: Boolean, default: false, },
 });
 
 

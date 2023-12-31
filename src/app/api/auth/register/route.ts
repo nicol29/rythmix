@@ -8,16 +8,14 @@ import { MongoError } from "mongodb";
 
 export async function POST(request: Request) {
   const data = await request.json();
-  const { userName, userType, email, password }: TRegistrationSchema = registrationSchema.parse(data);
+  const { email, password }: TRegistrationSchema = registrationSchema.parse(data);
 
-  // connectMongoDB();
+  connectMongoDB();
 
   try {
     const hashedPass = await hash(password, 10);
 
     await Users.create({
-      userName,
-      userType,
       email,
       password: hashedPass,
       profileUrl: email.split('@')[0],

@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import { compare } from "bcrypt";
 import Users from "@/models/Users";
 import connectMongoDB from "@/config/mongoDBConnection";
@@ -8,11 +8,9 @@ import GoogleProvider from "next-auth/providers/google";
 
 const googleID = process.env.GOOGLE_CLIENT_ID ?? "";
 const googleSecret = process.env.GOOGLE_CLIENT_SECRET ?? "";
+const nextAuthSecret = process.env.NEXTAUTH_SECRET ?? "";
 
-const handler = NextAuth({
-  session: {
-    strategy: "jwt"
-  },
+export const handler: NextAuthOptions = NextAuth({
   providers: [
     GoogleProvider({
       clientId: googleID,
@@ -34,13 +32,6 @@ const handler = NextAuth({
         const passwordMatch = await compare(credentials?.password || "", user.password);
 
         if (passwordMatch) {
-          // return {
-          //   id: user._id.toString(),
-          //   userName: user.userName,
-          //   userType: user.userType,
-          //   email: user.email,
-          //   profileUrl: user.profileUrl,
-          // }
           return user;
         } else {
           throw new Error('Invalid credentials');
@@ -49,13 +40,75 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session }) {
+    async signIn({ profile, user, account }) {
+      if (account?.provider === "google") {
+        try {
+          await connectMongoDB();
+          const email = profile?.email;
+          const userFromDB = await Users.findOne({ email: email });
+
+          if (!userFromDB) {
+            await Users.create({
+              email: email, 
+              profileUrl: email?.split('@')[0],
+              profilePicture: user.image,
+            });
+          } 
+        } catch (error) {
+          console.error("Error in signIn callback:", error);
+          return false;
+        }
+      } 
+      return true;
+    }, 
+    async jwt({ user, token, account }) {
+      // console.log(token)
+      let { _id, profileUrl, profilePicture, isProfileCompleted, createdAt } = user;
+      // console.log(user);
+      
+      if (account?.provider === "google") {
+        const userFromDB = await Users.findOne({ email: user.email });
+
+        if (userFromDB) {
+          _id = userFromDB._id.toString();
+          profileUrl = userFromDB.profileUrl;
+          profilePicture = userFromDB.profilePicture;
+          isProfileCompleted = userFromDB.isProfileCompleted;
+          createdAt = userFromDB.createdAt;
+        }
+      } 
+      
+      if (user) {
+        return {
+          ...token,
+          id: _id?.toString(),
+          profileUrl,
+          picture: profilePicture,
+          isProfileCompleted,
+          createdAt,
+        }
+      } 
+      return token;
+    },
+    async session({ session, token }) {
+      console.log("dslkjvbdslkjvsbkdjlvsdbjkjbksvdjvdjb")
+
+      session.user = {
+        ...session.user,
+        id: token.id,
+        profileUrl: token.profileUrl,
+        profilePicture: token.profilePicture,
+        isProfileCompleted: token.isProfileCompleted,
+        createdAt: token.createdAt,
+      };
+    
       return session;
     },
-    // async signIn({ profile, }) {
-    //   return profile;
-    // }
-  }
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: nextAuthSecret,
 });
 
 export { handler as GET, handler as POST };
