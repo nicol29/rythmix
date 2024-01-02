@@ -29,6 +29,8 @@ export default function RegistrationForm() {
 
     if (!response.ok) {
       if (data.errorCode === "EMAIL_EXISTS") router.push(`/login?email=${encodeURIComponent(data.email)}`);
+    } else {
+      router.push(`/login`);
     }
 
     reset();

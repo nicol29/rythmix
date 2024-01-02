@@ -21,7 +21,7 @@ export const handler: NextAuthOptions = NextAuth({
         email: {},
         password: {}
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
 
         connectMongoDB();
         const user = await Users.findOne({ email: credentials?.email });
@@ -61,47 +61,48 @@ export const handler: NextAuthOptions = NextAuth({
       } 
       return true;
     }, 
-    async jwt({ user, token, account }) {
-      // console.log(token)
-      let { _id, profileUrl, profilePicture, isProfileCompleted, createdAt } = user;
-      // console.log(user);
-      
-      if (account?.provider === "google") {
+    async jwt({ user, token, account, trigger, session }) {
+      if (trigger === "update") {
+        token.userName = session.userName;
+        token.userType = session.userType;
+        token.isProfileCompleted = session.isProfileCompleted;
+      }
+
+      if (account?.provider === "google" && user) {
         const userFromDB = await Users.findOne({ email: user.email });
 
         if (userFromDB) {
-          _id = userFromDB._id.toString();
-          profileUrl = userFromDB.profileUrl;
-          profilePicture = userFromDB.profilePicture;
-          isProfileCompleted = userFromDB.isProfileCompleted;
-          createdAt = userFromDB.createdAt;
+          return {
+            ...token,
+            image: userFromDB.profilePicture,
+            id: userFromDB._id.toString(),
+            profileUrl: userFromDB.profileUrl,
+            isProfileCompleted: userFromDB.isProfileCompleted,
+          }
         }
-      } 
-      
-      if (user) {
+      } else if (account?.provider === "credentials" && user) {
+        const { _id, profileUrl, profilePicture, isProfileCompleted } = user;
+
         return {
           ...token,
           id: _id?.toString(),
           profileUrl,
-          picture: profilePicture,
+          image: profilePicture,
           isProfileCompleted,
-          createdAt,
         }
-      } 
+      }
       return token;
     },
     async session({ session, token }) {
-      console.log("dslkjvbdslkjvsbkdjlvsdbjkjbksvdjvdjb")
-
       session.user = {
         ...session.user,
         id: token.id,
+        image: token.image,
         profileUrl: token.profileUrl,
-        profilePicture: token.profilePicture,
         isProfileCompleted: token.isProfileCompleted,
-        createdAt: token.createdAt,
+        userName: token.userName,
+        userType: token.userType, 
       };
-    
       return session;
     },
   },

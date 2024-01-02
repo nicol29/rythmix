@@ -7,12 +7,24 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CloseIcon, GoogleIcon } from "@/assets/icons";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
-export default function LoginForm({ searchParams } : any) {
+export default function LoginForm() {
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TLogInSchema>({
     resolver: zodResolver(loginSchema),
   });
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  console.log(session);
+
+  // if (session?.user.isProfileCompleted === true) {
+  //   router.push("/");
+  // } else if (session?.user.isProfileCompleted === false) {
+  //   router.push("/register/complete-account");
+  // }
 
   const emailParams = useSearchParams().get("email") ?? "";
   const [email, setEmail] = useState(emailParams);
@@ -28,7 +40,6 @@ export default function LoginForm({ searchParams } : any) {
 
     if (response?.error) {
       setError(response.error);
-
       return;
     }
 
