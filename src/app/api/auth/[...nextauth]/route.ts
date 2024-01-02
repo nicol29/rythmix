@@ -10,7 +10,7 @@ const googleID = process.env.GOOGLE_CLIENT_ID ?? "";
 const googleSecret = process.env.GOOGLE_CLIENT_SECRET ?? "";
 const nextAuthSecret = process.env.NEXTAUTH_SECRET ?? "";
 
-export const handler: NextAuthOptions = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: googleID,
@@ -26,7 +26,6 @@ export const handler: NextAuthOptions = NextAuth({
         connectMongoDB();
         const user = await Users.findOne({ email: credentials?.email });
 
-        // if (!user) return null;
         if (!user) throw new Error("User does not exist");
 
         const passwordMatch = await compare(credentials?.password || "", user.password);
@@ -78,10 +77,12 @@ export const handler: NextAuthOptions = NextAuth({
             id: userFromDB._id.toString(),
             profileUrl: userFromDB.profileUrl,
             isProfileCompleted: userFromDB.isProfileCompleted,
+            userName: userFromDB.userName,
+            userType: userFromDB.userType, 
           }
         }
       } else if (account?.provider === "credentials" && user) {
-        const { _id, profileUrl, profilePicture, isProfileCompleted } = user;
+        const { _id, profileUrl, profilePicture, isProfileCompleted, userName, userType } = user;
 
         return {
           ...token,
@@ -89,6 +90,8 @@ export const handler: NextAuthOptions = NextAuth({
           profileUrl,
           image: profilePicture,
           isProfileCompleted,
+          userName,
+          userType,
         }
       }
       return token;
@@ -102,7 +105,7 @@ export const handler: NextAuthOptions = NextAuth({
         isProfileCompleted: token.isProfileCompleted,
         userName: token.userName,
         userType: token.userType, 
-      };
+      }
       return session;
     },
   },
@@ -110,6 +113,8 @@ export const handler: NextAuthOptions = NextAuth({
     strategy: "jwt",
   },
   secret: nextAuthSecret,
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

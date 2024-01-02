@@ -18,13 +18,11 @@ export default function LoginForm() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  console.log(session);
-
-  // if (session?.user.isProfileCompleted === true) {
-  //   router.push("/");
-  // } else if (session?.user.isProfileCompleted === false) {
-  //   router.push("/register/complete-account");
-  // }
+  if (session?.user.isProfileCompleted === true) {
+    router.push("/");
+  } else if (session?.user.isProfileCompleted === false) {
+    router.push("/register/complete-account");
+  }
 
   const emailParams = useSearchParams().get("email") ?? "";
   const [email, setEmail] = useState(emailParams);

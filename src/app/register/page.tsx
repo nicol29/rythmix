@@ -1,6 +1,7 @@
 import RegistrationForm from "@/components/registrationForm";
 import Link from "next/link";
 
+
 export default function Register() {
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-3">
