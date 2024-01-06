@@ -3,19 +3,24 @@
 import { useForm } from "react-hook-form";
 import { registrationSchema, TRegistrationSchema } from "@/schemas/registrationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { GoogleIcon } from "@/assets/icons";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
 
 
 export default function RegistrationForm() {
+  useRedirectOnProfileCompletion();
+
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TRegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const processForm = async (formData: TRegistrationSchema) => {
+    setIsSubmitting(true);
 
     const response = await fetch("/api/auth/register", {
       method: 'POST',
@@ -33,6 +38,7 @@ export default function RegistrationForm() {
       router.push(`/login`);
     }
 
+    setIsSubmitting(false);
     reset();
   }
 
@@ -54,8 +60,8 @@ export default function RegistrationForm() {
           <input className="default-input-field" type="password" {...register("confirmPassword")} />
           {errors.confirmPassword && <p className="text-red-400 text-sm">{`${errors.confirmPassword.message}`}</p>}
         </div>
-        <button type="submit" className="bg-orange-500 text-orange-100 rounded h-10 mt-8 font-semibold">
-          Sign Up
+        <button type="submit" aria-disabled={isSubmitting} className="bg-orange-500 text-orange-100 rounded h-10 mt-8 font-semibold hover:bg-orange-400">
+          {isSubmitting ? "Signing Up" : "Sign Up"}
         </button>
       </form>
       <div className="w-4/5 h-px relative bg-neutral-600 before:content-['OR'] before:absolute before:-top-2.5 before:bg-neutral-800 before:w-8 before:flex before:justify-center before:left-1/2 before:right-1/2 before:-translate-x-1/2"></div>

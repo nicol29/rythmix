@@ -5,14 +5,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { completeAccountSchema, TCompleteAccountSchema } from "@/schemas/completeAccountSchema";
 import addExtraAccountInfo from "@/server-actions/addExtraAccountInfo";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
 
 
 export default function CompleteAccountForm() {
-  const { handleSubmit, register, reset, formState: { errors } } = useForm<TCompleteAccountSchema>({
+  useRedirectOnProfileCompletion();
+
+  const { handleSubmit, register, formState: { errors } } = useForm<TCompleteAccountSchema>({
     resolver: zodResolver(completeAccountSchema),
   });
   const { data: session, update } = useSession();
-  console.log(session);
+  const router = useRouter();
+  const profileCompleted = session?.user.isProfileCompleted;
+
+  useEffect(() => {
+    if (profileCompleted) {
+      router.push("/");
+    } 
+  },[profileCompleted, router]);
 
   const processForm = async (formData: TCompleteAccountSchema) => {
     const authenticatedUser = session?.user;
@@ -21,12 +33,14 @@ export default function CompleteAccountForm() {
       const { id, isProfileCompleted } = authenticatedUser;
       const response = await addExtraAccountInfo(formData, {id, isProfileCompleted});
 
+      //SANITISE AND CHECK FORMDATA VALUES
       if (response) update({
         userName: formData.userName,
         userType: formData.userType,
         isProfileCompleted: true
       });
     }
+    //SANITISE AND CHECK FORMDATA VALUES
     update({
       userName: formData.userName,
       userType: formData.userType,
