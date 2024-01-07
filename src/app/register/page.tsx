@@ -1,8 +1,14 @@
 import RegistrationForm from "@/components/registrationForm";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 
-export default function Register() {
+export default async function Register() {
+  const session = await getServerSession(authOptions);
+  if (!!session?.user) redirect("/");
+
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-3">
       <div className="w-4/5 mt-8 max-w-sm">

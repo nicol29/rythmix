@@ -3,11 +3,12 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import LogOutButton from "@/components/logOutButton";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 
 export default async function Login() {
   const session = await getServerSession(authOptions);
-  // console.log("server-session", {session});
+  if (!!session?.user) redirect("/");
 
   return (
     <main className="min-h-screen flex flex-col justify-center items-center gap-3">

@@ -7,20 +7,15 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { CloseIcon, GoogleIcon } from "@/assets/icons";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
 
 
 export default function LoginForm() {
-  useRedirectOnProfileCompletion();
+  // useRedirectOnProfileCompletion();
 
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TLogInSchema>({
     resolver: zodResolver(loginSchema),
   });
-  const router = useRouter();
-  const { data: session, status } = useSession();
-  const user = session?.user;
 
   const emailParams = useSearchParams().get("email") ?? "";
   const [email, setEmail] = useState(emailParams);

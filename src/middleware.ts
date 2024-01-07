@@ -8,10 +8,12 @@ export default withAuth(
   function middleware (request: NextRequestWithAuth) {
     const token = request.nextauth.token;
     const pathName = request.nextUrl.pathname;
+    console.log("ROUTE:", pathName);
+    console.log(token?.isProfileCompleted)
 
-    if (!token?.isProfileCompleted && pathName !== "/register/complete-account") {
+    if (!token?.isProfileCompleted && !pathName.startsWith("/register/complete-account")) {
       return NextResponse.redirect(new URL("/register/complete-account", request.nextUrl));
-    } else if (token?.isProfileCompleted && pathName === "/register/complete-account") {
+    } else if (token?.isProfileCompleted && pathName.startsWith("/register/complete-account")) {
       return NextResponse.redirect(new URL("/", request.nextUrl));
     }
 
@@ -19,18 +21,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized({ token, req }) {
-        console.log("skdjvbskdjbvdskjbvkjb")
-        switch (req.nextUrl.pathname) {
-          case "/lol":
-            return !!token // Only require authentication
-          case "/admin":
-            return token?.userType === "producer" // Require authorization
-          case "/":
-          default:
-            return true // Bypass auth for these routes
-        }
-      }
+      authorized: ({ token }) => !!token,
     },
     pages: {
       signIn: "/login",
@@ -38,4 +29,11 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/profile", "/register/complete-account", "/admin"] };
+export const config = { 
+  matcher: [
+    "/register/complete-account",
+    "/profile",
+  ]
+};
+
+

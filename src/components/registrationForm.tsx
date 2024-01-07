@@ -8,34 +8,30 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
+import { toast } from "sonner";
+import addUser from "@/server-actions/addUser";
 
 
 export default function RegistrationForm() {
-  useRedirectOnProfileCompletion();
-
+  // useRedirectOnProfileCompletion();
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TRegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  
 
   const processForm = async (formData: TRegistrationSchema) => {
     setIsSubmitting(true);
+  
+    const res = await addUser(formData);
 
-    const response = await fetch("/api/auth/register", {
-      method: 'POST',
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      if (data.errorCode === "EMAIL_EXISTS") router.push(`/login?email=${encodeURIComponent(data.email)}`);
+    if (res.success) {
+      toast.success(res.message)
+      router.push("/login");
     } else {
-      router.push(`/login`);
+      toast.error(res.message);
+      if (!!res.userExists) router.push("/login");
     }
 
     setIsSubmitting(false);
