@@ -20,7 +20,6 @@ export default async function Login() {
         <h2>{(`Don't have an account?`)}</h2>
         <Link className="text-orange-500 font-semibold" href="/register">Create Account</Link>
       </div>
-      {!!session && <LogOutButton />}
     </main>
   )
 }

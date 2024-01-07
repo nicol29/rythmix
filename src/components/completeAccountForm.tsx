@@ -5,47 +5,42 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { completeAccountSchema, TCompleteAccountSchema } from "@/schemas/completeAccountSchema";
 import addExtraAccountInfo from "@/server-actions/addExtraAccountInfo";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
+import { useState } from "react";
 
 
 export default function CompleteAccountForm() {
-  useRedirectOnProfileCompletion();
-
   const { handleSubmit, register, formState: { errors } } = useForm<TCompleteAccountSchema>({
     resolver: zodResolver(completeAccountSchema),
   });
   const { data: session, update } = useSession();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const profileCompleted = session?.user.isProfileCompleted;
-
-  useEffect(() => {
-    if (profileCompleted) {
-      router.push("/");
-    } 
-  },[profileCompleted, router]);
 
   const processForm = async (formData: TCompleteAccountSchema) => {
     const authenticatedUser = session?.user;
 
     if (authenticatedUser) {
-      const { id, isProfileCompleted } = authenticatedUser;
-      const response = await addExtraAccountInfo(formData, {id, isProfileCompleted});
+      setIsSubmitting(true);
 
-      //SANITISE AND CHECK FORMDATA VALUES
-      if (response) update({
-        userName: formData.userName,
-        userType: formData.userType,
-        isProfileCompleted: true
-      });
+      const { id, isProfileCompleted } = authenticatedUser; 
+      const res = await addExtraAccountInfo(formData, {id, isProfileCompleted});
+
+      setIsSubmitting(false);
+
+      if (res.success) {
+        update({
+          userName: formData.userName,
+          userType: formData.userType,
+          isProfileCompleted: true
+        });
+        toast.success(res.message);
+        router.push("/");
+      } else {
+        toast.error(res.message);
+      }
     }
-    //SANITISE AND CHECK FORMDATA VALUES
-    update({
-      userName: formData.userName,
-      userType: formData.userType,
-      isProfileCompleted: true
-    });
   }
 
   return (
@@ -53,7 +48,7 @@ export default function CompleteAccountForm() {
       <form onSubmit={handleSubmit(processForm)} className="w-4/5 flex flex-col gap-3">
         <div className="default-field-container">
           <label htmlFor="userName">Username</label>
-          <input className="default-input-field" type="text" {...register("userName", {required: "Username is required"})} />
+          <input className="default-input-field" type="text" {...register("userName")} />
           {errors.userName && <p className="text-red-400 text-sm">{`${errors.userName.message}`}</p>}
         </div>
         <div className="default-field-container">
@@ -65,8 +60,8 @@ export default function CompleteAccountForm() {
           </select>
           {errors.userType && <p className="text-red-400 text-sm">{`${errors.userType.message}`}</p>}
         </div>
-        <button type="submit" className="bg-orange-500 text-orange-100 rounded h-10 mt-8 font-semibold">
-          Finish Up
+        <button type="submit" aria-disabled={isSubmitting} className="bg-orange-500 text-orange-100 rounded h-10 mt-8 font-semibold">
+          {isSubmitting ? "Finishing Up" : "Finish Up"}
         </button>
       </form>
     </div>

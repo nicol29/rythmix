@@ -25,14 +25,6 @@ input:-webkit-autofill:active{
   }
 } */
 
-html {
-
-}
-
-body {
-  
-}
-
 .default-input-field {
   @apply  bg-neutral-750 
           h-9 rounded border

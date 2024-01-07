@@ -1,6 +1,6 @@
 "use server";
 
-import { TCompleteAccountSchema } from "@/schemas/completeAccountSchema";
+import { TCompleteAccountSchema, completeAccountSchema } from "@/schemas/completeAccountSchema";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 
@@ -11,20 +11,23 @@ interface AuthenticatedUserData {
 
 
 const addExtraAccountInfo = async (data: TCompleteAccountSchema, userProperties: AuthenticatedUserData) => {
-  const { userName, userType } = data;
+  try {
+    const { userName, userType }: TCompleteAccountSchema = completeAccountSchema.parse(data);
 
-  if (!userProperties.isProfileCompleted) {
-    connectMongoDB();
+    if (!userProperties.isProfileCompleted) {
+      await connectMongoDB();
 
-    const res = await Users.findByIdAndUpdate(userProperties.id, {
-      userName,
-      userType,
-      isProfileCompleted: true,
-    });
+      await Users.findByIdAndUpdate(userProperties.id, {
+        userName,
+        userType,
+        isProfileCompleted: true,
+      });
+    }
 
-    if (res) return true;
+    return {success: true, message: "Account updated successfully"};
+  } catch (error) {
+    return {success: false, message: `${error}`};
   }
-  return false;
 }
 
 export default addExtraAccountInfo;

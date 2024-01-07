@@ -22,18 +22,21 @@ export const authOptions: NextAuthOptions = {
         password: {}
       },
       async authorize(credentials) {
+        try {
+          await connectMongoDB();
 
-        connectMongoDB();
-        const user = await Users.findOne({ email: credentials?.email });
+          const user = await Users.findOne({ email: credentials?.email });
+          if (!user) throw new Error("User does not exist");
 
-        if (!user) throw new Error("User does not exist");
+          const passwordMatch = await compare(credentials?.password || "", user.password);
 
-        const passwordMatch = await compare(credentials?.password || "", user.password);
-
-        if (passwordMatch) {
-          return user;
-        } else {
-          throw new Error('Invalid credentials');
+          if (passwordMatch) {
+            return user;
+          } else {
+            throw new Error('Invalid credentials');
+          }
+        } catch (error) {
+          throw new Error(`${error}`);
         }
       },
     }),

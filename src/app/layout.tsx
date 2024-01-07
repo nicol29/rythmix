@@ -28,7 +28,7 @@ export default async function RootLayout({
             toastOptions={{
               unstyled: true,
               classNames: {
-                toast: 'bg-neutral-800 rounded border border-neutral-600 flex items-center justify-center py-1 px-4',
+                toast: 'bg-neutral-800 rounded border border-neutral-600 flex items-center justify-center gap-1 py-1 px-4',
                 title: 'text-red-800',
                 description: 'text-yellow-900',
                 actionButton: 'bg-zinc-900',

@@ -7,13 +7,11 @@ import { GoogleIcon } from "@/assets/icons";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useRedirectOnProfileCompletion from "@/hooks/useRedirectOnProfileCompletion";
 import { toast } from "sonner";
 import addUser from "@/server-actions/addUser";
 
 
 export default function RegistrationForm() {
-  // useRedirectOnProfileCompletion();
   const { handleSubmit, register, reset, formState: { errors } } = useForm<TRegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
@@ -27,7 +25,7 @@ export default function RegistrationForm() {
     const res = await addUser(formData);
 
     if (res.success) {
-      toast.success(res.message)
+      toast.success(res.message);
       router.push("/login");
     } else {
       toast.error(res.message);
@@ -36,6 +34,11 @@ export default function RegistrationForm() {
 
     setIsSubmitting(false);
     reset();
+  }
+
+  const handleGoogleLogin = async () => {
+    await signIn("google", { callbackUrl: '/register/complete-account' });
+    toast.success("Logged in successfully");
   }
 
   return (
@@ -48,7 +51,7 @@ export default function RegistrationForm() {
         </div>
         <div className="default-field-container">
           <label htmlFor="password">Password</label>
-          <input className="default-input-field" type="password" {...register("password", {required: "Must include a password"})} />
+          <input className="default-input-field" type="password" {...register("password")} />
           {errors.password && <p className="text-red-400 text-sm">{`${errors.password.message}`}</p>}
         </div>
         <div className="default-field-container">
@@ -61,7 +64,7 @@ export default function RegistrationForm() {
         </button>
       </form>
       <div className="w-4/5 h-px relative bg-neutral-600 before:content-['OR'] before:absolute before:-top-2.5 before:bg-neutral-800 before:w-8 before:flex before:justify-center before:left-1/2 before:right-1/2 before:-translate-x-1/2"></div>
-        <button onClick={() => signIn("google")} className="bg-white w-4/5 rounded h-10 text-neutral-600 flex items-center justify-center relative font-semibold">
+        <button onClick={() => handleGoogleLogin()} className="bg-white w-4/5 rounded h-10 text-neutral-600 flex items-center justify-center relative font-semibold">
           <GoogleIcon className="absolute left-2 h-3/6" /> 
           Continue with Google
         </button>
