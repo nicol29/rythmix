@@ -1,4 +1,4 @@
-import CompleteAccountForm from "@/components/completeAccountForm";
+import CompleteAccountForm from "@/components/CompleteAccountForm/completeAccountForm"
 
 
 export default async function CompleteAccount() {

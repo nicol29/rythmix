@@ -1,4 +1,4 @@
-import RegistrationForm from "@/components/registrationForm";
+import RegistrationForm from "@/components/RegistrationForm/registrationForm";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";

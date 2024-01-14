@@ -1,7 +1,6 @@
-import LoginForm from "@/components/loginForm";
+import LoginForm from "@/components/LoginForm/loginForm";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import LogOutButton from "@/components/logOutButton";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 

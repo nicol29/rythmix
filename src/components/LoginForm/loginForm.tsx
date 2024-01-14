@@ -47,12 +47,12 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit(processForm)} className="w-4/5 flex flex-col gap-3">
         <div className="default-field-container">
           <label htmlFor="email">Email</label>
-          <input className="default-input-field" type="email" {...register("email")}/>
+          <input className="default-input-field" type="email" id="email" {...register("email")}/>
           {errors.email && <p className="text-red-400 text-sm">{`${errors.email.message}`}</p>}
         </div>
         <div className="default-field-container">
           <label htmlFor="password">Password</label>
-          <input className="default-input-field" type="password" {...register("password")} />
+          <input className="default-input-field" type="password" id="password" {...register("password")} />
           {errors.password && <p className="text-red-400 text-sm">{`${errors.password.message}`}</p>}
         </div>
         <button type="submit" aria-disabled={isSubmitting} className="bg-orange-500 text-orange-100 w-full rounded h-10 mt-6 font-semibold hover:bg-orange-400">
