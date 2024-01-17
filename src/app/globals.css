@@ -13,7 +13,8 @@ input:-webkit-autofill:active{
 }
 
 :root {
-  background-color: #1c1c1c;
+  /* background-color: #1c1c1c; */
+  background-color: #1b1a1a;
   color: #bababa;
 }
 
@@ -29,7 +30,7 @@ input:-webkit-autofill:active{
   @apply  bg-neutral-750 
           h-9 rounded border
           border-neutral-600 
-          focus:border-neutral-400 
+          focus:border-neutral-400
           outline-none px-1;
 }
 

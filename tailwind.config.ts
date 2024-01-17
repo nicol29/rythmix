@@ -16,6 +16,7 @@ const config: Config = {
       colors: {
         'neutral': {
           750: '#3c3c3c',
+          850: '#212121',
         },
       }
     },
