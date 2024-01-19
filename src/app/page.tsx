@@ -1,8 +1,13 @@
 import LogOutButton from '@/components/logOutButton'
 import Header from '@/components/header'
+import Beats from '@/models/Beats'
 
 
 export default async function Home() {
+  // const beat = await Beats.findOne();
+  // console.log(beat);
+
+  
 
   return (
     <>

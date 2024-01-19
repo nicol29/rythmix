@@ -4,3 +4,5 @@ export { default as MenuIcon } from "./menu_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as SearchIcon } from "./search_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as AccountCircleIcon } from "./account_circle_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as LogOutIcon } from "./logout_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as CartIcon } from "./shopping_bag_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as ExpandIcon } from "./expand_more_FILL0_wght400_GRAD0_opsz24.svg";

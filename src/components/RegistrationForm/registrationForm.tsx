@@ -18,7 +18,7 @@ export default function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   
-
+  
   const processForm = async (formData: TRegistrationSchema) => {
     setIsSubmitting(true);
   
