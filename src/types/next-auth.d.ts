@@ -23,7 +23,7 @@ declare module "next-auth" {
       profilePicture?: string | null,
       image?: string | null,
       isProfileCompleted?: boolean,
-    }
+    } & Session['user'];
   }
 }
 

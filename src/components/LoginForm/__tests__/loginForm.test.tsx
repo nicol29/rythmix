@@ -19,7 +19,7 @@ jest.mock("next-auth/react", () => {
   };
 });
 
-describe('RegistrationForm', () => {
+describe('LogInForm', () => {
   it('renders the complete account form', () => {
     render(<LoginForm />);
 
