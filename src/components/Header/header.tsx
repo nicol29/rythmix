@@ -7,10 +7,13 @@ import Image from "next/image";
 import Link from "next/link";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import useDetectOutsideClick from "@/hooks/useDetectOutsideClick";
+import { useRouter, usePathname } from "next/navigation";
 
 
 export default function Header() {
   const { data: session, status } = useSession();
+  const router = useRouter();
+  const path = usePathname();
 
   const [activeDropDown, setActiveDropdown] = useState<"profile" | "cart" | null>(null);
   const [menuToggled,setMenuToggled] = useState(false);
@@ -30,10 +33,15 @@ export default function Header() {
     setMenuToggled(!menuToggled);
   }
 
+  const changeToHomePage = () => {
+    if (path !== "/") router.push("/");
+  }
+
   return (
     <header className="bg-neutral-850 fixed top-0 w-full">
       <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative sm:gap-6">
         <MenuIcon className="text-neutral-400 h-7 cursor-pointer" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
+        <img className="h-6 mt-1 cursor-pointer" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />
         <button className="block sm:hidden" onClick={() => setSearchToggled(!searchToggled)} aria-label="Open searchbar">
           <SearchIcon className="text-neutral-400 h-6"/>
         </button>
@@ -104,8 +112,9 @@ export default function Header() {
         </div>
         <div onClick={() => manageSideMenu()} className={menuToggled ? "top-0 left-0 h-screen w-full bg-black opacity-45 absolute" : "hidden"}></div>
         <div className={menuToggled ? "h-screen w-5/6 absolute top-0 left-0 bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]" : "h-screen w-5/6 absolute top-0 left-0 -translate-x-full bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]"} aria-hidden={!menuToggled} aria-label="menu">
-          <div className="h-14 border-b border-neutral-750 px-2 flex items-center">
+          <div className="h-14 border-b border-neutral-750 px-2 flex gap-3 items-center">
             <CloseIcon className="h-7 cursor-pointer text-neutral-400" onClick={() => manageSideMenu()} />
+            <img className="h-7 mt-1" src="/transparentRythmix.png" />
           </div>
         </div>
       </div>
