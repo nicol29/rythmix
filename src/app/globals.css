@@ -34,6 +34,14 @@ input:-webkit-autofill:active{
           outline-none px-1;
 }
 
+.dark-input-field {
+  @apply  bg-neutral-850
+          h-9 rounded border
+          border-neutral-700
+          focus:border-neutral-500
+          outline-none px-1;
+}
+
 .default-field-container {
   @apply flex flex-col;
 }

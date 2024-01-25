@@ -38,7 +38,7 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-neutral-850 fixed top-0 w-full">
+    <header className="bg-neutral-850 fixed top-0 w-full z-20">
       <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative sm:gap-6">
         <MenuIcon className="text-neutral-400 h-7 cursor-pointer" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
         <img className="h-6 mt-1 cursor-pointer" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />

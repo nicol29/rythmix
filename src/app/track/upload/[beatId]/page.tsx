@@ -7,8 +7,11 @@ export default function Upload () {
   return (
     <>
       <Header />
-      <main className="mt-14">
-        <BeatUploadForm />
+      <main className="mt-14 pt-12">
+        <div className="flex justify-center">
+          
+          <BeatUploadForm />
+        </div>
       </main>
     </>
   )
