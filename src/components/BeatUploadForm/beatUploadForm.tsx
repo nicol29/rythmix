@@ -7,6 +7,7 @@ import fileReducer from "@/reducers/fileReducer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TBeatUploadSchema, beatUploadSchema } from "@/schemas/beatUploadSchema";
+import InfoIcon from "../InfoIcon/infoIcon";
 
 
 export default function BeatUploadForm() {
@@ -113,7 +114,10 @@ export default function BeatUploadForm() {
         </div>
       </div>
       <div className="flex flex-col gap-2 lg:col-span-2 lg:max-w-[650px]">
-        <h2 className="text-2xl mb-4">Metadata</h2>
+        <div className="flex mb-4 items-center gap-2">
+          <h2 className="text-2xl">Metadata</h2>
+          <InfoIcon dialogueText="Helps improve beat discoverability in searches" />
+        </div>
         <div className="grid grid-cols-2 gap-2 lg:gap-6">
           <div className="default-field-container">
             <label className="mb-2" htmlFor="title">Bpm</label>
