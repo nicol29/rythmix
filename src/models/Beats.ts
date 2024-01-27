@@ -18,7 +18,9 @@ const beatsSchema = new mongoose.Schema({
     preview: { type: String },
     coverArt: { type: String },
   },
-  licenses: {  },
+  licenses: [ 
+    { type: Object }
+  ],
   createdAt: { type: Date, default: Date.now, },
 })
 

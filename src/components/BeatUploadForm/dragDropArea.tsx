@@ -9,15 +9,14 @@ import Image from "next/image";
 
 
 export default function DragDropArea({ filesState, dispatch, styles, dropZoneName, dropZoneOptions }: DragDropAreaProps) {
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length) {
       const acceptedFile = acceptedFiles[0];
       if (dropZoneName === "artworkFile") Object.assign(acceptedFile, { preview: URL.createObjectURL(acceptedFile) });
       
-      dispatch({ type: "SET_ACCEPTED_FILE", payload: { dropzone: dropZoneName, acceptedFile: acceptedFile } });
-    } else if (rejectedFiles.length) {
-      dispatch({ type: "SET_REJECTED_FILE", payload: { dropzone: dropZoneName, rejectedFile: rejectedFiles[0] } });
-    }
+      dispatch({ type: "SET_ACCEPTED_FILE", payload: { dropzone: dropZoneName, acceptedFile }});
+      dispatch({ type: "REMOVE_ERROR", payload: { dropzone: dropZoneName }});
+    } 
   }, []);
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } = useDropzone({

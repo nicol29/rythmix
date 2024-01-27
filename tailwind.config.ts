@@ -18,6 +18,8 @@ const config: Config = {
           750: '#3c3c3c',
           850: '#212121',
         },
+        'transparent-orange':'#ff770045',
+        'transparent-orange-hv':'#ff770053',
       }
     },
   },
