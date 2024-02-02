@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useEffect } from "react";
+import { useReducer, useState } from "react";
 import DragDropArea from "./dragDropArea";
 import { FileState } from "@/types/uploadBeatFormTypes";
 import fileReducer from "@/reducers/fileReducer";
@@ -9,35 +9,39 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TBeatUploadSchema, beatUploadSchema } from "@/schemas/beatUploadSchema";
 import InfoIcon from "../InfoIcon/infoIcon";
 import { toast } from "sonner";
+import addBeat from "@/server-actions/addBeat";
 
+const initialFileState: FileState = {
+  artworkFile: { acceptedFile: null, errorMsg: null },
+  mp3File: { acceptedFile: null, errorMsg: null },
+  wavFile: { acceptedFile: null, errorMsg: null }
+}
 
-export default function BeatUploadForm() {
-  const initialFileState: FileState = {
-    artworkFile: { acceptedFile: null, errorMsg: null },
-    mp3File: { acceptedFile: null, errorMsg: null },
-    wavFile: { acceptedFile: null, errorMsg: null }
-  }
-
-  const [fileState, dispatch] = useReducer(fileReducer, initialFileState);
-
-  const { handleSubmit, register, setValue, watch, formState: { errors } } = useForm<TBeatUploadSchema>({
-    resolver: zodResolver(beatUploadSchema),
-    defaultValues: {
-      licenses: {
-        basic: {
-          price: 25.00,
-          selected: false
-        },
-        premium: {
-          price: 50.00,
-          selected: false
-        }, 
-        exclusive: {
-          price: 700.00,
-          selected: false
-        }
-      }
+const defaultFormValues = {
+  licenses: {
+    basic: {
+      price: 25.00,
+      selected: false
+    },
+    premium: {
+      price: 50.00,
+      selected: false
+    }, 
+    exclusive: {
+      price: 700.00,
+      selected: false
     }
+  }
+}
+
+export default function BeatUploadForm({ slug }: { slug: string }) {
+  const [fileState, dispatch] = useReducer(fileReducer, initialFileState);
+  const [isDraftLoading, setIsDraftLoading] = useState(false);
+  const [isPublishLoading, setIsPublishLoading] = useState(false);
+
+  const { handleSubmit, register, setValue, getValues, watch, formState: { errors } } = useForm<TBeatUploadSchema>({
+    resolver: zodResolver(beatUploadSchema),
+    defaultValues: defaultFormValues,
   });
 
   const watchLicenses = watch("licenses");
@@ -64,34 +68,54 @@ export default function BeatUploadForm() {
       dispatch({ type: "SET_ERROR", payload: { dropzone: "mp3File", error: "Must provide .mp3 file" }});
       noErrors = false;
     }
-
     if (!fileState.artworkFile.acceptedFile) {
       dispatch({ type: "SET_ERROR", payload: { dropzone: "artworkFile", error: "Must provide artwork" }});
       noErrors = false;
     }
-    
     if (licenses.premium.selected && !fileState.wavFile.acceptedFile || licenses.exclusive.selected && !fileState.wavFile.acceptedFile) {
       dispatch({ type: "SET_ERROR", payload: { dropzone: "wavFile", error: "Must provide .wav file" }});
       noErrors = false;
     }
-    
     return noErrors;
   }
+
+  const appendFilesToFormData = (formData: TBeatUploadSchema) => {
+    const filesFormData = new FormData();
+
+    if (fileState.artworkFile.acceptedFile) filesFormData.append('artworkFile', fileState.artworkFile.acceptedFile);
+    if (fileState.mp3File.acceptedFile) filesFormData.append('mp3File', fileState.mp3File.acceptedFile);
+    if (fileState.wavFile.acceptedFile) {
+      const { licenses } = formData;
+      if (licenses.premium.selected || licenses.exclusive.selected) filesFormData.append('wavFile', fileState.wavFile.acceptedFile);
+    }
+    return filesFormData;
+  }
   
-  const processForm = async (formData: TBeatUploadSchema) => {
+  const handleDraft = async () => {
+    const currentFormValues = getValues();
+    const filesFormData = appendFilesToFormData(currentFormValues);
+
+    const res = await addBeat(currentFormValues, filesFormData, slug, "draft");
+    res?.success ? toast.success("Successfully drafted") : toast.error("Something went wrong");
+  }
+
+  const handlePublish = async (formData: TBeatUploadSchema) => {
     if (verifyFilesAreSubmitted(formData)) {
-      console.log(formData);
-      
+      const filesFormData = appendFilesToFormData(formData);
+
+      const res = await addBeat(formData, filesFormData, slug, "published");
+      res?.success ? toast.success("Successfully published") : toast.error("Something went wrong");
     } else {
-      toast.error("Submit required files");
+      toast.error("Attach required files");
     }
   }
+
 
   const artWorkDropZoneStyles = `${fileState.artworkFile.acceptedFile ? '' : 'border-dashed'} flex items-center p-5 text-center justify-center bg-neutral-850 w-full aspect-square rounded border-2 border-neutral-700 relative`;
   const audioFilesDropZoneStyles = `${fileState.mp3File.acceptedFile ? '' : 'border-dashed'} flex items-center px-5 py-3 text-center justify-center bg-neutral-850 w-full min-h-[100px] rounded border-2 border-neutral-700 relative`;
 
   return (
-    <form onSubmit={handleSubmit(processForm)} className="flex flex-col gap-14 px-4 max-w-[325px] lg:max-w-none lg:grid lg:grid-rows-2 lg:grid-cols-3 ">
+    <form className="flex flex-col gap-14 px-4 max-w-[325px] lg:max-w-none lg:grid lg:grid-rows-2 lg:grid-cols-3 ">
       <div className="flex flex-col gap-5 lg:col-start-3 lg:row-span-3 lg:w-[325px]">
         <h2 className="text-2xl">Assets</h2>
         <div>
@@ -109,7 +133,7 @@ export default function BeatUploadForm() {
                 'image/png': ['.png', '.jpeg', '.jpg'],
               },
               maxSize: 3 * 1024 * 1024,
-              minSize: 500 * 500,
+              minSize: 200 * 200,
             }}
           />
           {fileState.artworkFile.errorMsg && <p className="text-red-400 text-sm">{`${fileState.artworkFile.errorMsg}`}</p>}
@@ -298,8 +322,8 @@ export default function BeatUploadForm() {
         </div>
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:col-start-3">
-        <button type="submit" className="bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300">Save as Draft</button>
-        <button type="submit" className="bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400">Publish</button>
+        <button onClick={() => handleDraft()} type="button" className="bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300">Save as Draft</button>
+        <button onClick={handleSubmit(handlePublish)} type="submit" className="bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400">Publish</button>
       </div>
     </form>
   )

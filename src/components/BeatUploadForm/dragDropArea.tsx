@@ -17,7 +17,7 @@ export default function DragDropArea({ filesState, dispatch, styles, dropZoneNam
       dispatch({ type: "SET_ACCEPTED_FILE", payload: { dropzone: dropZoneName, acceptedFile }});
       dispatch({ type: "REMOVE_ERROR", payload: { dropzone: dropZoneName }});
     } 
-  }, []);
+  }, [dispatch, dropZoneName]);
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } = useDropzone({
     onDrop,
@@ -53,8 +53,9 @@ export default function DragDropArea({ filesState, dispatch, styles, dropZoneNam
             dropZoneName === "artworkFile" && filesState.acceptedFile ?
             (
               <div className="absolute h-full w-full">
-                <Image src={`${filesState.acceptedFile.preview}`} fill className="h-full w-full object-cover rounded" alt="" />
-                {/* <img src={`${filesState.acceptedFile.preview}`} className="h-full w-full object-cover rounded" alt="" />  */}
+                <Image src={`${filesState.acceptedFile.preview}`} fill className="h-full w-full object-cover rounded" alt="User uploaded image" onLoad={() => { 
+                  if (filesState.acceptedFile?.preview) URL.revokeObjectURL(filesState.acceptedFile.preview);
+                }} />
                 <div onClick={() => removeAsset()} className="absolute top-2 right-2 w-6 h-6 flex justify-center items-center rounded-full cursor-pointer bg-neutral-400 hover:bg-neutral-200 hover:opacity-80">
                   <CloseIcon className="h-5 text-neutral-700" />
                 </div>

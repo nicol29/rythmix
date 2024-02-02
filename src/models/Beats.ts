@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
+
   
 const beatsSchema = new mongoose.Schema({
   title: { type: String },
@@ -15,12 +16,15 @@ const beatsSchema = new mongoose.Schema({
   urlIdentifier: { type: Number, required: true, unique: true },
   status: { type: String, default: "draft" },
   assets: { 
-    preview: { type: String },
-    coverArt: { type: String },
+    artwork: { url: { type: String }, publicId: { type: String } },
+    mp3: { url: { type: String }, publicId: { type: String } },
+    wav: { url: { type: String }, publicId: { type: String } },
   },
-  licenses: [ 
-    { type: Object }
-  ],
+  licenses: {
+    basic: { price: { type: Number }, selected: { type: Boolean } },
+    premium: { price: { type: Number }, selected: { type: Boolean } },
+    exclusive: { price: { type: Number }, selected: { type: Boolean } },
+  },
   createdAt: { type: Date, default: Date.now, },
 })
 

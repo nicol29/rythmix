@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { TBeatUploadSchema } from "@/schemas/beatUploadSchema";
 
 
 export interface DropzoneAction {
@@ -17,7 +18,7 @@ export interface FileState {
 };
 
 export interface DragDropAreaProps {
-  filesState: { acceptedFile: File | null; errorMsg: string | null; };
+  filesState: { acceptedFile: FileWithPreview | null; errorMsg: string | null; };
   dispatch: Dispatch<DropzoneAction>;
   styles: String;
   dropZoneName: "artworkFile" | "mp3File" | "wavFile";
@@ -28,4 +29,15 @@ export interface DragDropAreaProps {
     maxSize: number;
     minSize: number;
   };
+}
+
+interface FileWithPreview extends File {
+  preview?: string;
+  path?: string
+}
+
+export interface FormDataWithFiles {
+  artworkFile: File | null;
+  mp3File: File | null;
+  wavFile: File | null;
 }
