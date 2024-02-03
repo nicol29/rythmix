@@ -16,9 +16,9 @@ const beatsSchema = new mongoose.Schema({
   urlIdentifier: { type: Number, required: true, unique: true },
   status: { type: String, default: "draft" },
   assets: { 
-    artwork: { url: { type: String }, publicId: { type: String } },
-    mp3: { url: { type: String }, publicId: { type: String } },
-    wav: { url: { type: String }, publicId: { type: String } },
+    artwork: { url: { type: String }, publicId: { type: String }, fileName: { type: String } },
+    mp3: { url: { type: String }, publicId: { type: String }, fileName: { type: String }  },
+    wav: { url: { type: String }, publicId: { type: String }, fileName: { type: String }  },
   },
   licenses: {
     basic: { price: { type: Number }, selected: { type: Boolean } },

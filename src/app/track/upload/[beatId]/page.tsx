@@ -10,7 +10,7 @@ export default function Upload ({ params }: { params: { beatId: string } }) {
       <main className="mt-14 pt-12">
         <div className="flex justify-center">
           
-          <BeatUploadForm slug={params.beatId} />
+          <BeatUploadForm slug={params.beatId} formType="upload" />
         </div>
       </main>
     </>

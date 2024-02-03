@@ -7,8 +7,8 @@ const licenseSchema = z.object({
 
 export const beatUploadSchema = z.object ({
   title: z.string().min(1, {message: "Must provide a title"}),
-  bpm: z.string().refine((value) => !value || !isNaN(parseFloat(value)), {
-    message: "Must be a number",
+  bpm: z.string().refine((val) => !Number.isNaN(parseInt(val, 10)), {
+    message: "Expected number, received a string"
   }),
   key: z.string(),
   genre: z.string(),

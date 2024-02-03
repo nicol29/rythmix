@@ -1,16 +1,19 @@
-import { ObjectId } from "mongodb"
+import { ObjectId } from "mongodb";
+
 
 interface AssetInterface {
   url: string; 
   publicId: string; 
+  fileName: string;
 }
 
-interface LicenseInterface {
+export interface LicenseInterface {
   price: number;
   selected: boolean;
 }
 
 export interface BeatDocumentInterface {
+  _id: ObjectId;
   title: string;
   bpm: string;
   key: string;
