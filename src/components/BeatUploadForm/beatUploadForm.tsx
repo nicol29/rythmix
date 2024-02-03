@@ -10,38 +10,43 @@ import { TBeatUploadSchema, beatUploadSchema } from "@/schemas/beatUploadSchema"
 import InfoIcon from "../InfoIcon/infoIcon";
 import { toast } from "sonner";
 import addBeat from "@/server-actions/addBeat";
+import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 
-const initialFileState: FileState = {
-  artworkFile: { acceptedFile: null, errorMsg: null },
-  mp3File: { acceptedFile: null, errorMsg: null },
-  wavFile: { acceptedFile: null, errorMsg: null }
-}
 
-const defaultFormValues = {
-  licenses: {
-    basic: {
-      price: 25.00,
-      selected: false
-    },
-    premium: {
-      price: 50.00,
-      selected: false
-    }, 
-    exclusive: {
-      price: 700.00,
-      selected: false
-    }
+export default function BeatUploadForm({ slug, currentBeat }: { slug: string, currentBeat?: BeatDocumentInterface }) {
+  const artWorkUrl = currentBeat?.assets.artwork.url;
+  const initialFileState: FileState = {
+    artworkFile: { acceptedFile: null, errorMsg: null },
+    mp3File: { acceptedFile: null, errorMsg: null },
+    wavFile: { acceptedFile: null, errorMsg: null }
   }
-}
-
-export default function BeatUploadForm({ slug }: { slug: string }) {
   const [fileState, dispatch] = useReducer(fileReducer, initialFileState);
   const [isDraftLoading, setIsDraftLoading] = useState(false);
   const [isPublishLoading, setIsPublishLoading] = useState(false);
 
   const { handleSubmit, register, setValue, getValues, watch, formState: { errors } } = useForm<TBeatUploadSchema>({
     resolver: zodResolver(beatUploadSchema),
-    defaultValues: defaultFormValues,
+    defaultValues: {
+      title: currentBeat?.title ?? "",
+      bpm: currentBeat?.bpm ?? "",
+      key: currentBeat?.key ?? "",
+      genre: currentBeat?.genre ?? "",
+      mood: currentBeat?.mood ?? "",
+      licenses: {
+        basic: {
+          price: currentBeat?.licenses.basic.price ?? 25.00,
+          selected: currentBeat?.licenses.basic.selected ?? false
+        },
+        premium: {
+          price: currentBeat?.licenses.premium.price ?? 50.00,
+          selected: currentBeat?.licenses.premium.selected ?? false
+        }, 
+        exclusive: {
+          price: currentBeat?.licenses.exclusive.price ?? 700.00,
+          selected: currentBeat?.licenses.exclusive.selected ?? false
+        }
+      }
+    },
   });
 
   const watchLicenses = watch("licenses");
@@ -92,19 +97,23 @@ export default function BeatUploadForm({ slug }: { slug: string }) {
   }
   
   const handleDraft = async () => {
+    setIsDraftLoading(true);
     const currentFormValues = getValues();
     const filesFormData = appendFilesToFormData(currentFormValues);
 
     const res = await addBeat(currentFormValues, filesFormData, slug, "draft");
     res?.success ? toast.success("Successfully drafted") : toast.error("Something went wrong");
+    setIsDraftLoading(false);
   }
 
   const handlePublish = async (formData: TBeatUploadSchema) => {
     if (verifyFilesAreSubmitted(formData)) {
+      setIsPublishLoading(true);
       const filesFormData = appendFilesToFormData(formData);
 
       const res = await addBeat(formData, filesFormData, slug, "published");
       res?.success ? toast.success("Successfully published") : toast.error("Something went wrong");
+      setIsPublishLoading(false);
     } else {
       toast.error("Attach required files");
     }
@@ -322,8 +331,8 @@ export default function BeatUploadForm({ slug }: { slug: string }) {
         </div>
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:col-start-3">
-        <button onClick={() => handleDraft()} type="button" className="bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300">Save as Draft</button>
-        <button onClick={handleSubmit(handlePublish)} type="submit" className="bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400">Publish</button>
+        <button onClick={() => handleDraft()} disabled={isDraftLoading || isPublishLoading} type="button" className={`bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300 ${isDraftLoading && `italic`}`}>{isDraftLoading ? "Saving..." : "Save as Draft"}</button>
+        <button onClick={handleSubmit(handlePublish)} disabled={isDraftLoading || isPublishLoading} type="submit" className={`bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400 ${isPublishLoading && `italic`}`}>{isPublishLoading ? "Publishing..." : "Publish"}</button>
       </div>
     </form>
   )

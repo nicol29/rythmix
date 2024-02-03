@@ -13,7 +13,6 @@ import connectMongoDB from "@/config/mongoDBConnection";
 const addBeat = async (formData: TBeatUploadSchema, files: any, beatUrlId: string, action: "draft" | "published") => {
   try {
     connectMongoDB(); 
-    console.log("files:", files);
 
     const signedInUser = await getServerSession(authOptions);
     const currentBeat = await Beats.findOne({ urlIdentifier: beatUrlId });

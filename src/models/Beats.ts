@@ -28,14 +28,18 @@ const beatsSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now, },
 })
 
-beatsSchema.virtual('fullUrl').get(function() {
-  const lowerCaseTitle: string | undefined = this.title?.toLocaleLowerCase();
-  const removeSpaceTitle: string | undefined = lowerCaseTitle?.replace(/\s+/g, '-');
+// beatsSchema.virtual('fullUrl').get(function() {
+//   const lowerCaseTitle: string | undefined = this.title?.toLocaleLowerCase();
+//   const removeSpaceTitle: string | undefined = lowerCaseTitle?.replace(/\s+/g, '-');
 
-  return `/${removeSpaceTitle}-${this.urlIdentifier}`;
-});
+//   return `/${removeSpaceTitle}-${this.urlIdentifier}`;
+// });
+
+// beatsSchema.set('toJSON', { virtuals: true });
+// beatsSchema.set('toObject', { virtuals: true });
 
 const Beats = mongoose.models.Beats || mongoose.model('Beats', beatsSchema);
+
 
 export default Beats;
 
