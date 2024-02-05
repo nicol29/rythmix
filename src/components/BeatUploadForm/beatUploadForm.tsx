@@ -66,7 +66,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
         setTagsField({ ...tagsField, error: "Maximum tags allowed is 3" });
         return;
       }
-      setTagsField({error: "", tags: [...tagsField.tags, watchTags]});
+      setTagsField({error: "", tags: [...tagsField.tags, watchTags.toLowerCase()]});
       setValue("tags", "");
     }
   }
