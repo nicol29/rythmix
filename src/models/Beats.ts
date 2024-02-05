@@ -8,6 +8,7 @@ const beatsSchema = new mongoose.Schema({
   key: { type: String },
   genre: { type: String },
   mood: { type: String },
+  tags: [{ type: String }],
   producer: { 
     _id: { type: ObjectId, required: true },
     userName: { type: String, required: true },

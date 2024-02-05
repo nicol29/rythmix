@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useState } from "react";
+import { KeyboardEvent, useReducer, useState } from "react";
 import DragDropArea from "./dragDropArea";
 import { FileState } from "@/types/uploadBeatFormTypes";
 import fileReducer from "@/reducers/fileReducer";
@@ -11,6 +11,8 @@ import InfoIcon from "../InfoIcon/infoIcon";
 import { toast } from "sonner";
 import addBeat from "@/server-actions/addBeat";
 import { BeatUploadFormPropsInterface } from "@/types/uploadBeatFormTypes";
+import uniqid from "uniqid";
+import { CloseIcon } from "@/assets/icons";
 
 
 export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUploadFormPropsInterface) {
@@ -24,6 +26,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
     wav: { acceptedFile: returnFileOrNull("wav"), errorMsg: null }
   }
   const [fileState, dispatch] = useReducer(fileReducer, initialFileState);
+  const [tagsField, setTagsField] = useState<{ tags: string[], error: null | string }>({tags: currentBeat?.tags ?? [], error: null});
   const [isDraftLoading, setIsDraftLoading] = useState(false);
   const [isPublishLoading, setIsPublishLoading] = useState(false);
 
@@ -48,11 +51,32 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
           price: currentBeat?.licenses?.exclusive?.price ?? 700.00,
           selected: currentBeat?.licenses?.exclusive?.selected ?? false
         }
-      }
+      },
     },
   });
 
   const watchLicenses = watch("licenses");
+  const watchTags = watch("tags");
+
+  const handleTagsField = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      if (tagsField.tags.length === 3) {
+        setTagsField({ ...tagsField, error: "Maximum tags allowed is 3" });
+        return;
+      }
+      setTagsField({error: "", tags: [...tagsField.tags, watchTags]});
+      setValue("tags", "");
+    }
+  }
+
+  const removeTag = (e: React.MouseEvent<SVGSVGElement>) => {
+    const elementText = e.currentTarget.parentElement?.innerText;
+    const updatedArray = tagsField.tags.filter((item) => item!== elementText);
+
+    setTagsField({ ...tagsField, tags: [...updatedArray] });
+  }
 
   const manageLicenseSelection = (licenseName: "basic" | "premium" | "exclusive") => {
     dispatch({ type: "REMOVE_ALL_ERRORS", payload: { dropzone: "mp3" }});
@@ -91,16 +115,20 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
     setIsDraftLoading(true);
     const currentFormValues = getValues();
 
-    const res = await addBeat(currentFormValues, slug, "draft");
+    const res = await addBeat(currentFormValues, tagsField.tags, slug, "draft");
     res?.success ? toast.success("Successfully drafted") : toast.error("Something went wrong");
     setIsDraftLoading(false);
   }
 
   const handlePublish = async (formData: TBeatUploadSchema) => {
+    if (tagsField.tags.length < 1) {
+      setTagsField({ ...tagsField, error: "Must include tag(s)"});
+      return;
+    }
     if (verifyFilesAreSubmitted(formData)) {
       setIsPublishLoading(true);
 
-      const res = await addBeat(formData, slug, "published");
+      const res = await addBeat(formData, tagsField.tags, slug, "published");
       res?.success ? toast.success("Successfully published") : toast.error("Something went wrong");
       setIsPublishLoading(false);
     } else {
@@ -238,8 +266,8 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
             }
           </div>
         </div>
-        <div className="flex flex-col gap-2 lg:mt-10">
-          <div className="flex mb-4 items-center gap-2">
+        <div className="flex flex-col gap-5 lg:mt-10">
+          <div className="flex items-center gap-2">
             <h2 className="text-2xl">Metadata</h2>
             <InfoIcon dialogueText="Helps improve beat discoverability in searches" />
           </div>
@@ -316,6 +344,14 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
                 <option value="uplifting">Uplifting</option>
               </select>
             </div>
+          </div>
+          <div className="default-field-container">
+            <label className="mb-2" htmlFor="tags">Tags *</label>
+            <input onKeyDown={(e) => handleTagsField(e)} className="dark-input-field" type="text" id="tags" placeholder="Hit enter to add a tag (max 3)" {...register("tags")} />
+            <ul className="flex gap-1 mt-2">
+              {tagsField.tags.map(item => <li className="flex gap-1 items-center bg-neutral-850 rounded-full px-1 border border-neutral-700 text-sm" key={uniqid()}>{item} <CloseIcon onClick={(e: React.MouseEvent<SVGSVGElement>) => removeTag(e)} className="h-4 w-4 cursor-pointer" /></li>)}
+            </ul>
+            {tagsField.error && <p className="text-red-400 text-sm">{tagsField.error}</p>}
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ interface LicensesInterface {
 }
 
 
-const addBeat = async (formData: TBeatUploadSchema, beatUrlId: string, action: "draft" | "published") => {
+const addBeat = async (formData: TBeatUploadSchema, tags: string[], beatUrlId: string, action: "draft" | "published") => {
   try {
     connectMongoDB(); 
 
@@ -27,6 +27,7 @@ const addBeat = async (formData: TBeatUploadSchema, beatUrlId: string, action: "
       key: formData.key,
       genre: formData.genre,
       mood: formData.mood,
+      tags: tags,
       licenses: {
         ...formData.licenses
       },

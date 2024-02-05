@@ -79,7 +79,14 @@ export default function DragDropArea({
             dropZoneName === "artwork" && filesState.acceptedFile ?
             (
               <div className="absolute h-full w-full">
-                <Image src={`${filesState.acceptedFile.url}`} fill sizes="w-full h-full" className="h-full w-full object-cover rounded" alt="User uploaded image" />
+                <Image 
+                  src={`${filesState.acceptedFile.url}`} 
+                  priority 
+                  fill 
+                  sizes="w-full h-full" 
+                  className="h-full w-full object-cover rounded" 
+                  alt="User uploaded image"
+                />
                 <div onClick={() => deleteFiles("image")} className="absolute top-2 right-2 w-6 h-6 flex justify-center items-center rounded-full cursor-pointer bg-neutral-400 hover:bg-neutral-200 hover:opacity-80">
                   <CloseIcon className="h-5 text-neutral-700" />
                 </div>

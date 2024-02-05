@@ -19,6 +19,7 @@ export interface BeatDocumentInterface {
   key: string;
   genre: string;
   mood: string;
+  tags: string[];
   producer: { 
     _id: ObjectId;
     userName: string;

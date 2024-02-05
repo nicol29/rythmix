@@ -20,6 +20,7 @@ export const beatUploadSchema = z.object ({
   }).refine((value) => value.basic.selected || value.premium.selected || value.exclusive.selected, { 
     message: "Atleast one license must be picked" 
   }),
+  tags: z.string(),
 })
 
 export type TBeatUploadSchema = z.infer<typeof beatUploadSchema>;
