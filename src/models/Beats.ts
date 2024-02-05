@@ -4,7 +4,7 @@ import mongoose from "mongoose";
   
 const beatsSchema = new mongoose.Schema({
   title: { type: String },
-  bpm: { type: Number },
+  bpm: { type: String },
   key: { type: String },
   genre: { type: String },
   mood: { type: String },

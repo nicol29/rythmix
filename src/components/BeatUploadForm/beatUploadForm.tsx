@@ -10,13 +10,7 @@ import { TBeatUploadSchema, beatUploadSchema } from "@/schemas/beatUploadSchema"
 import InfoIcon from "../InfoIcon/infoIcon";
 import { toast } from "sonner";
 import addBeat from "@/server-actions/addBeat";
-import { BeatDocumentInterface } from "@/types/mongoDocTypes";
-
-interface BeatUploadFormPropsInterface {
-  slug: string;
-  currentBeat?: BeatDocumentInterface; 
-  formType: "draft" | "upload" | "edit";
-}
+import { BeatUploadFormPropsInterface } from "@/types/uploadBeatFormTypes";
 
 
 export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUploadFormPropsInterface) {
@@ -43,16 +37,16 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
       mood: currentBeat?.mood ?? undefined,
       licenses: {
         basic: {
-          price: currentBeat?.licenses.basic.price ?? 25.00,
-          selected: currentBeat?.licenses.basic.selected ?? false
+          price: currentBeat?.licenses?.basic?.price ?? 25.00,
+          selected: currentBeat?.licenses?.basic?.selected ?? false
         },
         premium: {
-          price: currentBeat?.licenses.premium.price ?? 50.00,
-          selected: currentBeat?.licenses.premium.selected ?? false
+          price: currentBeat?.licenses?.premium?.price ?? 50.00,
+          selected: currentBeat?.licenses?.premium?.selected ?? false
         }, 
         exclusive: {
-          price: currentBeat?.licenses.exclusive.price ?? 700.00,
-          selected: currentBeat?.licenses.exclusive.selected ?? false
+          price: currentBeat?.licenses?.exclusive?.price ?? 700.00,
+          selected: currentBeat?.licenses?.exclusive?.selected ?? false
         }
       }
     },
@@ -328,10 +322,6 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
       <div className="flex flex-col gap-4 lg:flex-row lg:col-start-3">
         { formType === "upload" && <>
           <button onClick={() => handleDraft()} disabled={isDraftLoading || isPublishLoading} type="button" className={`bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300 ${isDraftLoading && `italic`}`}>{isDraftLoading ? "Saving..." : "Save as Draft"}</button>
-          <button onClick={handleSubmit(handlePublish)} disabled={isDraftLoading || isPublishLoading} type="submit" className={`bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400 ${isPublishLoading && `italic`}`}>{isPublishLoading ? "Publishing..." : "Publish"}</button>
-        </> } 
-        { formType === "draft" && <>
-          <button onClick={() => handleDraft()} disabled={isDraftLoading || isPublishLoading} type="button" className={`bg-white text-neutral-600 w-full rounded h-10 font-semibold hover:bg-neutral-300 ${isDraftLoading && `italic`}`}>{isDraftLoading ? "Saving..." : "Save Draft"}</button>
           <button onClick={handleSubmit(handlePublish)} disabled={isDraftLoading || isPublishLoading} type="submit" className={`bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400 ${isPublishLoading && `italic`}`}>{isPublishLoading ? "Publishing..." : "Publish"}</button>
         </> } 
         { formType === "edit" && <button onClick={handleSubmit(handlePublish)} disabled={isDraftLoading || isPublishLoading} type="submit" className={`bg-orange-500 text-orange-100 w-full rounded h-10 font-semibold hover:bg-orange-400 ${isPublishLoading && `italic`}`}>{isPublishLoading ? "Saving..." : "Save"}</button> } 

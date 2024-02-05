@@ -1,4 +1,5 @@
 import { Dispatch } from "react";
+import { BeatDocumentInterface } from "./mongoDocTypes";
 
 interface ReturnedUploadFile {
   fileName: string;
@@ -40,4 +41,10 @@ export interface FormDataWithFiles {
   artwork: File | null;
   mp3: File | null;
   wav: File | null;
+}
+
+export interface BeatUploadFormPropsInterface {
+  slug: string;
+  currentBeat: BeatDocumentInterface; 
+  formType: "upload" | "edit";
 }

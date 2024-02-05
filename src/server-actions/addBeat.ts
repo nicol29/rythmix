@@ -47,7 +47,11 @@ const deleteWavIfOnlyBasicLicense = async (beat: BeatDocumentInterface, licenses
     await cloudinary.uploader.destroy(wav.publicId, { resource_type: "video" });
 
     await Beats.findByIdAndUpdate(beat._id.toString(), { 
-      $unset: { 'assets.wav.url': "", 'assets.wav.publicId': "" }
+      $unset: { 
+        'assets.wav.url': "", 
+        'assets.wav.publicId': "",
+        'assets.wav.fileName': ""
+      }
     });
   }
 }

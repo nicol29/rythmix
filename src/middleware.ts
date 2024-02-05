@@ -30,7 +30,7 @@ export const config = {
   matcher: [
     "/register/complete-account",
     "/profile",
-    "/track/upload/:path*",
+    "/track/:path*",
   ]
 };
 
