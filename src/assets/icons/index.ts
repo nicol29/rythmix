@@ -9,4 +9,7 @@ export { default as ExpandIcon } from "./expand_more_FILL0_wght400_GRAD0_opsz24.
 export { default as LogInIcon } from "./login_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as RegisterIcon } from "./app_registration_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as DropIcon } from "./place_item_FILL0_wght400_GRAD0_opsz24.svg";
-export { default as CloudUploadButton } from "./cloud_upload_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as CloudUploadIcon } from "./cloud_upload_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as TrolleyIcon } from "./shopping_cart_FILL0_wght400_GRAD0_opsz24.svg"
+export { default as ListensIcon } from "./play_arrow_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as LikesIcon } from "./favorite_FILL0_wght400_GRAD0_opsz24.svg";

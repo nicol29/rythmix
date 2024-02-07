@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { useDropzone } from 'react-dropzone';
 import { DragDropAreaProps } from "@/types/uploadBeatFormTypes";
-import { DropIcon, CloseIcon, CloudUploadButton } from "@/assets/icons";
+import { DropIcon, CloseIcon, CloudUploadIcon } from "@/assets/icons";
 import {  } from "@/assets/icons";
 import Image from "next/image";
 import { addBeatFile, removeBeatFile } from "@/server-actions/beatFile";
@@ -71,7 +71,7 @@ export default function DragDropArea({
             <div className="absolute h-full w-full flex items-center justify-center"> 
               <div className="flex gap-2">
                 <p className="italic">Uploading...</p>
-                <CloudUploadButton className="h-6 w-6 bounce-animation" />
+                <CloudUploadIcon className="h-6 w-6 bounce-animation" />
               </div>
             </div>
           }

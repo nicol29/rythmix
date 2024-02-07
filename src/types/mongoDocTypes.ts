@@ -38,4 +38,9 @@ export interface BeatDocumentInterface {
     exclusive: LicenseInterface;
   },
   createdAt: Date,
+  formattedDate: string;
+  comments: [{
+    author: ObjectId,
+    text: string,
+  }],
 }

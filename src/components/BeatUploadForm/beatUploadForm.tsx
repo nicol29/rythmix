@@ -281,37 +281,37 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
               <label className="mb-2" htmlFor="key">Key</label>
               <select id="key" className="dark-input-field" {...register("key")}>
                 <option value={undefined}></option>
-                <option value="a-flat minor">A-flat minor</option>
-                <option value="a-flat major">A-flat major</option>
-                <option value="a minor">A minor</option>
-                <option value="a major">A major</option>
-                <option value="a-sharp minor">A-sharp minor</option>
-                <option value="a-sharp major">A-sharp major</option>
-                <option value="b-flat minor">B-flat minor</option>
-                <option value="b-flat major">B-flat major</option>
-                <option value="b minor">B minor</option>
-                <option value="b major">B major</option>
-                <option value="c flat major">C-flat major</option>
-                <option value="c minor">C minor</option>
-                <option value="c major">C major</option>
-                <option value="c-sharp minor">C-sharp minor</option>
-                <option value="c-sharp major">C-sharp major</option>
-                <option value="d-flat major">D-flat major</option>
-                <option value="d minor">D minor</option>
-                <option value="d major">D major</option>
-                <option value="d-sharp minor">D-sharp minor</option>
-                <option value="e-flat minor">E-flat minor</option>
-                <option value="e-flat major">E-flat major</option>
-                <option value="e minor">E minor</option>
-                <option value="e major">E major</option>
-                <option value="f minor">F minor</option>
-                <option value="f major">F major</option>
-                <option value="f-sharp minor">F-sharp minor</option>
-                <option value="f-sharp major">F-sharp major</option>
-                <option value="g-flat major">G-flat major</option>
-                <option value="g minor">G minor</option>
-                <option value="g major">G major</option>
-                <option value="g-sharp minor">G-sharp minor</option>
+                <option value="A-flat minor">A-flat minor</option>
+                <option value="A-flat major">A-flat major</option>
+                <option value="A minor">A minor</option>
+                <option value="A major">A major</option>
+                <option value="A-sharp minor">A-sharp minor</option>
+                <option value="A-sharp major">A-sharp major</option>
+                <option value="B-flat minor">B-flat minor</option>
+                <option value="B-flat major">B-flat major</option>
+                <option value="B minor">B minor</option>
+                <option value="B major">B major</option>
+                <option value="C flat major">C-flat major</option>
+                <option value="C minor">C minor</option>
+                <option value="C major">C major</option>
+                <option value="C-sharp minor">C-sharp minor</option>
+                <option value="C-sharp major">C-sharp major</option>
+                <option value="D-flat major">D-flat major</option>
+                <option value="D minor">D minor</option>
+                <option value="D major">D major</option>
+                <option value="D-sharp minor">D-sharp minor</option>
+                <option value="E-flat minor">E-flat minor</option>
+                <option value="E-flat major">E-flat major</option>
+                <option value="E minor">E minor</option>
+                <option value="E major">E major</option>
+                <option value="F minor">F minor</option>
+                <option value="F major">F major</option>
+                <option value="F-sharp minor">F-sharp minor</option>
+                <option value="F-sharp major">F-sharp major</option>
+                <option value="G-flat major">G-flat major</option>
+                <option value="G minor">G minor</option>
+                <option value="G major">G major</option>
+                <option value="G-sharp minor">G-sharp minor</option>
               </select>
             </div>
           </div>
@@ -320,28 +320,28 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
               <label className="mb-2" htmlFor="genre">Genre</label>
               <select id="genre" className="dark-input-field" {...register("genre")}>
                 <option value={undefined}></option>
-                <option value="drill">Drill</option>
-                <option value="electronic">Electronic</option>
-                <option value="hip hop">Hip Hop</option>
-                <option value="lo-fi">Lo-fi</option>
-                <option value="pop">Pop</option>
-                <option value="rock">Rock</option>
-                <option value="r&b">R&B</option>
+                <option value="Drill">Drill</option>
+                <option value="Electronic">Electronic</option>
+                <option value="Hip hop">Hip Hop</option>
+                <option value="Lo-fi">Lo-fi</option>
+                <option value="Pop">Pop</option>
+                <option value="Rock">Rock</option>
+                <option value="R&B">R&B</option>
               </select>
             </div>
             <div className="default-field-container">
               <label className="mb-2" htmlFor="mood">Mood</label>
               <select id="mood" className="dark-input-field" {...register("mood")}>
                 <option value={undefined}></option>
-                <option value="bouncy">Bouncy</option>
-                <option value="dark">Dark</option>
-                <option value="energetic">Energetic</option>
-                <option value="exciting">Exciting</option>
-                <option value="happy">Happy</option>
-                <option value="lonely">Lonely</option>
-                <option value="romantic">Romantic</option>
-                <option value="sad">Sad</option>
-                <option value="uplifting">Uplifting</option>
+                <option value="Bouncy">Bouncy</option>
+                <option value="Dark">Dark</option>
+                <option value="Energetic">Energetic</option>
+                <option value="Exciting">Exciting</option>
+                <option value="Happy">Happy</option>
+                <option value="Lonely">Lonely</option>
+                <option value="Romantic">Romantic</option>
+                <option value="Sad">Sad</option>
+                <option value="Uplifting">Uplifting</option>
               </select>
             </div>
           </div>
