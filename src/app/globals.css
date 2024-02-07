@@ -53,7 +53,7 @@ input::-webkit-inner-spin-button {
 }
 
 .default-orange-button {
-  @apply bg-orange-500 text-orange-100 rounded font-semibold hover:bg-orange-400;
+  @apply bg-orange-500 text-white rounded font-semibold hover:bg-orange-400;
 }
 
 .text-shadow {

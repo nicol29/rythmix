@@ -13,3 +13,4 @@ export { default as CloudUploadIcon } from "./cloud_upload_FILL0_wght400_GRAD0_o
 export { default as TrolleyIcon } from "./shopping_cart_FILL0_wght400_GRAD0_opsz24.svg"
 export { default as ListensIcon } from "./play_arrow_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as LikesIcon } from "./favorite_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as DeleteIcon } from "./delete_FILL0_wght400_GRAD0_opsz24.svg";

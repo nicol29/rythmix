@@ -5,12 +5,17 @@ import connectMongoDB from "@/config/mongoDBConnection";
 import { BeatDocumentInterface, LicenseInterface } from "@/types/mongoDocTypes";
 import { TrolleyIcon } from "@/assets/icons";
 import CommentSection from "./commentSection";
+import Users from "@/models/Users";
 
 
 export default async function Beat({ params }: { params: { beatId: string } }) {
   await connectMongoDB();
 
-  const res = await Beats.findOne({ urlIdentifier: params.beatId });
+  const res = await Beats.findOne({ urlIdentifier: params.beatId }).populate({
+    path: 'comments.author',
+    model: Users,
+    select: 'userName profilePicture profileUrl'
+  });
   const beat: BeatDocumentInterface = JSON.parse(JSON.stringify(res));
 
   return (
@@ -62,7 +67,7 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
           </section>
           <section className="rounded border border-neutral-700 bg-neutral-850 p-4">
             <h2>Comments</h2>
-            <CommentSection />
+            <CommentSection beat={beat} />
           </section>
         </div>
       </main>

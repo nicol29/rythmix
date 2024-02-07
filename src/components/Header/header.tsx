@@ -59,14 +59,14 @@ export default function Header() {
             <>
               <div className="flex items-center cursor-pointer gap-1" onClick={() => manageDropDowns("profile")}>
                 <div className="relative h-6 w-6">
-                  <Image className="rounded-full object-cover h-full w-full" src={returnProfilePicture(session.user.image)} width={28} height={28} priority alt="User profile picture" />
+                  <Image className="rounded-full object-cover" src={returnProfilePicture(session.user.image)} priority fill sizes="w-full h-full" alt="User profile picture" />
                 </div>
                 <ExpandIcon className={activeDropDown === "profile" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
               </div>
               <div className={activeDropDown === "profile" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[250px] right-1 p-2 mt-1" : "hidden"} aria-hidden={activeDropDown === "profile"} aria-label="profile menu">
                 <div className="flex gap-3 border-b border-neutral-750 pb-2 mb-2">
-                  <div className="relative w-9 h-auto self-center">
-                    <Image className="rounded-full object-cover h-full w-full" src={returnProfilePicture(session.user.image)} width={36} height={36} alt="User profile picture" />
+                  <div className="relative w-9 h-9 self-center">
+                    <Image className="rounded-full object-cover" src={returnProfilePicture(session.user.image)} priority fill sizes="w-full h-full" alt="User profile picture" />
                   </div>
                   <div>
                     <div className="text-orange-500 font-semibold">{session.user.userName}</div>
