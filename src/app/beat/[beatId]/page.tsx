@@ -38,11 +38,11 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
               <div className="flex flex-col gap-5 flex-grow">
                 <div>
                   <p className="text-base">Genre</p>
-                  <p className="font-light text-sm text-neutral-400">{beat.genre}</p>
+                  <p className="font-light text-sm text-neutral-400">{beat?.genre}</p>
                 </div>
                 <div>
                   <p className="text-base">Bpm</p>
-                  <p className="font-light text-sm text-neutral-400">{beat.bpm}</p>
+                  <p className="font-light text-sm text-neutral-400">{beat?.bpm}</p>
                 </div>
                 <div>
                   <p className="text-base">Produced By</p>
@@ -52,15 +52,15 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
               <div className="flex flex-col gap-5 flex-grow">
                 <div>
                   <p className="text-base">Key</p>
-                  <p className="font-light text-sm text-neutral-400">{beat.key}</p>
+                  <p className="font-light text-sm text-neutral-400">{beat?.key}</p>
                 </div>
                 <div>
                   <p className="text-base">Mood</p>
-                  <p className="font-light text-sm text-neutral-400">{beat.mood}</p>
+                  <p className="font-light text-sm text-neutral-400">{beat?.mood}</p>
                 </div>
                 <div>
                   <p className="text-base">Date Published</p>
-                  <p className="font-light text-sm text-neutral-400">{beat.formattedDate}</p>
+                  <p className="font-light text-sm text-neutral-400">{beat?.formattedDate}</p>
                 </div>
               </div>
             </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 import Image from "next/image";
 import uniqid from "uniqid";
@@ -24,12 +26,12 @@ export default function TrackDisplayCard({ beat }: { beat: BeatDocumentInterface
       </div>
       <div className="absolute right-4 bottom-[125px] sm:static sm:row-start-3 sm:col-start-2 sm:col-span-3 sm:self-end sm:bg-neutral-900 sm:rounded-lg sm:p-4 sm:ml-4">
         <div className="w-[80px] h-[80px] rounded-full bg-orange-500 drop-shadow-lg cursor-pointer"></div>
-        <div className="hidden"> </div>
+        <div className="hidden sm:block"> </div>
       </div>
       <div className="flex gap-5 items-center h-14 justify-center sm:col-start-3 sm:col-span-2 sm:row-start-2 sm:ml-auto sm:pb-2">
-        <div className="flex items-center gap-2"><ListensIcon className="h-5 w-5 text-orange-500" />3422 plays</div>
+        <div className="flex items-center gap-2"><ListensIcon className="h-5 w-5 text-orange-500" />{} plays</div>
         <div className="h-4 w-[1px] bg-neutral-700"></div>
-        <div className="flex items-center gap-2"><LikesIcon className="h-4 w-4 text-orange-500" />121 likes</div>
+        <div className="flex items-center gap-2"><LikesIcon className="h-4 w-4 text-orange-500" />{} likes</div>
       </div>
       <a href="#licenses" className="default-orange-button w-5/6 h-9 flex gap-3 items-center justify-center justify-self-center self-center mx-auto mb-5 sm:row-start-1 sm:col-start-4 sm:w-[115px] sm:mb-auto sm:mr-0">
         <p>Purchase</p>
