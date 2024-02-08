@@ -24,6 +24,10 @@ input::-webkit-inner-spin-button {
   color: #bababa;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
@@ -58,6 +62,18 @@ input::-webkit-inner-spin-button {
 
 .text-shadow {
   text-shadow: 1px 1px 4px rgba(19, 19, 19, 0.5);
+}
+
+.custom-grid-layout {
+  display: block;
+}
+
+@media (min-width: 640px) { /* sm: */
+  .custom-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 80px 30px 120px;
+  }
 }
 
 @layer utilities {

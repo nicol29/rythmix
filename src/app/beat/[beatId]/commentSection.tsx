@@ -7,18 +7,15 @@ import Image from 'next/image';
 import returnProfilePicture from '@/utils/returnUserProfilePicture';
 import { AccountCircleIcon } from '@/assets/icons';
 import { addComment, deleteComment } from '@/server-actions/beatComment';
-import { toast } from 'sonner';
 import { FormEvent } from 'react';
 import { useState } from 'react';
 import { BeatDocumentInterface } from '@/types/mongoDocTypes';
-import { useOptimistic } from 'react';
 import Link from 'next/link';
 
 
 export default function CommentSection({ beat }: { beat: BeatDocumentInterface }) {
   const { data: session, status } = useSession();
   const [commentField, setCommentField] = useState("");
-  console.log(beat.comments);
 
   const elapsedCommentTime = (date: Date) => {
     dayjs.extend(relativeTime);
@@ -30,17 +27,18 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
   const postComment = async (e: FormEvent) => {
     e.preventDefault(); 
     
-    const response = await addComment(commentField, beat._id);
+    await addComment(commentField, beat._id);
     setCommentField("");
   }
 
   const removeComment = async (commentId: string) => {
-    const response = await deleteComment(commentId, beat._id);
+    await deleteComment(commentId, beat._id);
   }
 
   return (
     <>
       <div className="h-[250px] overflow-y-auto border-t border-neutral-700 mt-1 pt-3">
+        { !beat.comments.length && <p className='w-full h-full flex items-center justify-center text-sm'>Be the first to comment!</p> }
         { beat.comments.map(comment => (
           <div key={comment._id.toString()} className='flex items-center gap-3 mb-5'>
             <div className='relative h-8 w-8'>

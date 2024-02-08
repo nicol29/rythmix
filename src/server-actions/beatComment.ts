@@ -10,7 +10,6 @@ import { revalidatePath } from "next/cache";
 
 export async function addComment(comment: string, beatId: string) {
   const signedInUser = await getServerSession(authOptions);
-  console.log(signedInUser)
   if (!signedInUser) redirect("/login");
 
   try {
@@ -24,8 +23,7 @@ export async function addComment(comment: string, beatId: string) {
       } 
     });
 
-    if (res) revalidatePath(`/beat/${beatId}`)
-    // if (res) return { success: true }
+    if (res) revalidatePath(`/beat/${beatId}`);
   } catch (error) {
     return { 
       success: false, 
@@ -43,7 +41,7 @@ export async function deleteComment(commentId: string, beatId: string) {
       $pull: { comments: { _id: commentId } }
     });
 
-    if (res) revalidatePath(`/beat/${beatId}`)
+    if (res) revalidatePath(`/beat/${beatId}`);
   } catch (error) {
     return { 
       success: false, 
