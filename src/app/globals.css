@@ -68,6 +68,10 @@ html {
   display: block;
 }
 
+.custom-gradient {
+  background-image: linear-gradient(to right, rgb(21, 21, 21) 33%, transparent 100%);
+}
+
 @media (min-width: 640px) { /* sm: */
   .custom-grid-layout {
     display: grid;

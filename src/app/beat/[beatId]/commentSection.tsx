@@ -27,12 +27,12 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
   const postComment = async (e: FormEvent) => {
     e.preventDefault(); 
     
-    await addComment(commentField, beat._id);
+    await addComment(commentField, beat.id);
     setCommentField("");
   }
 
   const removeComment = async (commentId: string) => {
-    await deleteComment(commentId, beat._id);
+    await deleteComment(commentId, beat.id);
   }
 
   return (
@@ -48,6 +48,7 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
               <div className='flex items-center'>
                 <Link href={`/${comment.author.profileUrl}`} className='text-orange-500 font-semibold text-base'>{comment.author.userName}</Link>
                 <span className='ml-3 text-xs text-neutral-500 '>• {elapsedCommentTime(comment.date)}</span>
+                { comment.author._id === beat.producer._id && <p className="cursor-pointer text-sm font-semibold ml-6">Author</p> }
                 { comment.author._id === session?.user.id && <p onClick={() => removeComment(comment._id)} className="text-red-400 cursor-pointer text-sm font-semibold ml-6">remove</p> }
               </div>
               <p className='text-sm'>{comment.text}</p>

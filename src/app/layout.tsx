@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import { Source_Sans_3 } from 'next/font/google';
 import './globals.css';
 import SessionProvider from '@/context/nextAuthSessionProvider';
+import AudioPlayerContextProvider from '@/context/audioPlayerContext';
 import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
+import PlayBar from '@/components/PlayBar/playBar';
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })
@@ -18,26 +20,29 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession();
-
+  
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={sourceSans3.className}>
-          {children}
-          <Toaster 
-            toastOptions={{
-              unstyled: true,
-              classNames: {
-                toast: 'bg-neutral-800 rounded border border-neutral-600 flex items-center justify-center gap-1 py-1 px-4',
-                title: 'text-red-800',
-                description: 'text-yellow-900',
-                actionButton: 'bg-zinc-900',
-                cancelButton: 'bg-orange-400',
-                closeButton: 'bg-lime-400',
-              },
-            }}
-          />
-        </body>
+        <AudioPlayerContextProvider>
+          <body className={sourceSans3.className}>
+            {children}
+            <Toaster 
+              toastOptions={{
+                unstyled: true,
+                classNames: {
+                  toast: 'bg-neutral-800 rounded border border-neutral-600 flex items-center justify-center gap-1 py-1 px-4',
+                  title: 'text-red-800',
+                  description: 'text-yellow-900',
+                  actionButton: 'bg-zinc-900',
+                  cancelButton: 'bg-orange-400',
+                  closeButton: 'bg-lime-400',
+                },
+              }}
+            />
+            <PlayBar />
+          </body>
+        </AudioPlayerContextProvider>
       </SessionProvider>
     </html>
   )

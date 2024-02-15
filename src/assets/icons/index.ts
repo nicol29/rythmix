@@ -14,3 +14,10 @@ export { default as TrolleyIcon } from "./shopping_cart_FILL0_wght400_GRAD0_opsz
 export { default as ListensIcon } from "./play_arrow_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as LikesIcon } from "./favorite_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as DeleteIcon } from "./delete_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as PlayAudioIcon } from "./play_arrow_FILL1_wght400_GRAD0_opsz24.svg";
+export { default as PauseAudioIcon } from "./pause_FILL1_wght400_GRAD0_opsz24.svg";
+export { default as VolumeIcon } from "./volume_up_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as VolumeMutedIcon } from "./volume_mute_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as SkipPrevButton } from "./skip_previous_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as SkipNextButton } from "./skip_next_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as LikesFilledIcon } from "./favorite_FILL1_wght400_GRAD0_opsz24.svg";

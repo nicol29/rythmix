@@ -13,7 +13,8 @@ export interface LicenseInterface {
 }
 
 export interface BeatDocumentInterface {
-  _id: string;
+  _id: ObjectId;
+  id: string;
   title: string;
   bpm: string;
   key: string;
@@ -45,4 +46,16 @@ export interface BeatDocumentInterface {
     _id: string;
     date: Date;
   }],
+  plays: number
+}
+
+export interface UserDocumentInterface {
+  _id: ObjectId;
+  email: string;
+  profilePicture: string;
+  profileUrl: string;
+  isProfileCompleted: boolean;
+  createdAt: Date;
+  userName: string;
+  userType: string;
 }

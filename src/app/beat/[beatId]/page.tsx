@@ -27,7 +27,7 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
       <Header />
       <main className="min-h-screen mt-14 flex flex-col items-center gap-6 sm:relative">
         <div className="hidden sm:block sm:relative sm:w-screen sm:h-[400px]">
-          <Image src={beat.assets.artwork.url} priority fill sizes="w-full h-full" className="object-cover" alt="User profile picture" />
+          <Image src={beat.assets.artwork.url} priority fill sizes="w-full h-full" className="object-cover object-top" alt="User profile picture" />
           <div className="absolute w-full h-full inset-0 bg-gradient-to-b from-transparent to-neutral-600 opacity-100"></div>
         </div>
         <TrackDisplayCard beat={beat} />

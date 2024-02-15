@@ -12,6 +12,7 @@ import { useRouter, usePathname } from "next/navigation";
 
 export default function Header() {
   const { data: session, status } = useSession();
+
   const router = useRouter();
   const path = usePathname();
 
