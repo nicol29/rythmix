@@ -87,7 +87,7 @@ export default async function Home() {
         <section className='flex flex-col ml-6 sm:ml-12'>
           <div className='flex items-center gap-2 mb-2'>
             <h2 className='text-3xl'>Hottest Tracks</h2>
-            <TrendingIcon className="h-10 w-10 text-neutral-500" />
+            <TrendingIcon className="h-10 w-10 text-orange-500" />
           </div>
           <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
             { hottestBeats?.map(beat => (
@@ -100,7 +100,7 @@ export default async function Home() {
           <div className='w-5/6 max-w-[400px]  lg:max-w-[1400px]'>
             <div className='flex items-center gap-2 mb-2'>
               <h2 className='text-3xl'>Genres</h2>
-              <GenreIcon className="h-8 w-8 text-neutral-500" />
+              <GenreIcon className="h-8 w-8 text-orange-500" />
             </div>
             <div className=''>
               <div className='grid grid-cols-2 grid-rows-3 gap-4 lg:grid-cols-6 lg:grid-rows-1'>
@@ -121,7 +121,7 @@ export default async function Home() {
         <section className='flex flex-col ml-6 sm:ml-12'>
           <div className='flex items-center gap-2 mb-2'>
             <h2 className='text-3xl'>Latest Tracks</h2>
-            <NewReleasesIcon className="h-8 w-8 text-neutral-500" />
+            <NewReleasesIcon className="h-8 w-8 text-orange-500" />
           </div>
           <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
             { newBeats?.map(beat => (

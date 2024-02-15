@@ -29,6 +29,7 @@ export default function AudioPlayerContextProvider({ children }: any) {
 
     setTrack(playList[activeIndex - 1]);
     setActiveIndex(activeIndex - 1);
+    setIsPlaying(true);
   }
 
   const nextTrack = () => {
@@ -36,6 +37,7 @@ export default function AudioPlayerContextProvider({ children }: any) {
 
     setTrack(playList[activeIndex + 1]);
     setActiveIndex(activeIndex + 1);
+    setIsPlaying(true);
   }
 
   return (

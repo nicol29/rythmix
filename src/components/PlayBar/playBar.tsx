@@ -1,10 +1,11 @@
 "use client";
 
-import { useContext, useRef, useEffect } from "react";
+import { useContext, useRef, useEffect, useState } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
 import { VolumeIcon, VolumeMutedIcon, SkipPrevButton, SkipNextButton, PauseAudioIcon, PlayAudioIcon, LikesFilledIcon, LikesIcon } from "@/assets/icons";
 import Link from "next/link";
 import Image from "next/image";
+import { getLike, addLike, removeLike } from "@/server-actions/beatLike";
 
 
 export default function PlayBar() {
@@ -12,6 +13,20 @@ export default function PlayBar() {
 
   const waveSurferRef = useRef<null | any>(null);
   const waveFormRef = useRef<null | any>(null);
+
+  const [like, setLike] = useState<null | any>(null);
+
+  const refreshLike = async (action: "add" | "remove") => {
+    if (action === "add") {
+      const res = await addLike(track._id.toString());
+      
+      if (res?.success) setLike(res.like);
+    } else {
+      const res = await removeLike(track._id.toString());
+
+      if (res?.success) setLike(res.like);
+    }
+  }
 
 
   useEffect(() => {
@@ -50,6 +65,14 @@ export default function PlayBar() {
 
   useEffect(() => {
     if (waveSurferRef.current) {
+      const checkForLike = async () => {
+        const res = await getLike(track._id.toString());
+
+        if (res.success) setLike(res.like);
+      }
+
+      checkForLike();
+
       waveSurferRef.current.load(track.assets.mp3.url);
 
       waveSurferRef.current?.on('ready', () => {
@@ -90,7 +113,10 @@ export default function PlayBar() {
             <Link href={`/beat/${track?.urlIdentifier}`} className="text-sm w-full truncate lg:text-base">{track?.title}</Link>
             <Link href={`/${track?.producer?.profileUrl}`} className="text-xs text-orange-500 font-medium mb-auto lg:text-sm">{track?.producer?.userName}</Link>
           </div>
-          { <LikesIcon className={"h-6 w-6 text-orange-500 cursor-pointer flex-shrink-0"} /> }
+          { like ?
+            <LikesFilledIcon onClick={() => refreshLike("remove")} className={"h-6 w-6 text-orange-500 cursor-pointer flex-shrink-0"} /> :
+            <LikesIcon onClick={() => refreshLike("add")} className={"h-6 w-6 text-orange-500 cursor-pointer flex-shrink-0"} />
+          }
         </div>
         <div className="absolute bottom-16 px-3 h-6 w-full overflow-y-hidden lg:static lg:h-12">
           <div ref={waveFormRef} className="h-12 w-full cursor-pointer lg:h-full"></div>
