@@ -9,6 +9,7 @@ import uniqid from "uniqid";
 import Plays from '@/models/Plays';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import Footer from '@/components/Footer/footer';
 
 
 export default async function Home() {
@@ -82,7 +83,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen mt-14 flex flex-col gap-14">
+      <main className="min-h-screen mt-14 flex flex-col gap-14 pb-14">
         <Hero />
         <section className='flex flex-col ml-6 sm:ml-12'>
           <h2 className='text-3xl mb-2'>Hottest Tracks</h2>
@@ -122,6 +123,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   )
 }

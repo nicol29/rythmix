@@ -13,12 +13,9 @@ export default function PlayBar() {
   const waveFormRef = useRef<null | any>(null);
 
 
-  const { isPlaying, playOrPauseTrack, openPlayBar, isPlayBarActive, track, setTrack, volume, setVolume } = useContext(AudioPlayerContext);
+  const { isPlaying, playOrPauseTrack, setIsPlaying, openPlayBar, isPlayBarActive, track, setTrack, volume, setVolume } = useContext(AudioPlayerContext);
 
   useEffect(() => {
-    if (!waveFormRef.current) return;
-
-
     const initWaveSurfer = async () => {
       const WaveSurfer = (await import('wavesurfer.js')).default;
 
@@ -35,11 +32,15 @@ export default function PlayBar() {
       })
     };
 
-    initWaveSurfer();
+    if (!waveSurferRef.current && waveFormRef?.current) { 
+      console.log("track effect");
+      initWaveSurfer();
+    }
 
-    
     if (waveSurferRef.current && typeof waveSurferRef.current.destroy === 'function') {
-      waveSurferRef.current.destroy();
+      return () => {
+        waveSurferRef.current.destroy();
+      }
     }
   }, []);
 
@@ -52,55 +53,65 @@ export default function PlayBar() {
   useEffect(() => {
     if (waveSurferRef.current) {
       waveSurferRef.current.load(track.assets.mp3.url);
+
+      waveSurferRef.current?.on('ready', () => {
+        waveSurferRef.current.play();
+      });
     }
   }, [track]);
+
+  useEffect(() => {
+    if (waveSurferRef.current) {
+      waveSurferRef.current?.on('seeking', () => {
+        waveSurferRef.current?.play();
+        setIsPlaying(true);
+      });
+    }
+  }, [setIsPlaying, track]);
 
   useEffect(() => {
     if (waveSurferRef.current) {
       waveSurferRef.current.setVolume(volume);
     }
   }, [volume]);
+
   
-  if (isPlayBarActive) {
+  if (true) {
     return (
-      <>
-        <section className="bg-neutral-850 border-t border-neutral-700 fixed bottom-0 w-full h-16">
-          <div className="w-full max-w-[1500px] px-5 h-full mx-auto flex items-center justify-between gap-12">
-            <div className="flex gap-3 items-center">
-              <Link className="relative w-14 aspect-square" href={`/beat/${track.urlIdentifier}`}>
-                <Image className="absolute object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={track.assets.artwork.url} alt="Track art" />
-              </Link>
-              <div className="w-[220px] flex flex-col">
-                <Link href={`/beat/${track.urlIdentifier}`} className="w-full truncate">{track.title}</Link>
-                <Link href={`/${track.producer.profileUrl}`} className="text-sm text-orange-500 font-medium mb-auto">{track.producer.userName}</Link>
-              </div>
-              { <LikesIcon className={"h-6 w-6 text-orange-500 cursor-pointer"} /> }
+      <section className="bg-neutral-850 border-t border-neutral-700 fixed bottom-0 w-full h-16">
+        <div className="w-full h-full pr-3 flex items-center gap-1 justify-between lg:gap-12 lg:px-5 lg:max-w-[1500px] lg:mx-auto">
+          <div className="flex h-full gap-3 items-center w-3/6">
+            <Link className="relative h-full aspect-square lg:w-14 lg:h-14" href={`/beat/${track?.urlIdentifier}`}>
+              <Image className="absolute object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={track?.assets.artwork.url} alt="Track art" />
+            </Link>
+            <div className="flex flex-col w-4/6 lg:w-[220px]">
+              <Link href={`/beat/${track?.urlIdentifier}`} className="text-sm w-full truncate lg:text-base">{track?.title}</Link>
+              <Link href={`/${track?.producer?.profileUrl}`} className="text-xs text-orange-500 font-medium mb-auto lg:text-sm">{track?.producer?.userName}</Link>
             </div>
-            <div ref={waveFormRef} className="px-3 h-12 w-4/6"></div>
-            <div className="flex gap-8">
-              <div className="flex gap-2 items-center">
-                { volume === 0 ? 
-                  <VolumeMutedIcon onClick={() => setVolume(1)} className={"h-6 w-6 text-neutral-300 cursor-pointer"} /> : 
-                  <VolumeIcon onClick={() => setVolume(0)} className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
-                }
-                <input className="h-1 w-[80px] cursor-pointer" type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} />
-              </div>
-              <div className="flex items-center gap-2">
-                <SkipPrevButton className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
-                { isPlaying ? 
-                  <PauseAudioIcon onClick={playOrPauseTrack} className={"h-8 w-8 text-neutral-300 cursor-pointer"} /> :
-                  <PlayAudioIcon onClick={playOrPauseTrack} className={"h-8 w-8 text-neutral-300 cursor-pointer"} />
-                }
-                <SkipNextButton className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
-              </div>
+            { <LikesIcon className={"h-6 w-6 text-orange-500 cursor-pointer flex-shrink-0"} /> }
+          </div>
+          <div className="absolute bottom-16 px-3 h-6 w-full overflow-y-hidden lg:static lg:h-12">
+            <div ref={waveFormRef} className="h-12 w-full lg:h-full"></div>
+          </div>
+          <div className="flex gap-8">
+            <div className="hidden lg:flex lg:gap-2 lg:items-center">
+              { volume === 0 ? 
+                <VolumeMutedIcon onClick={() => setVolume(1)} className={"h-6 w-6 text-neutral-300 cursor-pointer"} /> : 
+                <VolumeIcon onClick={() => setVolume(0)} className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
+              }
+              <input className="h-1 w-[80px] cursor-pointer" type="range" min="0" max="1" step="0.01" value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} />
+            </div>
+            <div className="flex items-center gap-2">
+              <SkipPrevButton className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
+              { isPlaying ? 
+                <PauseAudioIcon onClick={playOrPauseTrack} className={"h-8 w-8 text-neutral-300 cursor-pointer"} /> :
+                <PlayAudioIcon onClick={playOrPauseTrack} className={"h-8 w-8 text-neutral-300 cursor-pointer"} />
+              }
+              <SkipNextButton className={"h-6 w-6 text-neutral-300 cursor-pointer"} />
             </div>
           </div>
-          {/* <p onClick={() => setTrack("https://artcore-mp3-previews.s3.eu-west-2.amazonaws.com/21ee6dca-5d12-40b9-9166-6a12e4f8cda9-74084.mp3")}>play</p> */}
-        </section>
-        {/* <div className="bg-neutral-850 fixed bottom-0 w-full h-16 border-t border-neutral-700">
-          
-        </div> */}
-      </>
+        </div>
+      </section>
     )
   }
 }
