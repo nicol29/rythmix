@@ -21,3 +21,6 @@ export { default as VolumeMutedIcon } from "./volume_mute_FILL0_wght400_GRAD0_op
 export { default as SkipPrevButton } from "./skip_previous_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as SkipNextButton } from "./skip_next_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as LikesFilledIcon } from "./favorite_FILL1_wght400_GRAD0_opsz24.svg";
+export { default as GenreIcon } from "./genres_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as NewReleasesIcon } from "./new_releases_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as TrendingIcon } from "./trending_up_FILL0_wght400_GRAD0_opsz24.svg";

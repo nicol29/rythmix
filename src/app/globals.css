@@ -20,12 +20,12 @@ input::-webkit-inner-spin-button {
 
 :root {
   /* background-color: #1c1c1c; */
-  background-color: #1b1a1a;
+  background-color: #141313;
   color: #bababa;
 }
 
 html {
-  scroll-behavior: smooth;
+  background-color: #00000055;
 }
 
 /* @media (prefers-color-scheme: dark) {

@@ -8,7 +8,7 @@ import returnProfilePicture from "@/utils/returnUserProfilePicture";
 
 
 export default async function Profile({ params }: { params: { profileUrl: string } }) {
-  await connectMongoDB()
+  await connectMongoDB();
   
   const producer = await Users.findOne({ 
     profileUrl: params.profileUrl 
@@ -32,7 +32,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
           <h2 className="text-2xl">Tracks</h2>
           <div className="grid gap-4 grid-cols-3 bg-neutral-850 p-4 rounded">
             { beats.map(beat => (
-                <BeatCard key={beat.id} beat={JSON.parse(JSON.stringify(beat))} option={"simple"} />
+                <BeatCard key={beat.id} beatList={JSON.parse(JSON.stringify(beats))} beat={JSON.parse(JSON.stringify(beat))} option={"simple"} />
             )) }
           </div>
         </div>

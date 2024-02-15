@@ -9,8 +9,8 @@ import { AudioPlayerContext } from "@/context/audioPlayerContext";
 import addPlay from "@/server-actions/addPlay";
 
 
-export default function BeatCard({ beat, option }: { beat: BeatDocumentInterface, option?: "simple" }) {
-  const { isPlaying, setIsPlaying, playOrPauseTrack, openPlayBar, isPlayBarActive, track, setTrack, volume, setVolume } = useContext(AudioPlayerContext);
+export default function BeatCard({ beatList, beat, option }: { beatList: BeatDocumentInterface[]; beat: BeatDocumentInterface; option?: "simple" }) {
+  const { isPlaying, setIsPlaying, playOrPauseTrack, openPlayBar, setNewPlaylist, track, setTrack } = useContext(AudioPlayerContext);
 
   const getPrice = () => {
     const { licenses } = beat;
@@ -23,18 +23,26 @@ export default function BeatCard({ beat, option }: { beat: BeatDocumentInterface
   const playTrack = async () => {
     openPlayBar();
 
+    createPlayList();
 
     if (track?._id === beat._id) {
       playOrPauseTrack();
     } else {
       setTrack(beat);
       setIsPlaying(true);
-      // addPlay(beat._id.toString());
+      addPlay(beat._id.toString());
     }
+  }
+
+  const createPlayList = () => {
+    const currentBeatIndex = beatList.findIndex(currentBeat => currentBeat._id.toString() === beat._id.toString());
+    const playList = beatList.slice(currentBeatIndex);
+
+    setNewPlaylist(playList);
   }
   
   return (
-    <div className="box-border rounded p-4 border border-transparent hover:bg-neutral-800 hover:border-neutral-750">
+    <div className="box-border rounded p-4 border border-transparent hover:bg-neutral-750 hover:border-neutral-500">
       <div className="relative group flex justify-center">
         <Link className="relative aspect-square w-[220px]" href={`/beat/${beat.urlIdentifier}`}>
           <Image className="object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat.assets.artwork.url} alt="Track art" />

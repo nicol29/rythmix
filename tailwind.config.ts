@@ -20,8 +20,8 @@ const config: Config = {
         },
         'transparent-orange':'#ff770045',
         'transparent-orange-hv':'#ff770053',
-        'transparent-l-black': '#00000055',
-        'transparent-d-black': '#00000081',
+        'transparent-l-black': '#00000075',
+        'transparent-d-black': '#00000097',
       }
     },
   },

@@ -10,6 +10,7 @@ import Plays from '@/models/Plays';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import Footer from '@/components/Footer/footer';
+import { GenreIcon, TrendingIcon, NewReleasesIcon } from '@/assets/icons';
 
 
 export default async function Home() {
@@ -77,8 +78,6 @@ export default async function Home() {
       }
     }
   ]);
-
-  console.log(hottestBeats);
   
   return (
     <>
@@ -86,17 +85,23 @@ export default async function Home() {
       <main className="min-h-screen mt-14 flex flex-col gap-14 pb-14">
         <Hero />
         <section className='flex flex-col ml-6 sm:ml-12'>
-          <h2 className='text-3xl mb-2'>Hottest Tracks</h2>
+          <div className='flex items-center gap-2 mb-2'>
+            <h2 className='text-3xl'>Hottest Tracks</h2>
+            <TrendingIcon className="h-10 w-10 text-neutral-500" />
+          </div>
           <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
-            { hottestBeats.map(beat => (
-              <BeatCard key={beat.id} beat={JSON.parse(JSON.stringify(beat))} />
+            { hottestBeats?.map(beat => (
+              <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(hottestBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }
             <Link href={"/"} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
           </div>
         </section>
         <section className='flex justify-center bg-neutral-900 py-10'>
           <div className='w-5/6 max-w-[400px]  lg:max-w-[1400px]'>
-            <h2 className='text-3xl mb-2'>Genres</h2>
+            <div className='flex items-center gap-2 mb-2'>
+              <h2 className='text-3xl'>Genres</h2>
+              <GenreIcon className="h-8 w-8 text-neutral-500" />
+            </div>
             <div className=''>
               <div className='grid grid-cols-2 grid-rows-3 gap-4 lg:grid-cols-6 lg:grid-rows-1'>
                 {genres.map(item => (
@@ -114,10 +119,13 @@ export default async function Home() {
           </div>
         </section>
         <section className='flex flex-col ml-6 sm:ml-12'>
-          <h2 className='text-3xl mb-2'>Latest Tracks</h2>
+          <div className='flex items-center gap-2 mb-2'>
+            <h2 className='text-3xl'>Latest Tracks</h2>
+            <NewReleasesIcon className="h-8 w-8 text-neutral-500" />
+          </div>
           <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
-            { newBeats.map(beat => (
-              <BeatCard key={beat.id} beat={JSON.parse(JSON.stringify(beat))} />
+            { newBeats?.map(beat => (
+              <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(newBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }
             <Link href={"/"} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
           </div>
