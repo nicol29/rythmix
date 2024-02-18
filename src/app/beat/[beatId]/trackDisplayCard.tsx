@@ -3,10 +3,10 @@ import Image from "next/image";
 import uniqid from "uniqid";
 import { TrolleyIcon, ListensIcon, LikesIcon } from "@/assets/icons";
 import Link from "next/link";
-import WaveFormContainer from "./waveFormContainer";
+import BeatRouteControls from "./beatRouteControls";
 
 
-export default function TrackDisplayCard({ beat }: { beat: BeatDocumentInterface } ) {
+export default function TrackDisplayCard({ beat, totalLikes, totalPlays }: { beat: BeatDocumentInterface; totalLikes: number; totalPlays: number } ) {
   const artworkUrl = beat.assets.artwork.url;
 
   return (
@@ -24,12 +24,12 @@ export default function TrackDisplayCard({ beat }: { beat: BeatDocumentInterface
         <Link href={`/${beat.producer.profileUrl}`} className='text-orange-500 font-medium text-base'>{beat.producer.userName}</Link>
       </div>
       <div className="absolute right-4 bottom-[125px] sm:static sm:row-start-3 sm:col-start-2 sm:col-span-3 sm:self-end sm:bg-neutral-900 sm:rounded-lg sm:p-4 sm:ml-4">
-        <WaveFormContainer />
+        <BeatRouteControls beat={beat} />
       </div>
       <div className="flex gap-5 items-center h-14 justify-center sm:col-start-3 sm:col-span-2 sm:row-start-2 sm:ml-auto sm:pb-2">
-        <div className="flex items-center gap-2"><ListensIcon className="h-5 w-5 text-orange-500" />{beat.plays} plays</div>
+        <div className="flex items-center gap-2"><ListensIcon className="h-5 w-5 text-orange-500" />{totalPlays} plays</div>
         <div className="h-4 w-[1px] bg-neutral-700"></div>
-        <div className="flex items-center gap-2"><LikesIcon className="h-4 w-4 text-orange-500" />{} likes</div>
+        <div className="flex items-center gap-2"><LikesIcon className="h-4 w-4 text-orange-500" />{totalLikes} likes</div>
       </div>
       <a href="#licenses" className="default-orange-button w-5/6 h-9 flex gap-3 items-center justify-center justify-self-center self-center mx-auto mb-5 sm:row-start-1 sm:col-start-4 sm:w-[115px] sm:mb-auto sm:mr-0">
         <p>Purchase</p>

@@ -6,6 +6,7 @@ import AudioPlayerContextProvider from '@/context/audioPlayerContext';
 import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
 import PlayBar from '@/components/PlayBar/playBar';
+import Footer from '@/components/Footer/footer';
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })
@@ -40,6 +41,7 @@ export default async function RootLayout({
                 },
               }}
             />
+            <Footer />
             <PlayBar />
           </body>
         </AudioPlayerContextProvider>

@@ -12,10 +12,12 @@ export const addLike = async (beatId: string) => {
   try {
     const signedInUser = await getServerSession(authOptions);
 
+    if (!signedInUser?.user) return;
+
     await connectMongoDB();
 
     const res = await Likes.create({
-      producer: signedInUser?.user.id,
+      producer: signedInUser.user.id,
       beat: beatId,
     }, { new: true });
 
@@ -48,6 +50,8 @@ export const removeLike = async (beatId: string) => {
 
   try {
     const signedInUser = await getServerSession(authOptions);
+
+    if (!signedInUser?.user) return;
 
     await connectMongoDB();
 

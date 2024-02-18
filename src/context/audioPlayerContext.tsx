@@ -56,7 +56,9 @@ export default function AudioPlayerContextProvider({ children }: any) {
         openPlayBar, 
         activeIndex, 
         volume, 
-        setVolume}}>
+        setVolume
+      }}
+    >
       {children}
     </AudioPlayerContext.Provider>
   )

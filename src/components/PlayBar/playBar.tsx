@@ -6,6 +6,7 @@ import { VolumeIcon, VolumeMutedIcon, SkipPrevButton, SkipNextButton, PauseAudio
 import Link from "next/link";
 import Image from "next/image";
 import { getLike, addLike, removeLike } from "@/server-actions/beatLike";
+import addPlay from "@/server-actions/addPlay";
 
 
 export default function PlayBar() {
@@ -64,7 +65,7 @@ export default function PlayBar() {
   }, [isPlaying]);
 
   useEffect(() => {
-    if (waveSurferRef.current) {
+    if (waveSurferRef.current && track) {
       const checkForLike = async () => {
         const res = await getLike(track._id.toString());
 
@@ -74,6 +75,8 @@ export default function PlayBar() {
       checkForLike();
 
       waveSurferRef.current.load(track.assets.mp3.url);
+
+      addPlay(track._id.toString());
 
       waveSurferRef.current?.on('ready', () => {
         waveSurferRef.current.play();

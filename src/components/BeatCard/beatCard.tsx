@@ -6,7 +6,6 @@ import { PlayAudioIcon, PauseAudioIcon } from "@/assets/icons";
 import Link from "next/link";
 import { useContext } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
-import addPlay from "@/server-actions/addPlay";
 
 
 export default function BeatCard({ beatList, beat, option }: { beatList: BeatDocumentInterface[]; beat: BeatDocumentInterface; option?: "simple" }) {
@@ -30,7 +29,6 @@ export default function BeatCard({ beatList, beat, option }: { beatList: BeatDoc
     } else {
       setTrack(beat);
       setIsPlaying(true);
-      addPlay(beat._id.toString());
     }
   }
 
