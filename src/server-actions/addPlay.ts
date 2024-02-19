@@ -4,12 +4,13 @@ import Plays from "@/models/Plays";
 import connectMongoDB from "@/config/mongoDBConnection";
 
 
-const addPlay = async (beatId: string) => {
+const addPlay = async (beatId: string, producerId: string) => {
   try {
     await connectMongoDB();
 
     await Plays.create({
-      beat: beatId
+      beat: beatId,
+      producer: producerId
     });
 
   } catch (error) {

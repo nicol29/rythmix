@@ -41,7 +41,7 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
         { !beat.comments.length && <p className='w-full h-full flex items-center justify-center text-sm'>Be the first to comment!</p> }
         { beat.comments.map(comment => (
           <div key={comment._id.toString()} className='flex items-center gap-3 mb-5'>
-            <div className='relative h-8 w-8'>
+            <div className='relative h-8 w-8 flex-shrink-0'>
               <Image src={returnProfilePicture(comment.author.profilePicture)} priority fill sizes="w-full h-full" className="object-cover rounded-full" alt="User profile picture" />
             </div>
             <div>

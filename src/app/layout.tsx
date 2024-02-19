@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
 import PlayBar from '@/components/PlayBar/playBar';
 import Footer from '@/components/Footer/footer';
+import Header from '@/components/Header/header';
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })
@@ -27,6 +28,7 @@ export default async function RootLayout({
       <SessionProvider session={session}>
         <AudioPlayerContextProvider>
           <body className={sourceSans3.className}>
+            <Header />
             {children}
             <Toaster 
               toastOptions={{

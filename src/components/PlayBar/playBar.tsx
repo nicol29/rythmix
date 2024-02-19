@@ -76,7 +76,7 @@ export default function PlayBar() {
 
       waveSurferRef.current.load(track.assets.mp3.url);
 
-      addPlay(track._id.toString());
+      addPlay(track._id.toString(), track.producer._id.toString());
 
       waveSurferRef.current?.on('ready', () => {
         waveSurferRef.current.play();

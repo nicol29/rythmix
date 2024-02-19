@@ -10,7 +10,6 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import Plays from "@/models/Plays";
 import Likes from "@/models/Likes";
-import { ObjectId } from "mongodb";
 
 
 export default async function Beat({ params }: { params: { beatId: string } }) {

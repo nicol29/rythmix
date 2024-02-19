@@ -40,7 +40,7 @@ export default function BeatCard({ beatList, beat, option }: { beatList: BeatDoc
   }
   
   return (
-    <div className="box-border rounded p-4 border border-transparent hover:bg-neutral-750 hover:border-neutral-500">
+    <div className="box-border rounded p-2 border border-transparent hover:bg-neutral-750 hover:border-neutral-500 lg:p-4">
       <div className="relative group flex justify-center">
         <Link className="relative aspect-square w-[220px]" href={`/beat/${beat.urlIdentifier}`}>
           <Image className="object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat.assets.artwork.url} alt="Track art" />
