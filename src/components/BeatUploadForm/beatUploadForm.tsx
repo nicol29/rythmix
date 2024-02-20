@@ -13,9 +13,12 @@ import addBeat from "@/server-actions/addBeat";
 import { BeatUploadFormPropsInterface } from "@/types/uploadBeatFormTypes";
 import uniqid from "uniqid";
 import { CloseIcon } from "@/assets/icons";
+import { useRouter } from "next/navigation";
 
 
 export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUploadFormPropsInterface) {
+  const router = useRouter();
+
   const returnFileOrNull = (name: "artwork" | "mp3" | "wav") => {
     return currentBeat?.assets?.[name]?.url ? {...currentBeat?.assets[name]} : null; 
   }
@@ -117,6 +120,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
 
     const res = await addBeat(currentFormValues, tagsField.tags, slug, "draft");
     res?.success ? toast.success("Successfully drafted") : toast.error("Something went wrong");
+
     setIsDraftLoading(false);
   }
 
@@ -129,7 +133,14 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
       setIsPublishLoading(true);
 
       const res = await addBeat(formData, tagsField.tags, slug, "published");
-      res?.success ? toast.success("Successfully published") : toast.error("Something went wrong");
+
+      if (res?.success) {
+        toast.success("Successfully published");
+        router.push(`/beat/${slug}`);
+      } else {
+        toast.error("Something went wrong");
+      }
+
       setIsPublishLoading(false);
     } else {
       toast.error("Attach required files");

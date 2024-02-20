@@ -8,9 +8,14 @@ import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import { LocationIcon, ListensIcon } from "@/assets/icons";
 import dayjs from "dayjs";
 import Plays from "@/models/Plays";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import Link from "next/link";
 
 
 export default async function Profile({ params }: { params: { profileUrl: string } }) {
+  const signedInUser = await getServerSession(authOptions);
+
   await connectMongoDB();
   
   const producer: UserDocumentInterface | null = await Users.findOne({ 
@@ -42,7 +47,10 @@ export default async function Profile({ params }: { params: { profileUrl: string
               <span className="cursor-pointer">{0} followers</span>
               <span className="cursor-pointer">{0} following</span>
             </div>
-            <button className="default-orange-button w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Follow</button>
+            { signedInUser?.user ?
+              <Link href="/" className="default-orange-button text-center w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Edit Profile</Link> :
+              <button className="default-orange-button w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Follow</button>
+            }
             <div className="flex flex-col items-center mt-8 lg:flex-row lg:justify-between lg:w-full lg:mt-auto">
               <span className="flex items-center gap-1"><ListensIcon className="h-5 w-5" />{totalPlays} plays</span>
               <span className="text-neutral-500 text-sm mt-12 lg:mt-0">Member since: {dayjs(producer?.createdAt).format('DD MMM YYYY')}</span>

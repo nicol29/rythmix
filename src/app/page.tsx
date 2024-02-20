@@ -9,7 +9,6 @@ import uniqid from "uniqid";
 import Plays from '@/models/Plays';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import Footer from '@/components/Footer/footer';
 import { GenreIcon, TrendingIcon, NewReleasesIcon } from '@/assets/icons';
 
 
@@ -131,7 +130,6 @@ export default async function Home() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   )
 }
