@@ -8,6 +8,7 @@ import Link from "next/link";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import useDetectOutsideClick from "@/hooks/useDetectOutsideClick";
 import { useRouter, usePathname } from "next/navigation";
+import SearchBar from "./searchBar";
 
 
 export default function Header() {
@@ -41,18 +42,13 @@ export default function Header() {
   return (
     <header className="bg-neutral-850 fixed top-0 w-full z-20">
       <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative sm:gap-6">
-        <MenuIcon className="text-neutral-400 h-7 cursor-pointer" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
+        <MenuIcon className="text-neutral-400 h-7 cursor-pointer shrink-0" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
         <img className="h-6 mt-1 cursor-pointer" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />
         <button className="block sm:hidden" onClick={() => setSearchToggled(!searchToggled)} aria-label="Open searchbar">
           <SearchIcon className="text-neutral-400 h-6"/>
         </button>
-        <div className={searchToggled ? "bg-neutral-800 w-screen absolute top-full left-0 mt-px h-12 flex justify-center items-center sm:static sm:w-auto sm:h-auto sm:bg-neutral-850" : "hidden sm:block sm:static sm:w-auto sm:h-auto sm:bg-neutral-850"}>
-          <form className="w-4/5 rounded-full bg-neutral-750 h-9 border border-neutral-600 flex items-center justify-between px-3 sm:w-[300px] md:w-[400px]">
-            <input type="text" placeholder="Search" className="bg-transparent outline-none w-5/6"/>
-            <button>
-              <SearchIcon className="text-neutral-400 h-6 cursor-pointer" />
-            </button>
-          </form>
+        <div className={searchToggled ? "bg-neutral-800 w-screen absolute top-full left-0 mt-px h-12 flex justify-center items-center scale-100 opacity-100 transition-all sm:static sm:w-auto sm:h-auto sm:bg-neutral-850" : "scale-0 opacity-0 sm:scale-100 sm:opacity-100 sm:block sm:static sm:w-auto sm:h-auto sm:bg-neutral-850"}>
+          <SearchBar />
           <CloseIcon className="h-5 w-5 absolute right-3 text-neutral-500 cursor-pointer sm:hidden" onClick={() => setSearchToggled(!searchToggled)}/>
         </div>
         <div ref={profileRef} className="ml-auto relative">
@@ -115,7 +111,7 @@ export default function Header() {
         <div className={menuToggled ? "h-screen w-5/6 absolute top-0 left-0 bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]" : "h-screen w-5/6 absolute top-0 left-0 -translate-x-full bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]"} aria-hidden={!menuToggled} aria-label="menu">
           <div className="h-14 border-b border-neutral-750 px-2 flex gap-3 items-center">
             <CloseIcon className="h-7 cursor-pointer text-neutral-400" onClick={() => manageSideMenu()} />
-            <img className="h-7 mt-1" src="/transparentRythmix.png" />
+            <img className="h-7 mt-1" src="/transparentRythmix.png" alt="Rythmix logo" />
           </div>
         </div>
       </div>
