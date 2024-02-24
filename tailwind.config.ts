@@ -17,6 +17,7 @@ const config: Config = {
         'neutral': {
           750: '#3c3c3c',
           850: '#212121',
+          925: '#101010',
         },
         'transparent-orange':'#ff770045',
         'transparent-orange-hv':'#ff770053',

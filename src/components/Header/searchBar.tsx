@@ -4,11 +4,14 @@ import { getSearchResults } from "@/server-actions/getSearchResults";
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<BeatDocumentInterface[]>([]);
+  
+  const router = useRouter();
 
 
   useEffect(() => {
@@ -21,14 +24,22 @@ export default function SearchBar() {
     })()
   }, [searchQuery]);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setSearchResults([]);
+
+    router.push(`/search?searchString=${searchQuery}`);
+  }
+
   return (
-    <form className={`relative w-4/5 bg-neutral-750 h-9 border border-neutral-600 flex items-center justify-between px-3 sm:w-[300px] md:w-[400px] ${searchResults.length > 0 ? "rounded-tl-[10px] rounded-tr-[10px]" : "rounded-[30px]"}`}>
+    <form onSubmit={(e) => handleSubmit(e)} className={`relative w-4/5 bg-neutral-750 h-9 border border-neutral-600 flex items-center justify-between px-3 sm:w-[300px] md:w-[400px] ${searchResults.length > 0 ? "rounded-tl-[18px] rounded-tr-[18px]" : "rounded-full"}`}>
       <input onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} type="text" placeholder="Search" className="bg-transparent outline-none w-5/6"/>
       <button>
         <SearchIcon className="text-neutral-400 h-6 cursor-pointer" />
       </button>
       { searchResults.length > 0 &&
-        <div className="absolute w-full bg-neutral-750 top-9 left-0 border border-neutral-600 max-h-[330px] overflow-y-auto rounded-bl-[20px] rounded-br-[20px]">
+        <div className="absolute w-full bg-neutral-750 top-[38px] left-0 border border-neutral-600 max-h-[330px] overflow-y-auto rounded-bl rounded-br">
           { searchResults.map(result => (
               <Link href={`/beat/${result.urlIdentifier}`} key={result._id.toString()}>
                 <div className="py-2 px-4 flex gap-2 hover:bg-neutral-600">

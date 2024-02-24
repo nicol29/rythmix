@@ -95,7 +95,7 @@ export default async function Home() {
             <Link href={"/"} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
           </div>
         </section>
-        <section className='flex justify-center bg-neutral-900 py-10'>
+        <section className='flex justify-center bg-neutral-950 py-10'>
           <div className='w-5/6 max-w-[400px]  lg:max-w-[1400px]'>
             <div className='flex items-center gap-2 mb-2'>
               <h2 className='text-3xl'>Genres</h2>
