@@ -35,24 +35,24 @@ export default function FilterPanel() {
   const addFilterToUrl = (setState: any, inputValue: string | number, filterName: string) => {
     setState(inputValue);
 
-    router.push(`/search/?${addQueryStringToUrl(filterName, "add", inputValue.toString())}`);
+    router.push(`/search/?${addQueryStringToUrl(filterName, "add", inputValue.toString())}`, { scroll: false });
   }
 
   const removeFilterFromUrl = (setState: any, inputValue: null | number, filterName: string) => {
     setState(inputValue);
 
-    router.push(`/search/?${addQueryStringToUrl(filterName, "remove")}`);
+    router.push(`/search/?${addQueryStringToUrl(filterName, "remove")}`, { scroll: false });
   }
   
   return (
     <>
       <form action="" className={`bg-neutral-900 p-4 flex flex-col rounded border border-neutral-800 ${!hideForm && `gap-7`}`}>
-        <div onClick={() => setHideForm(!hideForm)} className="flex justify-between items-center">
+        <div onClick={() => setHideForm(!hideForm)} className="flex justify-between items-center cursor-pointer lg:hidden">
           <h2 className="text-lg">Filters</h2>
           <ExpandIcon className={`h-6 w-6 transition-all ${!hideForm && `rotate-180`}`} />
         </div>
-        <div className={`flex flex-col gap-5 transition-all ${hideForm ? `max-h-0 overflow-hidden` : `max-h-[450px] overflow-auto`}`}>
-          <div className="default-field-container">
+        <div className={`flex flex-col gap-5 transition-all ${hideForm ? `max-h-0 overflow-hidden lg:max-h-[450px] lg:overflow-auto` : `max-h-[450px] overflow-auto`} lg:flex-row lg:gap-8`}>
+          <div className="default-field-container lg:w-[150px]">
             <label className="mb-2" htmlFor="genre">Genre</label>
             <select id="genre" className="dark-input-field" value={genre || ""} onChange={(e) => addFilterToUrl(setGenre, e.target.value, e.target.id) }>
               <option value="">Select Genre</option>
@@ -65,7 +65,7 @@ export default function FilterPanel() {
               <option value="R&B">R&B</option>
             </select>
           </div>
-          <div className="default-field-container">
+          <div className="default-field-container lg:w-[150px]">
             <label className="mb-2" htmlFor="mood">Mood</label>
             <select id="mood" className="dark-input-field" value={mood || ""} onChange={(e) => addFilterToUrl(setMood, e.target.value, e.target.id) }>
               <option value="">Select Mood</option>
@@ -80,7 +80,7 @@ export default function FilterPanel() {
               <option value="Uplifting">Uplifting</option>
             </select>
           </div>
-          <div className="default-field-container">
+          <div className="default-field-container lg:w-[150px]">
             <label className="mb-2" htmlFor="key">Key</label>
             <select id="key" className="dark-input-field" value={key || ""} onChange={(e) => addFilterToUrl(setKey, e.target.value, e.target.id) }>
               <option value="">Select Key</option>
@@ -117,7 +117,7 @@ export default function FilterPanel() {
               <option value="G-sharp minor">G-sharp minor</option>
             </select>
           </div>
-          <div className="default-field-container">
+          <div className="default-field-container lg:w-[150px]">
             <label className="mb-2" htmlFor="sortBy">Bpm</label>
             <div className="flex items-center gap-3">
               <span>0</span>
@@ -136,10 +136,10 @@ export default function FilterPanel() {
               <span>{bpm}</span>
             </div>
           </div>
-          <div className="default-field-container">
+          <div className="default-field-container lg:w-[150px]">
             <label className="mb-2" htmlFor="sortBy">Sort By</label>
             <select id="sortBy" className="dark-input-field" value={sortBy || ""} onChange={(e) => addFilterToUrl(setSortBy, e.target.value, e.target.id) }>
-              <option value={undefined}></option>
+              <option value={""}>Select Sort</option>
               <option value="Newest">Newest</option>
               <option value="Oldest">Oldest</option>
             </select>
