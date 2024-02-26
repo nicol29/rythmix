@@ -6,10 +6,9 @@ import Image from "next/image";
 import uniqid from "uniqid";
 import returnCheapestLicensePrice from "@/utils/returnCheapestLicensePrice";
 import { TrolleyIcon, PauseAudioIcon, PlayAudioIcon, Spinner } from "@/assets/icons";
-import { useContext, useRef, useEffect, useState, useCallback } from "react";
+import { useContext, useRef, useEffect, useState } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
 import { getSearchResults } from "@/server-actions/getSearchResults";
-import { Germania_One } from "next/font/google";
 
 
 export default function BeatResultCards({ 
@@ -25,9 +24,10 @@ export default function BeatResultCards({
 }) {
   const { isPlaying, setIsPlaying, playOrPauseTrack, openPlayBar, setNewPlaylist, track, setTrack, appendToPlaylist } = useContext(AudioPlayerContext);
   const [beatsPlaylist, setBeatsPlaylist] = useState<BeatDocumentInterface[]>([]);
-  const spinnerRef = useRef(null);
   const [queryPos, setQueryPos] = useState(0);
   const [lastDocs, setLastDocs] = useState(false);
+  const spinnerRef = useRef(null);
+
 
   const playTrack = async (beat: BeatDocumentInterface) => {
     openPlayBar();
@@ -58,6 +58,7 @@ export default function BeatResultCards({
       setLastDocs(true);
       return;
     } 
+    appendToPlaylist(moreBeats.beats);
     setBeatsPlaylist(beatsPlaylist => [...beatsPlaylist, ...moreBeats.beats]);
   }
 
@@ -65,7 +66,6 @@ export default function BeatResultCards({
     if (spinnerRef.current) {
       const observer = new IntersectionObserver(([entry]) => {
         if (entry.isIntersecting) {
-          console.log("entered");
           setQueryPos(queryPos => queryPos + 1);
         }
       });
@@ -73,7 +73,6 @@ export default function BeatResultCards({
       observer.observe(spinnerRef.current);
 
       return () => {
-        console.log("disconnected")
         observer.disconnect();
       }
     }
@@ -81,10 +80,8 @@ export default function BeatResultCards({
 
   useEffect(() => {
     if (queryPos === 0) return;
-    console.log(queryPos);
-    // appendToPlaylist(moreBeats.beats);
-    getMoreBeats();
 
+    getMoreBeats();
   }, [queryPos]);
 
   useEffect(() => {
