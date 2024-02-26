@@ -46,7 +46,7 @@ export default function FilterPanel() {
   
   return (
     <>
-      <form action="" className={`bg-neutral-900 p-4 flex flex-col rounded border border-neutral-800 ${!hideForm && `gap-7`}`}>
+      <form action="" className={`bg-neutral-900 p-4 flex flex-col rounded border border-neutral-800 lg:drop-shadow-lg ${!hideForm && `gap-7`}`}>
         <div onClick={() => setHideForm(!hideForm)} className="flex justify-between items-center cursor-pointer lg:hidden">
           <h2 className="text-lg">Filters</h2>
           <ExpandIcon className={`h-6 w-6 transition-all ${!hideForm && `rotate-180`}`} />

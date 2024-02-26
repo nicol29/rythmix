@@ -24,6 +24,11 @@ export default function AudioPlayerContextProvider({ children }: any) {
     setPlaylist(tracks);
   }
 
+  const appendToPlaylist = (newTracks: BeatDocumentInterface[]) => {
+    console.log([...playList, ...newTracks]);
+    setPlaylist([...playList, ...newTracks]);
+  }
+
   const prevTrack = () => {
     if (activeIndex === 0) return;
 
@@ -50,6 +55,7 @@ export default function AudioPlayerContextProvider({ children }: any) {
         setIsPlaying, 
         isPlayBarActive, 
         setNewPlaylist, 
+        appendToPlaylist,
         setTrack, 
         track, 
         playList, 

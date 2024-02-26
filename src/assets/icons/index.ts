@@ -25,3 +25,4 @@ export { default as GenreIcon } from "./genres_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as NewReleasesIcon } from "./new_releases_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as TrendingIcon } from "./trending_up_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as LocationIcon } from "./location_on_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as Spinner } from "./Spinner-1s-200px.svg";

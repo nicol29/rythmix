@@ -5,18 +5,111 @@ import Link from "next/link";
 import Image from "next/image";
 import uniqid from "uniqid";
 import returnCheapestLicensePrice from "@/utils/returnCheapestLicensePrice";
-import { TrolleyIcon } from "@/assets/icons";
-import { useContext } from "react";
+import { TrolleyIcon, PauseAudioIcon, PlayAudioIcon, Spinner } from "@/assets/icons";
+import { useContext, useRef, useEffect, useState, useCallback } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
+import { getSearchResults } from "@/server-actions/getSearchResults";
+import { Germania_One } from "next/font/google";
 
 
-export default function BeatResultCards({ beats }: { beats: BeatDocumentInterface[] }) {
+export default function BeatResultCards({ 
+  beats,
+  searchString,
+  filters,
+  sortFilter
+}: { 
+  beats: BeatDocumentInterface[];
+  searchString: string | undefined;
+  filters: { [key: string]: string | number };
+  sortFilter: number | undefined;
+}) {
+  const { isPlaying, setIsPlaying, playOrPauseTrack, openPlayBar, setNewPlaylist, track, setTrack, appendToPlaylist } = useContext(AudioPlayerContext);
+  const [beatsPlaylist, setBeatsPlaylist] = useState<BeatDocumentInterface[]>([]);
+  const spinnerRef = useRef(null);
+  const [queryPos, setQueryPos] = useState(0);
+  const [lastDocs, setLastDocs] = useState(false);
+
+  const playTrack = async (beat: BeatDocumentInterface) => {
+    openPlayBar();
+
+    createPlayList(beat);
+
+    if (track?._id === beat._id) {
+      playOrPauseTrack();
+    } else {
+      setTrack(beat);
+      setIsPlaying(true);
+    }
+  }
+
+  const createPlayList = (beat: BeatDocumentInterface) => {
+    const currentBeatIndex = beatsPlaylist.findIndex(currentBeat => currentBeat._id.toString() === beat._id.toString());
+    const playList = beatsPlaylist.slice(currentBeatIndex);
+
+    setNewPlaylist(playList);
+  }
+
+  const getMoreBeats = async () => {
+    if (!searchString) return;
+
+    const moreBeats = await getSearchResults(searchString, filters, sortFilter, queryPos);
+
+    if (moreBeats.beats.length < 1) {
+      setLastDocs(true);
+      return;
+    } 
+    setBeatsPlaylist(beatsPlaylist => [...beatsPlaylist, ...moreBeats.beats]);
+  }
+
+  useEffect(() => {
+    if (spinnerRef.current) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          console.log("entered");
+          setQueryPos(queryPos => queryPos + 1);
+        }
+      });
+
+      observer.observe(spinnerRef.current);
+
+      return () => {
+        console.log("disconnected")
+        observer.disconnect();
+      }
+    }
+  }, [spinnerRef]);
+
+  useEffect(() => {
+    if (queryPos === 0) return;
+    console.log(queryPos);
+    // appendToPlaylist(moreBeats.beats);
+    getMoreBeats();
+
+  }, [queryPos]);
+
+  useEffect(() => {
+    setBeatsPlaylist(beats);
+    setQueryPos(0);
+
+    beats.length < 1 ? setLastDocs(false) : setLastDocs(false);
+
+  }, [beats]);
+
   return (
     <div className="w-11/12 flex flex-col gap-3 max-w-[850px]">
-      { beats.map((beat) => (
+      { beatsPlaylist.map((beat) => (
         <div key={beat._id.toString()} className="bg-neutral-850 rounded flex gap-3 p-2">
-          <div className="relative h-full aspect-square">
+          <div className="relative h-full aspect-square flex justify-center items-center">
             <Image className="absolute object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat?.assets.artwork.url} alt="Track art" />
+            <div onClick={() => playTrack(beat)} className="cursor-pointer hover:bg-transparent-d-black bg-transparent-l-black absolute w-8 h-8 rounded-full self-center">
+              { track?._id === beat._id ?
+                (isPlaying ? 
+                  <PauseAudioIcon className="w-full h-full text-neutral-300" /> :
+                  <PlayAudioIcon className="w-full h-full text-neutral-300" />
+                ) : 
+                <PlayAudioIcon className="w-full h-full text-neutral-300" />
+              }
+            </div>
           </div>
           <div className="flex-grow">
             <div className="w-full flex justify-between">
@@ -31,7 +124,7 @@ export default function BeatResultCards({ beats }: { beats: BeatDocumentInterfac
             <Link href={`/${beat.producer.profileUrl}`} className="text-sm text-orange-500">{beat.producer.userName}</Link>
             <div className="flex gap-3 items-center">
               <span className="text-neutral-500 text-xs font-base">{beat.genre}</span>
-              <div className="h-4 w-[1px] bg-neutral-600"></div>
+              <div className="h-2 w-[1px] bg-neutral-600"></div>
               <span className="text-neutral-500 text-xs font-base">{beat.bpm} bpm</span>
             </div>
           </div>
@@ -43,6 +136,9 @@ export default function BeatResultCards({ beats }: { beats: BeatDocumentInterfac
           </div>
         </div>
       )) }
+      <div ref={spinnerRef} >
+        {!lastDocs && <Spinner className="h-11 w-11" />}
+      </div>
     </div>
   )
 }

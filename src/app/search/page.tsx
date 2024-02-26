@@ -24,8 +24,8 @@ export default async function Search({
   }
 
   let beats;
-  if (searchParams.searchString) beats = await getSearchResults(searchParams.searchString, filters, sortFilter)
-
+  if (searchParams.searchString) beats = await getSearchResults(searchParams.searchString, filters, sortFilter);
+  
   return (
     <main className="mt-14 min-h-screen">
       <section className="relative bg-neutral-925 flex justify-center py-10 lg:py-0 lg:h-[250px]">
@@ -35,7 +35,12 @@ export default async function Search({
         </div>
       </section>
       <section className="flex justify-center py-12 lg:mt-[100px]">
-        <BeatResultCards beats={beats?.beats} />
+        <BeatResultCards 
+          beats={beats?.beats}
+          searchString={searchParams.searchString}
+          filters={filters}
+          sortFilter={sortFilter}
+        />
       </section>
     </main>
   )

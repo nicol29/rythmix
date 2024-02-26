@@ -7,9 +7,12 @@ import connectMongoDB from "@/config/mongoDBConnection";
 export const getSearchResults = async (
   searchString: string, 
   filters?: { [key: string]: string | number }, 
-  sortFilter?: number
+  sortFilter?: number,
+  queryPos?: number
 ) => {
   try {
+    const docLimit = 10;
+
     await connectMongoDB();
 
     let mongoPipeline: any = [{
@@ -32,7 +35,11 @@ export const getSearchResults = async (
       mongoPipeline.push({ "$sort": { "createdAt": sortFilter} });
     }
 
-    const results = await Beats.aggregate(mongoPipeline).limit(10);
+    if (queryPos) {
+      mongoPipeline.push({ $skip: queryPos * docLimit })
+    }
+
+    const results = await Beats.aggregate(mongoPipeline).limit(docLimit);
 
     const beats = JSON.parse(JSON.stringify(results));
 

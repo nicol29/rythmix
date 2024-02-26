@@ -16,8 +16,11 @@ export default function SearchBar() {
 
   useEffect(() => {
     (async() => {
-      if (searchQuery.length < 1) return;
-
+      if (searchQuery.length < 1) {
+        setSearchResults([]);
+        return;
+      }
+      
       const res = await getSearchResults(searchQuery);
 
       if (res.success) setSearchResults(res.beats);

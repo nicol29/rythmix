@@ -6,18 +6,11 @@ import { PlayAudioIcon, PauseAudioIcon } from "@/assets/icons";
 import Link from "next/link";
 import { useContext } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
+import returnCheapestLicensePrice from "@/utils/returnCheapestLicensePrice";
 
 
 export default function BeatCard({ beatList, beat, option }: { beatList: BeatDocumentInterface[]; beat: BeatDocumentInterface; option?: "simple" }) {
   const { isPlaying, setIsPlaying, playOrPauseTrack, openPlayBar, setNewPlaylist, track, setTrack } = useContext(AudioPlayerContext);
-
-  const getPrice = () => {
-    const { licenses } = beat;
-
-    if (licenses.basic.selected) return licenses.basic.price;
-    if (licenses.premium.selected) return licenses.premium.price;
-    if (licenses.exclusive.selected) return licenses.exclusive.price;
-  }
 
   const playTrack = async () => {
     openPlayBar();
@@ -61,14 +54,14 @@ export default function BeatCard({ beatList, beat, option }: { beatList: BeatDoc
           { option === "simple" ?
             <div className="flex items-center justify-between gap-2 text-neutral-500 w-full">
               <span className="font-normal text-sm">{beat?.genre}</span>
-              <span className="text-orange-500 bg-neutral-750 px-2 rounded-full">€ {getPrice()}</span>
+              <span className="text-orange-500 bg-neutral-750 px-2 rounded-full">€ {returnCheapestLicensePrice(beat)}</span>
             </div> :
             <>
               <Link href={`/${beat.producer.profileUrl}`} className="text-orange-500 font-medium">{beat.producer.userName}</Link>
               <div className="flex items-center gap-2 text-neutral-500">
                 <span className="font-normal text-sm">{beat?.genre}</span>
                 {beat?.genre && <div className="h-4 w-[1px] bg-neutral-700"></div>}
-                <span className="text-orange-500 bg-neutral-750 px-2 rounded-full">€ {getPrice()}</span>
+                <span className="text-orange-500 bg-neutral-750 px-2 rounded-full">€ {returnCheapestLicensePrice(beat)}</span>
               </div>
             </>
           }
