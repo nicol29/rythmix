@@ -23,7 +23,8 @@ export default async function Profile({ params }: { params: { profileUrl: string
   }, { password: 0 });
 
   const beats = await Beats.find({
-    "producer._id": producer?._id
+    "producer._id": producer?._id,
+    "status": "published"
   });
 
   const totalPlays = await Plays.countDocuments({ producer: producer?._id });

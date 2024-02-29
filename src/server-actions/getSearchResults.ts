@@ -28,7 +28,10 @@ export const getSearchResults = async (
         }
       },
     }, { 
-      "$match": { ...filters } 
+      "$match": { 
+        ...filters,
+        "status": "published"
+      } 
     },];
 
     if (sortFilter) {
