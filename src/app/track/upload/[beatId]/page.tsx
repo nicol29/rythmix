@@ -24,7 +24,7 @@ export default async function Upload ({ params }: { params: { beatId: string } }
   return (
     <>
       <Header />
-      <main className="mt-14 pt-12">
+      <main className="mt-14 pt-12 pb-20">
         <div className="flex justify-center">
           
         <BeatUploadForm 

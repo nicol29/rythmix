@@ -1,20 +1,17 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
 import Beats from "@/models/Beats";
-import RenderTracks from "./renderTracks";
+import RenderTracks from "../renderTracks";
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
-import connectMongoDB from "@/config/mongoDBConnection";
 
 
 export default async function Tracks() {
   const signedInUser = await getServerSession(authOptions);
 
-  await connectMongoDB();
-
   const userPublishedBeats: BeatDocumentInterface[] = await Beats.find({
     "producer._id": signedInUser?.user.id,
-    "status": "published"
+    "status": "draft"
   }).sort({ createdAt: -1 });
 
 
@@ -27,8 +24,8 @@ export default async function Tracks() {
             <Link href="/upload" className="default-orange-button px-3 py-1 flex gap-2"><span>+</span>Create Track</Link>
           </div>
           <div className="mt-10 flex gap-4 text-lg text-neutral-400 sm:mt-16">
-            <Link href="/tracks" className="px-1 border-b-2 border-orange-500">Published</Link>
-            <Link href="/tracks/drafts" className="px-1">Drafts</Link>
+            <Link href="/tracks" className="px-1">Published</Link>
+            <Link href="/tracks/drafts" className="px-1 border-b-2 border-orange-500">Drafts</Link>
           </div>
         </div>
       </section>

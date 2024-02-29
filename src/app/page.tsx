@@ -24,7 +24,9 @@ export default async function Home() {
 
   await connectMongoDB();
 
-  const newBeats = await Beats.find().select({ 
+  const newBeats = await Beats.find({
+    "status": "published",
+  }).select({ 
     assets: 1,
     licenses: 1,
     bpm: 1,
@@ -52,10 +54,8 @@ export default async function Home() {
         plays: { $sum: 1 } 
       }
     },
-    { $sort: { plays: -1 } 
-    },
-    { $limit: 10
-    }, 
+    { $sort: { plays: -1 } },
+    { $limit: 10 }, 
     {
       $lookup: {
         from: 'beats', 
