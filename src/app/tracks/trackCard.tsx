@@ -24,26 +24,26 @@ export default function TrackCard({
           }
         </div>
         <div className="w-full flex">
-          <div style={{ width: '40%' }}>
+          <div style={{ width: '40%' }} className="truncate max-w-[125px] sm:max-w-[175px] lg:max-w-full">
             <Link href={`/beat/${beat.urlIdentifier}`}>{beat?.title}</Link>
           </div>
-          <ul style={{ width: '20%' }} className="flex gap-2 text-sm">
+          <ul style={{ width: '20%' }} className="gap-2 text-sm hidden lg:flex">
             <li className={`border text-orange-500 border-orange-600 rounded px-2 py-1 ${!beat.assets?.artwork?.url && `opacity-30`}`}>IMG</li>
             <li className={`border text-orange-500 border-orange-600 rounded px-2 py-1 ${!beat.assets?.mp3?.url && `opacity-30`}`}>MP3</li>
             <li className={`border text-orange-500 border-orange-600 rounded px-2 py-1 ${!beat.assets?.wav?.url && `opacity-30`}`}>WAV</li>
           </ul>
-          <div style={{ width: '20%' }} className="text-neutral-500">
+          <div style={{ width: '20%' }} className="text-neutral-500 hidden lg:block">
             {beat?.formattedDate}
           </div>
-          <div style={{ width: '20%' }} className="flex gap-4 items-center justify-end text-sm font-medium">
-            <Link href={`/track/edit/${beat.urlIdentifier}`} className="flex items-center gap-1">
+          <div style={{ width: '20%' }} className="flex flex-col gap-2 justify-center ml-auto text-sm font-medium lg:gap-4 lg:flex-row lg:items-center">
+            <Link href={`/track/edit/${beat.urlIdentifier}`} className="flex items-center gap-1 justify-end">
               <span>EDIT</span>
-              <EditIcon className="h-4 w-4" />
+              <EditIcon className="h-4 w-4 flex-shrink-0" />
             </Link>
-            <div className="h-5 w-[1px] bg-neutral-700"></div>
-            <button onClick={() => openModal(beat)} className="flex items-center gap-1 text-red-400">
+            <div className="h-5 w-[1px] bg-neutral-700 hidden lg:block"></div>
+            <button onClick={() => openModal(beat)} className="flex items-center gap-1 justify-end text-red-400">
               <span>DELETE</span>
-              <DeleteIcon className="h-4 w-4" />
+              <DeleteIcon className="h-4 w-4 flex-shrink-0" />
             </button>
           </div>
         </div>

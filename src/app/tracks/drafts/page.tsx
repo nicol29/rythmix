@@ -31,10 +31,10 @@ export default async function Tracks() {
       </section>
       <section className="flex flex-col items-center py-20">
         <div className="w-5/6 sm:max-w-[1200px] flex pl-24 text-neutral-500 mb-3">
-          <div style={{ width: '40%' }} className="">Track</div>
-          <div style={{ width: '20%' }}>Formats</div>
-          <div style={{ width: '20%' }}>Date</div>
-          <div style={{ width: '20%' }} className="pl-16">Actions</div>
+          <div style={{ width: '40%' }}>Track</div>
+          <div style={{ width: '20%' }} className="hidden lg:block">Formats</div>
+          <div style={{ width: '20%' }} className="hidden lg:block">Date</div>
+          <div style={{ width: '20%' }} className="ml-auto">Actions</div>
         </div>
         <RenderTracks 
           userPublishedBeats={JSON.parse(JSON.stringify(userPublishedBeats))}
