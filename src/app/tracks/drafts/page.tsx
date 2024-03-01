@@ -1,20 +1,10 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Link from "next/link";
-import Beats from "@/models/Beats";
-import RenderTracks from "../renderTracks";
-import { BeatDocumentInterface } from "@/types/mongoDocTypes";
+import DraftedTracks from "./draftedTracks";
+import Loading from "../loading";
+import { Suspense } from "react";
 
 
-export default async function Tracks() {
-  const signedInUser = await getServerSession(authOptions);
-
-  const userPublishedBeats: BeatDocumentInterface[] = await Beats.find({
-    "producer._id": signedInUser?.user.id,
-    "status": "draft"
-  }).sort({ createdAt: -1 });
-
-
+export default async function Drafts() {
   return (
     <main className="min-h-screen mt-14">
       <section className="relative bg-neutral-925 flex justify-center pt-10 sm:pt-16">
@@ -36,9 +26,9 @@ export default async function Tracks() {
           <div style={{ width: '20%' }} className="hidden lg:block">Date</div>
           <div style={{ width: '20%' }} className="ml-auto">Actions</div>
         </div>
-        <RenderTracks 
-          userPublishedBeats={JSON.parse(JSON.stringify(userPublishedBeats))}
-        />
+        <Suspense fallback={<Loading />}>
+          <DraftedTracks />
+        </Suspense>
       </section>
     </main>
   )
