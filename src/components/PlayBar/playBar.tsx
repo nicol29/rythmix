@@ -6,7 +6,7 @@ import { VolumeIcon, VolumeMutedIcon, SkipPrevButton, SkipNextButton, PauseAudio
 import Link from "next/link";
 import Image from "next/image";
 import { getLike, addLike, removeLike } from "@/server-actions/beatLike";
-import addPlay from "@/server-actions/addPlay";
+import addPlay from "@/server-actions/beatPlay";
 
 
 export default function PlayBar() {
