@@ -15,6 +15,7 @@ import Link from "next/link";
 
 export default async function Profile({ params }: { params: { profileUrl: string } }) {
   const signedInUser = await getServerSession(authOptions);
+  console.log(signedInUser)
 
   await connectMongoDB();
   
@@ -48,7 +49,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
               <span className="cursor-pointer">{0} followers</span>
               <span className="cursor-pointer">{0} following</span>
             </div>
-            { signedInUser?.user ?
+            { signedInUser?.user.profileUrl === params.profileUrl ?
               <Link href="/" className="default-orange-button text-center w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Edit Profile</Link> :
               <button className="default-orange-button w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Follow</button>
             }
