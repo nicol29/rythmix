@@ -21,7 +21,7 @@ export default async function ProfileSettings() {
         </div>
       </section>
       <section className="py-10 flex justify-center">
-        <div className="w-5/6 sm:max-w-[1300px] flex flex-col gap-20">
+        <div className="w-5/6 flex flex-col gap-20 sm:max-w-[1300px] lg:max-w-[500px] ">
           <SettingsSideNavBar activeRoute="profile" />
           <ProfileSettingsForm 
             profileSettings={{

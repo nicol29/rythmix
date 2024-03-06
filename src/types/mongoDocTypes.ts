@@ -12,6 +12,15 @@ export interface LicenseInterface {
   selected: boolean;
 }
 
+export interface LicenseTermsInterface {
+  distributionCopies: string;
+  audioStreams: string;
+  musicVideos: string;
+  radioStations: string;
+  allowProfitPerformances: boolean;
+  country: string | null;
+}
+
 export interface BeatDocumentInterface {
   _id: ObjectId;
   id: string;
@@ -60,4 +69,9 @@ export interface UserDocumentInterface {
   userType: string;
   country: string;
   biography: string;
+  licenseTerms: {
+    basic: LicenseTermsInterface;
+    premium: LicenseTermsInterface;
+    exclusive: LicenseTermsInterface;
+  }
 }
