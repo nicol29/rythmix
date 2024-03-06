@@ -11,7 +11,8 @@ export default async function ProfileSettings() {
 
   await connectMongoDB();
   const userFromDB = await Users.findOne({ _id: signedInUser?.user.id });
-  console.log(signedInUser?.user)
+
+  
   return (
     <main className="min-h-screen pt-14">
       <section className="relative bg-neutral-925 drop-shadow flex justify-center items-center py-10 lg:py-0 lg:h-[200px]">
@@ -27,6 +28,7 @@ export default async function ProfileSettings() {
               userName: signedInUser?.user.userName,
               profileUrl: signedInUser?.user.profileUrl,
               biography: userFromDB?.biography,
+              country: userFromDB?.country,
             }} 
           />
         </div>

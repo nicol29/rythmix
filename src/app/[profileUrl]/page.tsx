@@ -26,7 +26,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
     "producer._id": producer?._id,
     "status": "published"
   });
-
+  console.log(producer?.country)
   const totalPlays = await Plays.countDocuments({ producer: producer?._id });
 
   return (
@@ -41,7 +41,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
               <h1 className="text-3xl font-medium mt-2 text-neutral-400 lg:mt-0">{producer?.userName}</h1>
               <div className="flex items-center gap-1 text-neutral-500">
                 <LocationIcon className="w-4 h-4" />
-                <span>{"Unknown"}</span>
+                <span>{producer?.country ? producer.country : "Unknown"}</span>
               </div>
             </div>
             <span className="text-neutral-500 text-sm font-medium">{signedInUser?.user.userType}</span>

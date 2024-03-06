@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { DropIcon, CloudUploadIcon } from "@/assets/icons";
 import { addProfilePicture } from "@/server-actions/addProfilePicture";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 
 export default function DragDropAreaProfilePicture({ 
@@ -31,6 +32,8 @@ export default function DragDropAreaProfilePicture({
           ...session?.user,
           image: res?.accessUrl,
         });
+
+        toast.success("Image changed successfully");
       }
 
       closeModal();

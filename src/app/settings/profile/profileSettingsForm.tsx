@@ -9,6 +9,7 @@ import Modal from "@/components/Modal/modal";
 import DragDropAreaProfilePicture from "./dragDropAreaPicture";
 import { CloseIcon } from "@/assets/icons";
 import { useSession } from "next-auth/react";
+import { updateProfileInfo } from "@/server-actions/settings";
 
 
 export default function ProfileSettingsForm({
@@ -18,14 +19,16 @@ export default function ProfileSettingsForm({
     userName: string;
     profileUrl: string;
     biography: string | null;
+    country: string | null;
   }
 }) {
-  const { handleSubmit, register, reset, formState: { errors } } = useForm<TProfileSettingsSchema>({
+  const { handleSubmit, register, setError, formState: { errors } } = useForm<TProfileSettingsSchema>({
     resolver: zodResolver(profileSettingsSchema),
     defaultValues: {
       userName: profileSettings?.userName,
       profileUrl: profileSettings?.profileUrl,
       biography: profileSettings?.biography ?? "",
+      country: profileSettings?.country ?? "",
     }
   });
   const { data: session, update } = useSession();
@@ -34,7 +37,25 @@ export default function ProfileSettingsForm({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const processForm = async (formData: TProfileSettingsSchema) => {
-    console.log(formData);
+    setIsSubmitting(true);
+
+    const res = await updateProfileInfo(formData, session?.user.id);
+
+    setIsSubmitting(false);
+
+    if (res?.success) {
+      update({
+        ...session?.user,
+        userName: formData.userName,
+        profileUrl: formData.profileUrl,
+      });
+    } else {
+      if (res.duplicateKey) {
+        setError("profileUrl", {
+          message: res.message
+        });
+      }
+    }
   }
 
   return (
@@ -64,6 +85,11 @@ export default function ProfileSettingsForm({
           <label htmlFor="profileUrl">Profile Url</label>
           <input className="dark-input-field" type="text" id="profileUrl" {...register("profileUrl")}/>
           {errors.profileUrl && <p className="text-red-400 text-sm">{`${errors.profileUrl.message}`}</p>}
+        </div>
+        <div className="default-field-container">
+          <label htmlFor="country">Country</label>
+          <input className="dark-input-field" type="text" id="country" {...register("country")}/>
+          {errors.country && <p className="text-red-400 text-sm">{`${errors.country.message}`}</p>}
         </div>
         <div className="default-field-container">
           <label htmlFor="biography">Biography</label>

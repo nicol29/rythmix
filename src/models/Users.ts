@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, required: true, default: Date.now, },
   walletAddress: { type: String, },
   isProfileCompleted: { type: Boolean, default: false, },
+  biography: { type: String, },
+  country: { type: String, },
 });
 
 const Users = mongoose.models.Users || mongoose.model('Users', userSchema);

@@ -31,6 +31,7 @@ export const config = {
     "/register/complete-account",
     "/profile",
     "/track/:path*",
+    "/settings/:path*",
   ]
 };
 

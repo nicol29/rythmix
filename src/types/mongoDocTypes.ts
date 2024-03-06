@@ -58,4 +58,6 @@ export interface UserDocumentInterface {
   createdAt: Date;
   userName: string;
   userType: string;
+  country: string;
+  biography: string;
 }
