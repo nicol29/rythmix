@@ -15,7 +15,6 @@ import Link from "next/link";
 
 export default async function Profile({ params }: { params: { profileUrl: string } }) {
   const signedInUser = await getServerSession(authOptions);
-  console.log(signedInUser)
 
   await connectMongoDB();
   
@@ -45,6 +44,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
                 <span>{"Unknown"}</span>
               </div>
             </div>
+            <span className="text-neutral-500 text-sm font-medium">{signedInUser?.user.userType}</span>
             <div className="flex gap-4 mt-8 mb-3 lg:mt-3 lg:mb-0">
               <span className="cursor-pointer">{0} followers</span>
               <span className="cursor-pointer">{0} following</span>

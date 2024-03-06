@@ -68,6 +68,7 @@ export const authOptions: NextAuthOptions = {
         token.userName = session.userName;
         token.userType = session.userType;
         token.isProfileCompleted = session.isProfileCompleted;
+        token.image = session.image;
       }
 
       if (account?.provider === "google" && user) {

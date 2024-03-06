@@ -25,7 +25,6 @@ export default function AudioPlayerContextProvider({ children }: any) {
   }
 
   const appendToPlaylist = (newTracks: BeatDocumentInterface[]) => {
-    console.log([...playList, ...newTracks]);
     setPlaylist([...playList, ...newTracks]);
   }
 
