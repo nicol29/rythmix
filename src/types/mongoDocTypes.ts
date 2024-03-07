@@ -47,6 +47,11 @@ export interface BeatDocumentInterface {
     premium: LicenseInterface;
     exclusive: LicenseInterface;
   },
+  licenseTerms: {
+    basic: LicenseTermsInterface;
+    premium: LicenseTermsInterface;
+    exclusive: LicenseTermsInterface;
+  }
   createdAt: Date,
   formattedDate: string;
   comments: [{

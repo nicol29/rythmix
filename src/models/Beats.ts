@@ -33,7 +33,8 @@ const beatsSchema = new mongoose.Schema({
     text: { type: String, required: true },
     date: { type: Date, default: Date.now, },
   }],
-  plays: { type: Number, default: 0 }
+  plays: { type: Number, default: 0 },
+  licenseTerms: { type: Object, required: true }
 })
 
 beatsSchema.virtual('formattedDate').get(function() {

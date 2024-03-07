@@ -81,5 +81,12 @@ export const updateLicenseSetting = async (
 }
 
 export const updateNotificationSetting = async () => {
-
+  try {
+    await connectMongoDB();
+    
+  } catch (error) {
+    console.log(error)
+  }
+  
 }
+

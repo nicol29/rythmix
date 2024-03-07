@@ -27,11 +27,11 @@ export default async function Edit ({ params }: { params: { beatId: string } }) 
       <main className="mt-14 pt-12 pb-20">
         <div className="flex justify-center">
           
-          <BeatUploadForm 
-            slug={params.beatId} 
-            currentBeat={beat}
-            formType="edit" 
-          />
+        <BeatUploadForm 
+          slug={params.beatId} 
+          currentBeat={beat}
+          formType="edit" 
+        />
         </div>
       </main>
     </>

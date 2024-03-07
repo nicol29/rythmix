@@ -119,9 +119,15 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
     const currentFormValues = getValues();
 
     const res = await addBeat(currentFormValues, tagsField.tags, slug, "draft");
-    res?.success ? toast.success("Successfully drafted") : toast.error("Something went wrong");
 
     setIsDraftLoading(false);
+
+    if (res?.success) {
+      toast.success("Successfully drafted");
+      router.push(`/tracks/drafts`);
+    } else { 
+      toast.error("Something went wrong");
+    }
   }
 
   const handlePublish = async (formData: TBeatUploadSchema) => {
@@ -136,7 +142,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
 
       if (res?.success) {
         toast.success("Successfully published");
-        router.push(`/beat/${slug}`);
+        router.push(`/tracks`);
       } else {
         toast.error("Something went wrong");
       }

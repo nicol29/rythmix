@@ -28,9 +28,9 @@ export default async function Upload ({ params }: { params: { beatId: string } }
         <div className="flex justify-center">
           
         <BeatUploadForm 
-            slug={params.beatId} 
-            currentBeat={beat}
-            formType="upload" 
+          slug={params.beatId} 
+          currentBeat={beat}
+          formType="upload" 
         />
         </div>
       </main>

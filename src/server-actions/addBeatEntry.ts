@@ -6,11 +6,18 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { MongoError } from "mongodb";
 import { redirect } from "next/navigation";
 import connectMongoDB from "@/config/mongoDBConnection";
+import Users from "@/models/Users";
+import { UserDocumentInterface } from "@/types/mongoDocTypes";
 
 
 const addBeatEntry = async () => {
-  await connectMongoDB();
   const session = await getServerSession(authOptions);
+
+  await connectMongoDB();
+
+  const userFromDB: UserDocumentInterface | null = await Users.findOne({ 
+    _id: session?.user.id 
+  });
 
   let beat;
   let retryCount = 0;
@@ -28,7 +35,8 @@ const addBeatEntry = async () => {
           _id: session?.user.id,
           userName: session?.user.userName,
           profileUrl: session?.user.profileUrl,
-        }
+        },
+        licenseTerms: { ...userFromDB?.licenseTerms }
       });
 
     } catch (error) {

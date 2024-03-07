@@ -2,8 +2,8 @@ import Header from "@/components/Header/header";
 import TrackDisplayCard from "./trackDisplayCard";
 import Beats from "@/models/Beats";
 import connectMongoDB from "@/config/mongoDBConnection";
-import { BeatDocumentInterface, LicenseInterface } from "@/types/mongoDocTypes";
-import { TrolleyIcon } from "@/assets/icons";
+import { BeatDocumentInterface } from "@/types/mongoDocTypes";
+import LicenseCard from "./licenseCard";
 import CommentSection from "./commentSection";
 import Users from "@/models/Users";
 import { redirect } from "next/navigation";
@@ -15,7 +15,10 @@ import Likes from "@/models/Likes";
 export default async function Beat({ params }: { params: { beatId: string } }) {
   await connectMongoDB();
 
-  const res = await Beats.findOne({ urlIdentifier: params.beatId }).populate({
+  const res = await Beats.findOne({ 
+    urlIdentifier: params.beatId,
+    status: "published"
+  }).populate({
     path: 'comments.author',
     model: Users,
     select: 'userName profilePicture profileUrl'
@@ -77,9 +80,24 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
           <section className="rounded border border-neutral-700 bg-neutral-850 p-4">
             <h2 id="licenses">Licenses</h2>
             <div className="border-t border-neutral-700 mt-1 flex flex-col pt-4">
-              <LicenseCard license={beat.licenses.basic} name={"Basic"} format={"MP3 Format"} />
-              <LicenseCard license={beat.licenses.premium} name={"Premium"} format={"MP3 / WAV Format"} />
-              <LicenseCard license={beat.licenses.exclusive} name={"Exclusive"} format={"MP3 / WAV Format"} />
+              <LicenseCard 
+                license={beat.licenses.basic}
+                licenseTerms={beat.licenseTerms.basic}
+                name={"Basic"} 
+                format={"MP3 Format"} 
+              />
+              <LicenseCard 
+                license={beat.licenses.premium} 
+                licenseTerms={beat.licenseTerms.premium}
+                name={"Premium"} 
+                format={"MP3 / WAV Format"} 
+              />
+              <LicenseCard 
+                license={beat.licenses.exclusive} 
+                licenseTerms={beat.licenseTerms.exclusive}
+                name={"Exclusive"} 
+                format={"MP3 / WAV Format"} 
+              />
             </div>
           </section>
           <section className="rounded border border-neutral-700 bg-neutral-850 p-4 sm:col-span-2">
@@ -92,25 +110,3 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
   )
 }
 
-function LicenseCard({ license, name, format }: { license: LicenseInterface; name: "Basic" | "Premium" | "Exclusive"; format: string }) {
-  if (license.selected) {
-    return (
-      <>
-        <div className="flex justify-between w-full">
-          <div>
-            <p className="text-base">{name}</p>
-            <p className="font-light text-sm italic text-neutral-400">{format}</p>
-            <p className="text-base mt-2">€ {license.price}</p>
-          </div>
-          <div className="flex items-end gap-3">
-            <p className="text-sm font-semibold text-orange-500 cursor-pointer">View license agreements</p>
-            <button className="default-orange-button w-11 h-11 flex items-center justify-center">
-              <TrolleyIcon className="h-6 w-6" />
-            </button>
-          </div>
-        </div>
-        <div className="h-[1px] w-full bg-neutral-700 my-4"></div>
-      </>
-    )
-  }
-}

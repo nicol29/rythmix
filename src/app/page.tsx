@@ -81,9 +81,29 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <main className="min-h-screen mt-14 flex flex-col gap-14 pb-14">
+      <main className="min-h-screen mt-14 flex flex-col">
         <Hero />
-        <section className='flex flex-col ml-6 sm:ml-12'>
+        <section className="py-14 px-4 bg-neutral-850">
+          <div className="max-w-[1150px] mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-6">Welcome to <span className='text-white'>Ryth</span><span className='text-orange-500'>mix</span> - Your Ultimate Beat Store</h2>
+            <p className="text-lg text-neutral-400 mb-8">Discover, purchase, and sell high-quality beats with ease. Join our community of talented producers and artists to elevate your music creation process.</p>
+            <div className="flex flex-wrap justify-center gap-8 lg:flex-nowrap">
+              <div className="w-full md:w-1/3 bg-neutral-900 rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4">Wide Selection of Beats</h3>
+                <p className="text-md text-neutral-500">Explore an extensive library of beats across various genres. Whether youre into Hip Hop, R&B, Pop, or Electronic, you will find the perfect beat to match your vibe.</p>
+              </div>
+              <div className="w-full md:w-1/3 bg-neutral-900 rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4">Easy Licensing</h3>
+                <p className="text-md text-neutral-500">Securely license beats with transparent terms. Choose from flexible licensing options to suit your project needs, from non-exclusive to exclusive rights.</p>
+              </div>
+              <div className="w-full md:w-1/3 bg-neutral-900 rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-4">Support Independent Artists</h3>
+                <p className="text-md text-neutral-500">By purchasing beats from BeatWave, you are directly supporting independent producers and contributing to a thriving music community.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className='flex flex-col py-14 ml-6 sm:ml-12'>
           <div className='flex items-center gap-2 mb-2'>
             <h2 className='text-3xl'>Hottest Tracks</h2>
             <TrendingIcon className="h-10 w-10 text-orange-500" />
@@ -117,7 +137,7 @@ export default async function Home() {
             </div>
           </div>
         </section>
-        <section className='flex flex-col ml-6 sm:ml-12'>
+        <section className='flex flex-col py-14 ml-6 sm:ml-12'>
           <div className='flex items-center gap-2 mb-2'>
             <h2 className='text-3xl'>Latest Tracks</h2>
             <NewReleasesIcon className="h-8 w-8 text-orange-500" />
