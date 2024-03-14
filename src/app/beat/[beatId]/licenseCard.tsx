@@ -48,16 +48,16 @@ export default function LicenseCard({
               <h3 className="text-2xl">{name} License Terms</h3>
               <CloseIcon onClick={() => setIsModalOpen(false)} className="h-5 w-5 cursor-pointer" />
             </div>
-            <div className="flex gap-20 pt-2">
+            <div className="flex flex-col gap-4 pt-2 sm:gap-20 sm:flex-row">
               <div className="flex-1 flex flex-col gap-4">
                 <div className="flex items-center gap-2"><CopyIcon className="h-5 w-5 text-neutral-500"/>{licenseTerms.distributionCopies} Distribution Copies</div>
-                <div className="flex items-center gap-2"><GenreIcon className="h-4 w-4"/>{licenseTerms.audioStreams} Audio Streams</div>
-                <div className="flex items-center gap-2"><VideoCamIcon className="h-4 w-4"/>{licenseTerms.musicVideos} Music Videos</div>
+                <div className="flex items-center gap-2"><GenreIcon className="h-5 w-5 text-neutral-500"/>{licenseTerms.audioStreams} Audio Streams</div>
+                <div className="flex items-center gap-2"><VideoCamIcon className="h-5 w-5 text-neutral-500"/>{licenseTerms.musicVideos} Music Videos</div>
               </div>
               <div className="flex-1 flex flex-col gap-4">
-                <div className="flex items-center gap-2"><RadioIcon className="h-4 w-4"/>{licenseTerms.radioStations} Radio Stations</div>
+                <div className="flex items-center gap-2"><RadioIcon className="h-5 w-5 text-neutral-500"/>{licenseTerms.radioStations} Radio Stations</div>
                 <div className="flex items-center gap-2 whitespace-nowrap overflow-hidden text-ellipsis">
-                  <MicrophoneIcon className="h-4 w-4"/>{licenseTerms.allowProfitPerformances}
+                  <MicrophoneIcon className="h-5 w-5 text-neutral-500"/>{licenseTerms.allowProfitPerformances}
                   {licenseTerms.allowProfitPerformances ? "Profit live performances allowed" : "Non-profit live performances only"}
                 </div>
               </div>
