@@ -5,6 +5,7 @@ import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 import { hash } from "bcrypt";
 import { MongoError } from "mongodb";
+import Notifications from "@/models/Notifications";
 
 
 const addUser = async (formData: TRegistrationSchema) => {
@@ -18,6 +19,16 @@ const addUser = async (formData: TRegistrationSchema) => {
       password: hashedPass,
       profileUrl: email.split('@')[0],
     });
+
+    const newUser = await Users.findOne({ email: email });
+    
+    if (newUser) {
+      await Notifications.create({
+        userId: newUser?._id.toString(),
+        type: 'system',
+        message: 'Welcome to Rythmix, start by browsing beats.',
+      });
+    }
 
     return {success: true, message: "Registered successfully"};
   } catch (error) {

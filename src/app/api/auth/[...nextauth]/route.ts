@@ -4,6 +4,7 @@ import { compare } from "bcrypt";
 import Users from "@/models/Users";
 import connectMongoDB from "@/config/mongoDBConnection";
 import GoogleProvider from "next-auth/providers/google";
+import Notifications from "@/models/Notifications";
 
 
 const googleID = process.env.GOOGLE_CLIENT_ID ?? "";
@@ -54,7 +55,17 @@ export const authOptions: NextAuthOptions = {
               email: email, 
               profileUrl: email?.split('@')[0],
               profilePicture: user.image,
-            });
+            },{ new: true });
+
+            const newUser = await Users.findOne({ email: email });
+
+            if (newUser) {
+              await Notifications.create({
+                userId: newUser?._id.toString(),
+                type: 'system',
+                message: 'Welcome to Rythmix, start by browsing beats.',
+              });
+            }
           } 
         } catch (error) {
           console.error("Error in signIn callback:", error);

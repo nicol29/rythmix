@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getLike, addLike, removeLike } from "@/server-actions/beatLike";
 import addPlay from "@/server-actions/beatPlay";
+import { createAssetNotification } from "@/server-actions/notifications";
 
 
 export default function PlayBar() {
@@ -19,6 +20,7 @@ export default function PlayBar() {
 
   const refreshLike = async (action: "add" | "remove") => {
     if (action === "add") {
+      await createAssetNotification("like", track.producer._id, track.urlIdentifier.toString());
       const res = await addLike(track._id.toString());
       
       if (res?.success) setLike(res.like);

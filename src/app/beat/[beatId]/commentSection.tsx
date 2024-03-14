@@ -11,6 +11,7 @@ import { FormEvent } from 'react';
 import { useState } from 'react';
 import { BeatDocumentInterface } from '@/types/mongoDocTypes';
 import Link from 'next/link';
+import { createAssetNotification } from '@/server-actions/notifications';
 
 
 export default function CommentSection({ beat }: { beat: BeatDocumentInterface }) {
@@ -28,6 +29,7 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
     e.preventDefault(); 
     
     await addComment(commentField, beat.id);
+    await createAssetNotification("comment", beat.producer._id, beat.urlIdentifier.toString());
     setCommentField("");
   }
 
