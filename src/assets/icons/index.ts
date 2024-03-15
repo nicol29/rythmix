@@ -31,3 +31,5 @@ export { default as CopyIcon } from "./content_copy_FILL0_wght400_GRAD0_opsz24.s
 export { default as MicrophoneIcon } from "./mic_external_on_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as RadioIcon } from "./radio_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as VideoCamIcon } from "./videocam_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as SettingsIcon } from "./settings_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as NotificationsIcon } from "./notifications_FILL0_wght400_GRAD0_opsz24.svg";

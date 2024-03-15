@@ -5,15 +5,26 @@ import Notifications from "@/models/Notifications";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-// const notificationsSchema = new mongoose.Schema({
-//   userId: { type: ObjectId, ref: 'Users', required: true },
-//   type: { type: String, enum: ['comment', 'like', 'purchase', 'system'], required: true },
-//   message: { type: String },
-//   from: { type: ObjectId, ref: 'Users' },
-//   read: { type: Boolean, default: false },
-//   resourceId: { type: String },
-// });
 
+export const getNotifications = async () => {
+  try {
+    const signedInUser = await getServerSession(authOptions);
+
+    await connectMongoDB();
+
+    const notifications = await Notifications.find({ 
+      userId: signedInUser?.user.id 
+    }).populate({
+      path: "from",
+      select: "profilePicture userName profileUrl"
+    }).sort({ createdAt: -1 });
+
+
+    return { success: true, notifications: JSON.parse(JSON.stringify(notifications)) }
+  } catch (error) {
+    throw error
+  }
+}
 
 export const createSystemNotification = async (message: string) => {
   try {
@@ -42,9 +53,9 @@ export const createAssetNotification = async (
     await connectMongoDB();
 
     await Notifications.create({
-      userId: signedInUser?.user.id,
+      userId: sender,
       type: type,
-      from: sender,
+      from: signedInUser?.user.id,
       resourceId: resourceId,
     });
   } catch (error) {
@@ -58,7 +69,10 @@ export const markNotificationsAsRead = async () => {
 
     await connectMongoDB();
 
-    await Notifications.updateMany({ userId: signedInUser?.user.id }, {
+    await Notifications.updateMany({ 
+      userId: signedInUser?.user.id, 
+      read: false
+    }, {
       read: true
     });
   } catch (error) {

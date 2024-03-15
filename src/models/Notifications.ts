@@ -9,6 +9,7 @@ const notificationsSchema = new mongoose.Schema({
   from: { type: ObjectId, ref: 'Users' },
   read: { type: Boolean, default: false },
   resourceId: { type: String },
+  createdAt: { type: Date, default: Date.now, },
 });
 
 

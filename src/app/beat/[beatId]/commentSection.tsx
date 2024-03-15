@@ -1,7 +1,5 @@
 "use client";
 
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import returnProfilePicture from '@/utils/returnUserProfilePicture';
@@ -12,18 +10,13 @@ import { useState } from 'react';
 import { BeatDocumentInterface } from '@/types/mongoDocTypes';
 import Link from 'next/link';
 import { createAssetNotification } from '@/server-actions/notifications';
+import getElapsedTime from '@/utils/getElapsedTime';
 
 
 export default function CommentSection({ beat }: { beat: BeatDocumentInterface }) {
   const { data: session, status } = useSession();
   const [commentField, setCommentField] = useState("");
-
-  const elapsedCommentTime = (date: Date) => {
-    dayjs.extend(relativeTime);
-
-    const elapsedTime = dayjs(date);
-    return elapsedTime.fromNow();
-  }
+  
 
   const postComment = async (e: FormEvent) => {
     e.preventDefault(); 
@@ -49,7 +42,7 @@ export default function CommentSection({ beat }: { beat: BeatDocumentInterface }
             <div>
               <div className='flex items-center'>
                 <Link href={`/${comment.author.profileUrl}`} className='text-orange-500 font-semibold text-base'>{comment.author.userName}</Link>
-                <span className='ml-3 text-xs text-neutral-500 '>• {elapsedCommentTime(comment.date)}</span>
+                <span className='ml-3 text-xs text-neutral-500 '>• {getElapsedTime(comment.date)}</span>
                 { comment.author._id === beat.producer._id && <p className="cursor-pointer text-sm font-semibold ml-6">Author</p> }
                 { comment.author._id === session?.user.id && <p onClick={() => removeComment(comment._id)} className="text-red-400 cursor-pointer text-sm font-semibold ml-6">remove</p> }
               </div>

@@ -9,6 +9,7 @@ import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import useDetectOutsideClick from "@/hooks/useDetectOutsideClick";
 import { useRouter, usePathname } from "next/navigation";
 import SearchBar from "./searchBar";
+import NotificationsTab from "./notificationsTab";
 
 
 export default function Header() {
@@ -17,16 +18,17 @@ export default function Header() {
   const router = useRouter();
   const path = usePathname();
 
-  const [activeDropDown, setActiveDropdown] = useState<"profile" | "cart" | null>(null);
+  const [activeDropDown, setActiveDropdown] = useState<"profile" | "cart" | "notifications" | null>(null);
   const [menuToggled,setMenuToggled] = useState(false);
   const [searchToggled, setSearchToggled] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+  const notiRef = useRef<HTMLDivElement>(null);
 
-  useDetectOutsideClick([cartRef, profileRef], () => setActiveDropdown(null));
+  useDetectOutsideClick([cartRef, profileRef, notiRef], () => setActiveDropdown(null));
 
-  const manageDropDowns = (toggleActive: "profile" | "cart") => {
+  const manageDropDowns = (toggleActive: "profile" | "cart" | "notifications") => {
     activeDropDown === toggleActive ? setActiveDropdown(null) : setActiveDropdown(toggleActive);
   }
 
@@ -41,9 +43,12 @@ export default function Header() {
 
   return (
     <header className="bg-neutral-850 fixed top-0 w-full z-20">
-      <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative sm:gap-6">
+      <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative lg:gap-6">
         <MenuIcon className="text-neutral-400 h-7 cursor-pointer shrink-0" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
-        <img className="h-6 mt-1 cursor-pointer" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />
+        <div className="flex-shrink-0">
+          <img className="h-6 mt-1 cursor-pointer hidden sm:block" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />
+          <img className="h-6 mt-1 cursor-pointer block sm:hidden" src="/transparentRythmixLogo.png" onClick={() => changeToHomePage()} />
+        </div>
         <button className="block sm:hidden" onClick={() => setSearchToggled(!searchToggled)} aria-label="Open searchbar">
           <SearchIcon className="text-neutral-400 h-6"/>
         </button>
@@ -51,7 +56,21 @@ export default function Header() {
           <SearchBar />
           <CloseIcon className="h-5 w-5 absolute right-3 text-neutral-500 cursor-pointer sm:hidden" onClick={() => setSearchToggled(!searchToggled)}/>
         </div>
-        <div ref={profileRef} className="ml-auto relative">
+        <div ref={cartRef} className="ml-auto relative">
+          <div onClick={() => manageDropDowns("cart")} className="flex items-center cursor-pointer gap-0.5">
+            <CartIcon className={"text-neutral-400 h-6"} />
+            <ExpandIcon className={activeDropDown === "cart" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
+          </div>
+          <div className={activeDropDown === "cart" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[250px] right-1 px-2 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
+            Filler Text
+          </div>
+        </div>
+        <NotificationsTab 
+          notiRef={notiRef}
+          manageDropDowns={manageDropDowns}
+          activeDropDown={activeDropDown}
+        />
+        <div ref={profileRef} className="relative">
           { status === "authenticated" ?
             <>
               <div className="flex items-center cursor-pointer gap-1" onClick={() => manageDropDowns("profile")}>
@@ -97,15 +116,6 @@ export default function Header() {
               </div>
             </>
           }
-        </div>
-        <div ref={cartRef} className="relative">
-          <div onClick={() => manageDropDowns("cart")} className="flex items-center cursor-pointer gap-0.5">
-            <CartIcon className={"text-neutral-400 h-6"} />
-            <ExpandIcon className={activeDropDown === "cart" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
-          </div>
-          <div className={activeDropDown === "cart" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[250px] right-1 px-2 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
-            Filler Text
-          </div>
         </div>
         <div onClick={() => manageSideMenu()} className={menuToggled ? "top-0 left-0 h-screen w-full bg-black opacity-45 absolute" : "hidden"}></div>
         <div className={menuToggled ? "h-screen w-5/6 absolute top-0 left-0 bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]" : "h-screen w-5/6 absolute top-0 left-0 -translate-x-full bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]"} aria-hidden={!menuToggled} aria-label="menu">
