@@ -65,9 +65,9 @@ export default function NotificationsTab({
         </Link>
       case "system":
         return <div className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
-          <SettingsIcon className="w-10 h-10" />
+          <SettingsIcon className="w-10 h-10 flex-shrink-0 text-neutral-500" />
           <p className="text-sm">
-            <span className="text-orange-500 font-bold">{notification.message}</span>
+            <span>{notification.message}</span>
             <span className='ml-3 text-xs text-neutral-500'>• {getElapsedTime(notification.createdAt)}</span>
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function NotificationsTab({
           <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>
           <Link href="/settings/notifications"><SettingsIcon className="h-5 w-5" /></Link>
         </div>
-        <div className="max-h-[350px] overflow-y-scroll">
+        <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
           { notifications.map(notification => (
               notificationHandler(notification)
           ))}
