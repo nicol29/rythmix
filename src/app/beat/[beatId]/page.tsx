@@ -81,18 +81,21 @@ export default async function Beat({ params }: { params: { beatId: string } }) {
             <h2 id="licenses">Licenses</h2>
             <div className="border-t border-neutral-700 mt-1 flex flex-col pt-4">
               <LicenseCard 
+                beat={beat}
                 license={beat.licenses.basic}
                 licenseTerms={beat.licenseTerms.basic}
                 name={"Basic"} 
                 format={"MP3 Format"} 
               />
               <LicenseCard 
+                beat={beat}
                 license={beat.licenses.premium} 
                 licenseTerms={beat.licenseTerms.premium}
                 name={"Premium"} 
                 format={"MP3 / WAV Format"} 
               />
               <LicenseCard 
+                beat={beat}
                 license={beat.licenses.exclusive} 
                 licenseTerms={beat.licenseTerms.exclusive}
                 name={"Exclusive"} 

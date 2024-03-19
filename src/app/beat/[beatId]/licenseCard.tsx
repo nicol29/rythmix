@@ -3,23 +3,35 @@
 import { LicenseInterface } from "@/types/mongoDocTypes";
 import { TrolleyIcon, CloseIcon, CopyIcon, GenreIcon, VideoCamIcon, RadioIcon, MicrophoneIcon } from "@/assets/icons";
 import Modal from "@/components/Modal/modal";
-import { useState } from "react";
-import { LicenseTermsInterface } from "@/types/mongoDocTypes";
+import { useState, useContext } from "react";
+import { LicenseTermsInterface, BeatDocumentInterface } from "@/types/mongoDocTypes";
+import { addItemToCart } from "@/utils/sessionStorage";
+import { CartItemsContext } from "@/context/cartItemsContext";
+import { toast } from "sonner";
 
 
 export default function LicenseCard({ 
+  beat,
   license, 
   licenseTerms,
   name, 
   format 
 }: { 
+  beat: BeatDocumentInterface;
   license: LicenseInterface; 
   licenseTerms: LicenseTermsInterface;
   name: "Basic" | "Premium" | "Exclusive"; 
-  format: string 
+  format: string;
 }) {
+  const { cartItems, addItemToCart, deleteItemFromCart } = useContext(CartItemsContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(cartItems);
 
+  const handleAddToCart = () => {
+    toast.success(`Added ${beat.title} ${name} license to cart`);
+
+    addItemToCart({ ...beat, chosenLicense: name });
+  }
 
   if (license.selected) {
     return (
@@ -32,7 +44,7 @@ export default function LicenseCard({
           </div>
           <div className="flex items-end gap-3">
             <p onClick={() => setIsModalOpen(true)} className="text-sm font-semibold text-orange-500 cursor-pointer">View license terms</p>
-            <button className="default-orange-button w-11 h-11 flex items-center justify-center">
+            <button onClick={handleAddToCart} className="default-orange-button w-11 h-11 flex items-center justify-center">
               <TrolleyIcon className="h-6 w-6" />
             </button>
           </div>
