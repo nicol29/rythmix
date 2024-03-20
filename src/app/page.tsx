@@ -98,7 +98,7 @@ export default async function Home() {
               </div>
               <div className="w-full md:w-1/3 bg-neutral-900 rounded-lg p-6">
                 <h3 className="text-xl font-semibold mb-4">Support Independent Artists</h3>
-                <p className="text-md text-neutral-500">By purchasing beats from BeatWave, you are directly supporting independent producers and contributing to a thriving music community.</p>
+                <p className="text-md text-neutral-500">By purchasing beats from Rythmix, you are directly supporting independent producers and contributing to a thriving music community.</p>
               </div>
             </div>
           </div>

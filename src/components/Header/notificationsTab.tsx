@@ -85,7 +85,7 @@ export default function NotificationsTab({
         </div>
         <ExpandIcon className={activeDropDown === "notifications" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
       </div>
-      <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[300px] right-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
+      <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[400px] right-1 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
         <div className="flex items-center gap-3 p-2 border-b border-neutral-700">
           <span className="text-lg">Notifications</span>
           <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>

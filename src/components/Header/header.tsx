@@ -10,6 +10,7 @@ import useDetectOutsideClick from "@/hooks/useDetectOutsideClick";
 import { useRouter, usePathname } from "next/navigation";
 import SearchBar from "./searchBar";
 import NotificationsTab from "./notificationsTab";
+import CartTab from "./cartTab";
 
 
 export default function Header() {
@@ -56,15 +57,11 @@ export default function Header() {
           <SearchBar />
           <CloseIcon className="h-5 w-5 absolute right-3 text-neutral-500 cursor-pointer sm:hidden" onClick={() => setSearchToggled(!searchToggled)}/>
         </div>
-        <div ref={cartRef} className="ml-auto relative">
-          <div onClick={() => manageDropDowns("cart")} className="flex items-center cursor-pointer gap-0.5">
-            <CartIcon className={"text-neutral-400 h-6"} />
-            <ExpandIcon className={activeDropDown === "cart" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
-          </div>
-          <div className={activeDropDown === "cart" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[250px] right-1 px-2 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
-            Filler Text
-          </div>
-        </div>
+        <CartTab 
+          cartRef={cartRef}
+          manageDropDowns={manageDropDowns}
+          activeDropDown={activeDropDown}
+        />
         <NotificationsTab 
           notiRef={notiRef}
           manageDropDowns={manageDropDowns}

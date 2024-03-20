@@ -5,7 +5,6 @@ import { TrolleyIcon, CloseIcon, CopyIcon, GenreIcon, VideoCamIcon, RadioIcon, M
 import Modal from "@/components/Modal/modal";
 import { useState, useContext } from "react";
 import { LicenseTermsInterface, BeatDocumentInterface } from "@/types/mongoDocTypes";
-import { addItemToCart } from "@/utils/sessionStorage";
 import { CartItemsContext } from "@/context/cartItemsContext";
 import { toast } from "sonner";
 
@@ -23,14 +22,20 @@ export default function LicenseCard({
   name: "Basic" | "Premium" | "Exclusive"; 
   format: string;
 }) {
-  const { cartItems, addItemToCart, deleteItemFromCart } = useContext(CartItemsContext);
+  const { addItemToCart } = useContext(CartItemsContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(cartItems);
 
   const handleAddToCart = () => {
     toast.success(`Added ${beat.title} ${name} license to cart`);
 
-    addItemToCart({ ...beat, chosenLicense: name });
+    addItemToCart({ 
+      ...beat, 
+      chosenLicense: { 
+        licenseType: name, 
+        licenseTerms, 
+        licensePrice: license.price 
+      } 
+    });
   }
 
   if (license.selected) {

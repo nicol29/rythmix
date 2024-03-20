@@ -63,6 +63,14 @@ export interface BeatDocumentInterface {
   plays: number
 }
 
+export interface CartItemInterface extends BeatDocumentInterface {
+  chosenLicense: {
+    licenseType: "Basic" | "Premium" | "Exclusive";
+    licenseTerms: LicenseTermsInterface;
+    licensePrice: number;
+  }
+}
+
 export interface UserDocumentInterface {
   _id: ObjectId;
   email: string;
