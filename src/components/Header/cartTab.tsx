@@ -40,7 +40,7 @@ export default function CartTab({
                     <Image className="object-cover rounded border border-neutral-750" fill sizes="w-full h-full" src={returnProfilePicture(item.assets.artwork.url)} alt="Track art" />
                   </div>
                   <div className="max-w-[270px] truncate overflow-hidden">
-                    <span>{item.title}dssdncksjbk</span>
+                    <span>{item.title}</span>
                     <div className="flex justify-between mt-2">
                       <span className="text-neutral-500 text-base">{item.chosenLicense.licenseType} License</span>
                       <span className="text-orange-500 font-semibold">$ {item.chosenLicense.licensePrice}</span>
