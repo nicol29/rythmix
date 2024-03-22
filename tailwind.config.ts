@@ -23,6 +23,7 @@ const config: Config = {
         'transparent-orange-hv':'#ff770053',
         'transparent-l-black': '#00000075',
         'transparent-d-black': '#00000097',
+        'stripe-purple': '#6772e5',
       }
     },
   },

@@ -33,3 +33,4 @@ export { default as RadioIcon } from "./radio_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as VideoCamIcon } from "./videocam_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as SettingsIcon } from "./settings_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as NotificationsIcon } from "./notifications_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as CheckMarkIcon } from "./task_alt_FILL0_wght400_GRAD0_opsz24.svg";

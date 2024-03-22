@@ -87,4 +87,8 @@ export interface UserDocumentInterface {
     premium: LicenseTermsInterface;
     exclusive: LicenseTermsInterface;
   }
+  stripeDetails: {
+    accountId: string;
+    onBoardStatus: "unstarted" | "incomplete" | "complete";
+  }
 }

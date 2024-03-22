@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema({
       allowProfitPerformances: { type: Boolean, default: true, },
       country: { type: String },
     }
+  },
+  stripeDetails: {
+    accountId: { type: String, },
+    onBoardStatus: { 
+      type: String, enum: ["unstarted", "incomplete", "complete"], 
+      default: "unstarted",
+    },
+    
   }
 });
 

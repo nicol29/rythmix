@@ -97,7 +97,7 @@ export const authOptions: NextAuthOptions = {
           }
         }
       } else if (account?.provider === "credentials" && user) {
-        const { _id, profileUrl, profilePicture, isProfileCompleted, userName, userType } = user;
+        const { _id, profileUrl, profilePicture, isProfileCompleted, userName, userType, } = user;
 
         return {
           ...token,
