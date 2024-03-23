@@ -28,7 +28,7 @@ export default async function PayoutSettings() {
           <SettingsSideNavBar activeRoute="payouts" />
           <div>
             <h2 className="text-xl mb-12">Payout Methods</h2>
-            <div className="flex justify-between gap-6">
+            <div className="flex flex-col justify-between gap-6 sm:flex-row">
               <div className="relative h-28 aspect-square bg-neutral-800 rounded">
                 <Image 
                   src="/stripe-logo.jpeg" 
@@ -40,7 +40,7 @@ export default async function PayoutSettings() {
                 />
               </div>
               <div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between">
                   <h3 className="text-xl">Connect Stripe Account</h3>
                   { userFromDBJSON.stripeDetails.onBoardStatus === "complete" ?
                     <span className="text-stripe-purple font-medium flex items-center gap-2">

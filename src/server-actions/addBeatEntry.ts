@@ -19,6 +19,8 @@ const addBeatEntry = async () => {
     _id: session?.user.id 
   });
 
+  if (userFromDB?.stripeDetails?.onBoardStatus !== "complete") return;
+
   let beat;
   let retryCount = 0;
   const maxRetries = 3;

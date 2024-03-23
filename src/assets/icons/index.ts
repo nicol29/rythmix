@@ -34,3 +34,5 @@ export { default as VideoCamIcon } from "./videocam_FILL0_wght400_GRAD0_opsz24.s
 export { default as SettingsIcon } from "./settings_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as NotificationsIcon } from "./notifications_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as CheckMarkIcon } from "./task_alt_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as InventoryIcon } from "./inventory_2_FILL0_wght100_GRAD0_opsz24.svg";
+export { default as AudioFileIcon } from "./audio_file_FILL0_wght100_GRAD0_opsz24.svg";

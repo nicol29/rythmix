@@ -32,6 +32,7 @@ export const config = {
     "/profile",
     "/track/:path*",
     "/settings/:path*",
+    "/upload",
   ]
 };
 

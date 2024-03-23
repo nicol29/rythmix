@@ -54,5 +54,3 @@ export default async function RootLayout({
     </html>
   )
 }
-
-// w-4/5 py-8 bg-neutral-800 rounded border border-neutral-600 flex flex-col items-center justify-center gap-10 max-w-sm

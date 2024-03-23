@@ -46,7 +46,6 @@ export default function LicenseSettingsForm({
     if (res?.success) toast.success(res.message);
   }
 
-
   return (
     <>
       <div>
