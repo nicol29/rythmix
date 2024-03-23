@@ -8,10 +8,14 @@ import Image from "next/image";
 import { getLike, addLike, removeLike } from "@/server-actions/beatLike";
 import addPlay from "@/server-actions/beatPlay";
 import { createAssetNotification } from "@/server-actions/notifications";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 export default function PlayBar() {
   const { isPlaying, playOrPauseTrack, playList, setIsPlaying, track, volume, setVolume, activeIndex, nextTrack, prevTrack, isPlayBarActive } = useContext(AudioPlayerContext);
+  const { status } = useSession();
+  const router = useRouter();
 
   const waveSurferRef = useRef<null | any>(null);
   const waveFormRef = useRef<null | any>(null);
@@ -19,6 +23,8 @@ export default function PlayBar() {
   const [like, setLike] = useState<null | any>(null);
 
   const refreshLike = async (action: "add" | "remove") => {
+    if (status === "unauthenticated") router.push('/login');
+
     if (action === "add") {
       await createAssetNotification("like", track.producer._id, track.urlIdentifier.toString());
       const res = await addLike(track._id.toString());

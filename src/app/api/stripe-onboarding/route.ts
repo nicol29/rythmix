@@ -27,6 +27,7 @@ export async function GET() {
         return_url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/settings/payouts`,
         type: 'account_onboarding',
       });
+      
 
       return Response.redirect(accountLink.url);
     } else {

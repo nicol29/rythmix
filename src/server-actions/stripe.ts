@@ -11,8 +11,6 @@ const stripe = require('stripe')('sk_test_51Ow59cIoHbkQst2eofJmJDPN36VtirlFj8otK
 
 
 export const onBoardUser = async () => {
-  // Set your secret key. Remember to switch to your live secret key in production.
-  // See your keys here: https://dashboard.stripe.com/apikeys
   await connectMongoDB();
 
   const signedInUser = await getServerSession(authOptions);

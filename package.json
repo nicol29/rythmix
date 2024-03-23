@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe-accounts-webhook"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
