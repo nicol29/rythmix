@@ -1,14 +1,16 @@
 "use client";
 
-import { BeatDocumentInterface } from "@/types/mongoDocTypes";
+import { BeatDocumentInterface, LicenseInterface, LicenseTermsInterface } from "@/types/mongoDocTypes";
 import Link from "next/link";
 import Image from "next/image";
 import uniqid from "uniqid";
 import returnCheapestLicensePrice from "@/utils/returnCheapestLicensePrice";
-import { TrolleyIcon, PauseAudioIcon, PlayAudioIcon, Spinner } from "@/assets/icons";
+import { TrolleyIcon, PauseAudioIcon, PlayAudioIcon, Spinner, CloseIcon } from "@/assets/icons";
 import { useContext, useRef, useEffect, useState } from "react";
 import { AudioPlayerContext } from "@/context/audioPlayerContext";
 import { getSearchResults } from "@/server-actions/getSearchResults";
+import Modal from "@/components/Modal/modal";
+import LicenseCard from "../beat/[beatId]/licenseCard";
 
 
 export default function BeatResultCards({ 
@@ -26,6 +28,8 @@ export default function BeatResultCards({
   const [beatsPlaylist, setBeatsPlaylist] = useState<BeatDocumentInterface[]>([]);
   const [queryPos, setQueryPos] = useState(0);
   const [lastDocs, setLastDocs] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalBeat, setModalBeat] = useState<null | BeatDocumentInterface>(null);
   const spinnerRef = useRef(null);
 
 
@@ -92,6 +96,16 @@ export default function BeatResultCards({
 
   }, [beats]);
 
+  const openModal = (chosenBeat: BeatDocumentInterface) => {
+    setIsModalOpen(true);
+    setModalBeat(chosenBeat);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalBeat(null);
+  }
+
   return (
     <div className="w-11/12 flex flex-col gap-3 max-w-[850px]">
       { beatsPlaylist.map((beat) => (
@@ -126,7 +140,7 @@ export default function BeatResultCards({
             </div>
           </div>
           <div className="w-[90px] flex items-center justify-end">
-            <button className="default-orange-button self-center items-center flex px-1">
+            <button onClick={() => openModal(beat)} className="default-orange-button self-center items-center flex px-1">
               <span className="font-normal">€{returnCheapestLicensePrice(beat)}</span>
               <TrolleyIcon className="h-4 w-4 ml-1" />
             </button>
@@ -136,6 +150,43 @@ export default function BeatResultCards({
       <div ref={spinnerRef} >
         {!lastDocs && <Spinner className="h-11 w-11" />}
       </div>
+      <Modal 
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+      >
+        <div>
+          <div className="flex justify-between items-center">
+            <h2 id="licenses">Licenses</h2>
+            <CloseIcon onClick={closeModal} className="h4 w-4 cursor-pointer" />
+          </div>
+          <div className="border-t border-neutral-700 mt-1 flex flex-col pt-4">
+            <LicenseCard 
+              beat={modalBeat as BeatDocumentInterface}
+              license={modalBeat?.licenses.basic as LicenseInterface}
+              licenseTerms={modalBeat?.licenseTerms.basic as LicenseTermsInterface}
+              name={"Basic"} 
+              format={"MP3 Format"} 
+              closeModal={closeModal}
+            />
+            <LicenseCard 
+              beat={modalBeat as BeatDocumentInterface}
+              license={modalBeat?.licenses.premium as LicenseInterface} 
+              licenseTerms={modalBeat?.licenseTerms.premium as LicenseTermsInterface}
+              name={"Premium"} 
+              format={"MP3 / WAV Format"} 
+              closeModal={closeModal}
+            />
+            <LicenseCard 
+              beat={modalBeat as BeatDocumentInterface}
+              license={modalBeat?.licenses.exclusive as LicenseInterface} 
+              licenseTerms={modalBeat?.licenseTerms.exclusive as LicenseTermsInterface}
+              name={"Exclusive"} 
+              format={"MP3 / WAV Format"} 
+              closeModal={closeModal}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

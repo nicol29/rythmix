@@ -18,7 +18,7 @@ export default function CartTab({
   const { cartItems, deleteItemFromCart } = useContext(CartItemsContext);
 
   return (
-    <div ref={cartRef} className="ml-auto relative">
+    <div ref={cartRef} className="ml-auto sm:relative">
       <div onClick={() => manageDropDowns("cart")} className="flex items-center cursor-pointer gap-0.5">
         <div className="relative">
           <CartIcon className={"text-neutral-400 h-6"} />
@@ -26,7 +26,7 @@ export default function CartTab({
         </div>
         <ExpandIcon className={activeDropDown === "cart" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
       </div>
-      <div className={activeDropDown === "cart" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[400px] right-1 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
+      <div className={activeDropDown === "cart" ? "absolute bg-neutral-850 border rounded border-neutral-750 right-2 mt-1 w-5/6 sm:min-w-[400px] sm:right-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
         <div className="flex items-center justify-between gap-3 p-2 border-b border-neutral-700">
           <span className="text-lg">Cart ({cartItems.length})</span>
           <Link href="/cart-checkout" className="text-orange-500 font-bold text-sm">view cart</Link>

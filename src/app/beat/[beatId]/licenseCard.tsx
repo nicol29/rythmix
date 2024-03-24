@@ -14,13 +14,15 @@ export default function LicenseCard({
   license, 
   licenseTerms,
   name, 
-  format 
+  format ,
+  closeModal
 }: { 
   beat: BeatDocumentInterface;
   license: LicenseInterface; 
   licenseTerms: LicenseTermsInterface;
   name: "Basic" | "Premium" | "Exclusive"; 
   format: string;
+  closeModal?: () => void;
 }) {
   const { addItemToCart } = useContext(CartItemsContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,9 +38,11 @@ export default function LicenseCard({
         licensePrice: license.price 
       } 
     });
+
+    if (closeModal) closeModal();
   }
 
-  if (license.selected) {
+  if (license?.selected) {
     return (
       <>
         <div className="flex justify-between w-full">

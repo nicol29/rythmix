@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import getElapsedTime from "@/utils/getElapsedTime";
+import uniqid from "uniqid";
 
 
 export default function NotificationsTab({
@@ -44,7 +45,7 @@ export default function NotificationsTab({
 
     switch (notification.type) {
       case "comment":
-        return <Link href={`/beat/${notification.resourceId}`} className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
+        return <Link href={`/beat/${notification.resourceId}`} key={notification._id.toString()} className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
           <div className="relative w-10 aspect-square self-center flex-shrink-0">
             <Image className="object-cover rounded-full border border-neutral-750" fill sizes="w-full h-full" src={returnProfilePicture(notification.from?.profilePicture)} alt="Track art" />
           </div>
@@ -54,7 +55,7 @@ export default function NotificationsTab({
           </p>
         </Link>
       case "like":
-        return <Link href={`/beat/${notification.resourceId}`} className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
+        return <Link href={`/beat/${notification.resourceId}`} key={notification._id.toString()} className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
           <div className="relative w-10 aspect-square self-center flex-shrink-0">
             <Image className="object-cover rounded-full border border-neutral-750" fill sizes="w-full h-full" src={returnProfilePicture(notification.from?.profilePicture)} alt="Track art" />
           </div>
@@ -64,7 +65,7 @@ export default function NotificationsTab({
           </p>
         </Link>
       case "system":
-        return <div className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
+        return <div key={notification._id.toString()} className={`flex gap-2 py-3 px-2 border-b border-neutral-750 ${!notification.read && `new-notification-grey`}`}>
           <SettingsIcon className="w-10 h-10 flex-shrink-0 text-neutral-500" />
           <p className="text-sm">
             <span>{notification.message}</span>
@@ -77,7 +78,7 @@ export default function NotificationsTab({
   }
 
   return (
-    <div ref={notiRef} className="relative">
+    <div ref={notiRef} className="sm:relative">
       <div onClick={() => manageDropDowns("notifications")} className="flex items-center cursor-pointer gap-0.5">
         <div className="relative">
           <NotificationsIcon className={"text-neutral-400 h-6"} />
@@ -85,7 +86,7 @@ export default function NotificationsTab({
         </div>
         <ExpandIcon className={activeDropDown === "notifications" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
       </div>
-      <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[400px] right-1 mt-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
+      <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 right-2 mt-1 w-5/6 sm:min-w-[400px] sm:right-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
         <div className="flex items-center gap-3 p-2 border-b border-neutral-700">
           <span className="text-lg">Notifications</span>
           <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>

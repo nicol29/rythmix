@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { MenuIcon, SearchIcon, CloseIcon, AccountCircleIcon, LogOutIcon, CartIcon, ExpandIcon, RegisterIcon, LogInIcon } from "@/assets/icons"
 import Image from "next/image";
@@ -26,6 +26,10 @@ export default function Header() {
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const notiRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setActiveDropdown(null);
+  }, [path]);
 
   useDetectOutsideClick([cartRef, profileRef, notiRef], () => setActiveDropdown(null));
 
