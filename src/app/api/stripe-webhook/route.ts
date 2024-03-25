@@ -1,10 +1,10 @@
 import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
+import Customer_Orders from "@/models/CustomerOrders";
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
 
 const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-const endpointSecret = "whsec_ac9d04537f931ef8f36d7d0e097b317ae605c5905640d79b3fba897925edcc01";
 
 
 export async function POST(request: NextRequest) {
@@ -30,6 +30,21 @@ export async function POST(request: NextRequest) {
       case 'account.external_account.updated':
         const accountExternalAccountUpdated = event.data.object;
         break;
+      case 'payment_intent.canceled':
+        const paymentIntentCanceled = event.data.object;
+        // Then define and call a function to handle the event payment_intent.canceled
+        break;
+      case 'payment_intent.payment_failed':
+        const paymentIntentPaymentFailed = event.data.object;
+        // Then define and call a function to handle the event payment_intent.payment_failed
+        break;
+      case 'payment_intent.succeeded':
+        const paymentIntentSucceeded = event.data.object;
+
+        updateOrderStatus(paymentIntentSucceeded.id);
+        // Then define and call a function to handle the event payment_intent.succeeded
+        break;
+      // ... handle other event types
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
@@ -57,4 +72,20 @@ const updateUserStripeStatus = async (stripeAccountID: string) => {
   } catch (error) {
     return Response.json({ error: 'Internal Server Error' }, { status: 500 });
   }
+}
+
+const updateOrderStatus = async (paymentIntentId: string) => {
+  try {
+    await Customer_Orders.findOneAndUpdate({ 
+      "paymentIntentId": paymentIntentId 
+    }, { $set: {
+      "status": "completed"
+    }});
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const createSeperateTransfers = async () => {
+  
 }

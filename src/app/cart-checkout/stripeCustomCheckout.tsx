@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, FormEvent } from 'react';
-import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { PaymentElement, useStripe, useElements, AddressElement } from "@stripe/react-stripe-js";
 
 
 export default function StripeCustomCheckout() {
@@ -57,12 +57,7 @@ export default function StripeCustomCheckout() {
         return_url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/your-order`,
       },
     });
-
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
+    
     if (error.type === "card_error" || error.type === "validation_error") {
       if (error.message) setMessage(error.message);
     } else {
@@ -72,12 +67,17 @@ export default function StripeCustomCheckout() {
     setIsLoading(false);
   };
 
+  const addressElementOptions = {
+    mode: "billing",
+  };
+
   const paymentElementOptions = {
     layout: "tabs",
   };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
+      <AddressElement id="address-element" options={addressElementOptions as any} />
       <PaymentElement id="payment-element" options={paymentElementOptions as any} />
       <button className="w-full py-2 default-orange-button mt-6" disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">

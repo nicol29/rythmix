@@ -4,7 +4,8 @@ import Users from "@/models/Users";
 import Customer_Orders from "@/models/CustomerOrders";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { BeatDocumentInterface, UserDocumentInterface, CartItemInterface } from "@/types/mongoDocTypes";
+import { BeatDocumentInterface, UserDocumentInterface } from "@/types/mongoDocTypes";
+import { createContract } from "@/utils/createContract";
 import { redirect } from "next/navigation";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Beats from "@/models/Beats";
@@ -73,6 +74,7 @@ export const createCheckoutSession = async (
 
     const itemsOrderedByBuyer = beatsFromDB.map((beat, index) => {
       const chosenLicensePrice = beat.licenses[cartItems[index].chosenLicense].price;
+      const chosenLicenseTerms = beat.licenseTerms[cartItems[index].chosenLicense];
 
       totalPrice = totalPrice + chosenLicensePrice;
 
@@ -80,10 +82,19 @@ export const createCheckoutSession = async (
         productId: beat._id,
         sellerId: beat.producer._id,
         price: chosenLicensePrice,
+        contract: createContract(
+          chosenLicenseTerms, 
+          beat.producer.userName, 
+          signedInUser?.user.userName,
+          beat.title,
+          chosenLicensePrice
+        ),
+        licenseTerms: chosenLicenseTerms,
       }
     });
 
-    const totalPriceInCents = totalPrice * 100;
+    const finalPriceWithFees = (Math.round(totalPrice * 5) / 100) + totalPrice;
+    const totalPriceInCents = finalPriceWithFees * 100;
 
     const paymentIntent: Stripe.PaymentIntent = await stripe.paymentIntents.create({
       amount: totalPriceInCents,

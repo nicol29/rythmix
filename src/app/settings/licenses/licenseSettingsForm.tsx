@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CloseIcon } from "@/assets/icons";
 import { useState } from "react";
 import { toast } from "sonner";
-import { previewContract } from "@/utils/createContract";
+import { createContract } from "@/utils/createContract";
 
 
 export default function LicenseSettingsForm({ 

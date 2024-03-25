@@ -1,10 +1,10 @@
 "use client";
 
 import { CartItemsContext } from "@/context/cartItemsContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CloseIcon, CartIcon } from "@/assets/icons";
+import { CloseIcon, CartIcon, Spinner } from "@/assets/icons";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import { CartItemInterface } from "@/types/mongoDocTypes";
 import StripeCustomCheckout from "./stripeCustomCheckout";
@@ -13,6 +13,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import InfoIcon from "@/components/InfoIcon/infoIcon";
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`);
 
@@ -21,10 +22,16 @@ export default function CartSection() {
   const { cartItems, deleteItemFromCart } = useContext(CartItemsContext);
   const [clientSecret, setClientSecret] = useState("");
   const [payNow, setPayNow] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { status: signedInStatus } = useSession();
 
   const appearance = {
-    theme: 'night',
+    theme: 'flat',
+    variables: {
+      colorPrimary: '#f97316',
+      colorBackground: '#3c3c3c',
+      colorText: '#d4d4d4',
+    },
   };
 
   const options = {
@@ -41,6 +48,8 @@ export default function CartSection() {
   }
 
   const createPaymentIntent = async () => {
+    setLoading(true);
+
     if (signedInStatus === "authenticated") {
       const items = cartItems.map(item => {
         return {
@@ -50,6 +59,7 @@ export default function CartSection() {
       });
   
       const res = await createCheckoutSession(JSON.parse(JSON.stringify(items))); 
+      setLoading(false);
       setClientSecret(res?.clientSecret);
   
       setPayNow(true);
@@ -60,8 +70,8 @@ export default function CartSection() {
 
   return (
     <section className="py-10 lg:flex lg:justify-center lg:py-16">
-      <div className="flex flex-col items-center gap-10 lg:flex-row lg:w-full lg:max-w-[1250px] lg:px-6 lg:gap-24">
-        <div className="w-11/12 self-start">
+      <div className="flex flex-col items-center gap-10 lg:flex-row lg:w-full lg:max-w-[1250px] lg:px-6 lg:gap-24 lg:justify-between">
+        <div className="w-11/12 self-start mx-auto lg:flex-grow">
           <span className="text-lg">Items ({cartItems.length})</span>
           { cartItems.length !== 0 ?
             ( cartItems.map(item => (
@@ -75,7 +85,7 @@ export default function CartSection() {
                     <span className="text-neutral-500 text-sm lg:mt-1">{item.chosenLicense.licenseType} License {returnFormats(item)}</span>
                     <div className="flex justify-between mt-2 lg:mt-auto">
                       <span className="text-orange-500 font-semibold text-sm">Review license terms</span>
-                      <span className="text-orange-500 font-semibold">$ {item.chosenLicense.licensePrice}</span>
+                      <span className="text-orange-500 font-semibold">€ {item.chosenLicense.licensePrice}</span>
                     </div>
                   </div>
                 </div>
@@ -103,15 +113,23 @@ export default function CartSection() {
                   <span>{item.title}</span>
                   <div className="flex justify-between mt-2">
                     <span className="text-neutral-500 text-sm">{item.chosenLicense.licenseType} License</span>
-                    <span className="font-semibold">$ {item.chosenLicense.licensePrice}</span>
+                    <span className="font-semibold">€ {item.chosenLicense.licensePrice}</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-between border-t border-neutral-700 pt-2 mb-6 font-bold">
+          <div className="flex justify-between border-t pt-4 text-neutral-400 text-sm border-neutral-700">
+            <span className="flex items-center gap-2">Platform Fee <InfoIcon dialogueText="This fee contributes to the maintenance and continuous improvement of the Rythmix platform, ensuring high-quality service and user experience." /></span>
+            <span>€ {Math.round(returnTotal() * 1.8) / 100}</span>
+          </div>
+          <div className="flex justify-between text-neutral-400 text-sm mt-1">
+            <span className="flex items-center gap-2">Transaction Fee <InfoIcon dialogueText="This fee covers the costs associated with secure payment processing, safeguarding your financial transactions." /></span>
+            <span>€ {Math.round(returnTotal() * 3.2) / 100}</span>
+          </div>
+          <div className="flex justify-between border-tpt-2 mt-4 mb-8 font-bold">
             <span>Total ({cartItems.length} items)</span>
-            <span>$ {returnTotal()}</span>
+            <span>€ {(Math.round(returnTotal() * 5) / 100) + returnTotal()}</span>
           </div>
           {payNow ?
             (clientSecret && (
@@ -119,7 +137,11 @@ export default function CartSection() {
                 <StripeCustomCheckout />
               </Elements>
             )) :
-            <button onClick={createPaymentIntent} className="bg-stripe-purple text-white font-semibold w-full py-2 rounded drop-shadow mt-8">Proceed to Payment</button>
+            <button 
+              disabled={loading}
+              onClick={createPaymentIntent} 
+              className={`default-orange-button font-semibold w-full py-2 rounded drop-shadow mt-4 ${loading && `hover:bg-orange-200 bg-orange-200 py-0`}`}
+            >{loading ? <Spinner className="w-10 h-10" /> : "Proceed to Payment"}</button>
           }
         </div>
       </div>

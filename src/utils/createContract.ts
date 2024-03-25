@@ -1,45 +1,63 @@
-export const previewContract = () => {
+import { LicenseTermsInterface } from "@/types/mongoDocTypes";
+
+
+export const createContract = (
+  licenseTerms: LicenseTermsInterface, 
+  producerUserName: string, 
+  artistUserName: string,
+  beatTitle: string,
+  beatPrice: number,
+) => {
+  const dayjs = require('dayjs');
+  
+  const currentDate = dayjs().format('DD/MM/YYYY');
+
   return `
-MUSIC LICENSE AGREEMENT
+BEAT LICENSE AGREEMENT
 
-This Music License Agreement ("Agreement") is made effective as of [Date], by and between [Licensor's Name] ("Licensor") and [Licensee's Name] ("Licensee"), collectively referred to as the "Parties".
+This Beat License Agreement ("Agreement") is entered into as of ${currentDate} ("Effective Date"), between ${producerUserName}, herein referred to as the "Licensor," and ${artistUserName}, herein referred to as the "Licensee."
 
-1. Grant of License: The Licensor hereby grants to the Licensee a non-exclusive, non-transferable right to use the musical work entitled [Song Title] ("Work") subject to the terms and conditions of this Agreement.
+WHEREAS, Licensor owns and controls the rights to the instrumental music track titled ${beatTitle} ("Beat"); and
 
-2. Rights and Restrictions:
+WHEREAS, Licensee wishes to obtain certain rights to use the Beat in accordance with the terms and conditions of this Agreement;
 
-a. Distribution: The Licensee is allowed to distribute the Work in physical and digital format up to a maximum of [Max Distribution Copies] copies.
+NOW, THEREFORE, in consideration of the mutual promises contained herein and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the parties agree as follows:
 
-b. Streaming: The Licensee is permitted to stream the Work on various platforms, with total streams not exceeding [Max Audio Streams].
+License Grant: Licensor hereby grants to Licensee a non-exclusive, worldwide license to use the Beat subject to the terms and conditions of this Agreement. This license permits the Licensee to:
 
-c. Music Videos: The Licensee may produce and distribute up to [Max Music Videos] music videos that incorporate the Work.
+a. Distribute up to ${licenseTerms.distributionCopies} copies of the Beat as part of a song or audio project.
 
-d. Radio Broadcasts: The Work may be played on up to [Max Radio Station] radio stations.
+b. Use the Beat for up to ${licenseTerms.audioStreams} audio streams on platforms including, but not limited to, Spotify, Apple Music, and YouTube.
 
-e. Performances: The Licensee ☐ is ☐ is not allowed to use the Work for profit-making performances.
+c. Create and distribute one ${licenseTerms.musicVideos} music video utilizing the Beat.
 
-3. Territory: The rights granted to the Licensee under this Agreement are limited to the country/territory of [Country].
+d. Use the Beat for broadcasting on up to one ${licenseTerms.radioStations} radio station.
 
-4. Term: The term of this Agreement shall commence on the Effective Date and shall continue in effect until terminated by either Party with 30 days written notice.
+e. ${licenseTerms.allowProfitPerformances ? "Conduct live performances with the Beat that may generate profit." : "Live performances are not permitted with the Beat that may generate profit."}
 
-5. Royalties: [Details on any royalties to be paid for the use of the Work.]
+Territory: The rights granted to the Licensee shall apply globally, unless the country is specifically excluded in the terms of this Agreement.
 
-6. Credit: The Licensee shall ensure that the Licensor is credited in any distribution or broadcast of the Work.
+Credit: Licensee agrees to credit the Licensor in any written description accompanying the published song in the format: "Produced by ${producerUserName}."
 
-7. Representations and Warranties: Both Parties represent and warrant that they have the full legal right and authority to enter into this Agreement and to grant the rights herein.
+Restrictions: The Licensee shall not sell, lease, license, or sub-license the Beat, except as part of a musical composition. The Beat remains the intellectual property of the Licensor.
 
-8. Indemnification: The Licensee agrees to indemnify and hold harmless the Licensor from any and all claims arising from the Licensee's use of the Work.
+Term: The rights granted to the Licensee under this Agreement shall commence on the Effective Date and shall continue perpetually unless otherwise terminated in accordance with this Agreement.
 
-9. Governing Law: This Agreement shall be governed by the laws of [Jurisdiction].
+Payment: Licensee agrees to pay Licensor a one-time fee of ${beatPrice} for the rights granted under this Agreement. The payment shall be made in full before the Beat is used by the Licensee.
 
-IN WITNESS WHEREOF, the Parties have executed this Music License Agreement as of the date first above written.
+Warranties and Representations: Licensor warrants that they have the right and authority to enter into this Agreement and grant the rights herein.
 
-Licensor:
+Termination: This Agreement may be terminated by either party if the other party breaches any of its terms and conditions.
 
-[Name]
+Governing Law: This Agreement shall be governed by the laws of [State/Country].
 
-Licensee:
+IN WITNESS WHEREOF, the parties hereto have executed this Agreement as of the Effective Date.
 
-[Name]
-  `
+
+Name: ${producerUserName}
+Date: ${currentDate}
+
+Name: ${artistUserName}
+Date: ${currentDate}
+`
 }
