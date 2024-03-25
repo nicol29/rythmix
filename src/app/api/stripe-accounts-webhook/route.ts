@@ -3,7 +3,7 @@ import Users from "@/models/Users";
 import { NextRequest } from "next/server";
 import Stripe from "stripe";
 
-const stripe = require('stripe')('sk_test_51Ow59cIoHbkQst2eofJmJDPN36VtirlFj8otKFZrnQCzZ9QJ68nAvwCnMwov6g7TgKqBzwsdl2UbiSjqS1z8DFwF002catJhqA');
+const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 const endpointSecret = "whsec_ac9d04537f931ef8f36d7d0e097b317ae605c5905640d79b3fba897925edcc01";
 
 

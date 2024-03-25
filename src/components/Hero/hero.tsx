@@ -28,7 +28,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="h-[450px] w-full bg-slate-500 relative sm:h-[600px] drop-shadow-lg">
+    <section className="h-[450px] w-full bg-slate-500 relative sm:h-[600px] drop-shadow-lg mt-14">
       <div className="relative w-full h-full">
         <Image className={`object-cover transition-opacity duration-1000 ${activeIndex === 0 ? "opacity-100" : "opacity-0"}`} src={"/matthew-moloney-5kYKzH5Gwgk-unsplash.jpg"} priority fill alt="Group of producers" />
         <Image className={`object-cover transition-opacity duration-1000 ${activeIndex === 1 ? "opacity-100" : "opacity-0"}`} src={"/dylan-mcleod-VRdZBLqnoMU-unsplash.jpg"} priority fill alt="Producer equipment" />

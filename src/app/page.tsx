@@ -81,7 +81,7 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <main className="min-h-screen mt-14 flex flex-col">
+      <main className="min-h-screen flex flex-col">
         <section className="py-14 px-4 bg-neutral-850">
           <div className="max-w-[1150px] mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Welcome to <span className='text-white'>Ryth</span><span className='text-orange-500'>mix</span> - Your Ultimate Beat Store</h2>

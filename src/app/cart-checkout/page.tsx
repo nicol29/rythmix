@@ -1,4 +1,4 @@
-import CheckOutSection from "./checkoutSection"
+import CartSection from "./cartSection";
 
 
 export default async function ProfileSettings() {
@@ -9,7 +9,7 @@ export default async function ProfileSettings() {
           <h1 className="text-3xl">Cart</h1>
         </div>
       </section>
-      <CheckOutSection />
+      <CartSection />
     </main>
   )
 }

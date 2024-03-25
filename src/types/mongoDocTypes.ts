@@ -65,7 +65,7 @@ export interface BeatDocumentInterface {
 
 export interface CartItemInterface extends BeatDocumentInterface {
   chosenLicense: {
-    licenseType: "Basic" | "Premium" | "Exclusive";
+    licenseType: "basic" | "premium" | "exclusive";
     licenseTerms: LicenseTermsInterface;
     licensePrice: number;
   }
@@ -91,4 +91,17 @@ export interface UserDocumentInterface {
     accountId: string;
     onBoardStatus: "unstarted" | "incomplete" | "complete";
   }
+}
+
+export interface CustomerOrdersInterface {
+  totalAmount: number;
+  paymentIntentId: string;
+  items: [{
+    productId: ObjectId;
+    sellerId: ObjectId;
+    price: number;
+  }],
+  buyerId: ObjectId;
+  status: string;
+  createdAt: Date;
 }

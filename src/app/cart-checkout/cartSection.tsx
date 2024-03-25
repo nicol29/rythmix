@@ -1,29 +1,67 @@
 "use client";
 
 import { CartItemsContext } from "@/context/cartItemsContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CloseIcon, CartIcon } from "@/assets/icons";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import { CartItemInterface } from "@/types/mongoDocTypes";
+import StripeCustomCheckout from "./stripeCustomCheckout";
+import { createCheckoutSession } from "@/server-actions/stripe";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+
+const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`);
 
 
-export default function CheckOutSection() {
+export default function CartSection() {
   const { cartItems, deleteItemFromCart } = useContext(CartItemsContext);
+  const [clientSecret, setClientSecret] = useState("");
+  const [payNow, setPayNow] = useState(false);
+  const { status: signedInStatus } = useSession();
+
+  const appearance = {
+    theme: 'night',
+  };
+
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   const returnFormats = (item: CartItemInterface) => {
-    return item.chosenLicense.licenseType === "Basic" ? "- MP3 Format" : "- MP3/WAV Format";
+    return item.chosenLicense.licenseType === "basic" ? "- MP3 Format" : "- MP3/WAV Format";
   }
 
   const returnTotal = () => {
     return cartItems.reduce((acc, item) => acc + item.chosenLicense.licensePrice, 0);
   }
 
+  const createPaymentIntent = async () => {
+    if (signedInStatus === "authenticated") {
+      const items = cartItems.map(item => {
+        return {
+          beatId: item._id.toString(),
+          chosenLicense: item.chosenLicense.licenseType
+        }
+      });
+  
+      const res = await createCheckoutSession(JSON.parse(JSON.stringify(items))); 
+      setClientSecret(res?.clientSecret);
+  
+      setPayNow(true);
+    } else {
+      toast.error("You must be signed in to complete this transaction");
+    }
+  }
+
   return (
     <section className="py-10 lg:flex lg:justify-center lg:py-16">
       <div className="flex flex-col items-center gap-10 lg:flex-row lg:w-full lg:max-w-[1250px] lg:px-6 lg:gap-24">
-        <div className="w-11/12">
+        <div className="w-11/12 self-start">
           <span className="text-lg">Items ({cartItems.length})</span>
           { cartItems.length !== 0 ?
             ( cartItems.map(item => (
@@ -71,10 +109,18 @@ export default function CheckOutSection() {
               </div>
             ))}
           </div>
-          <div className="flex justify-between border-t border-neutral-700 pt-2">
+          <div className="flex justify-between border-t border-neutral-700 pt-2 mb-6 font-bold">
             <span>Total ({cartItems.length} items)</span>
             <span>$ {returnTotal()}</span>
           </div>
+          {payNow ?
+            (clientSecret && (
+              <Elements options={options as any} stripe={stripePromise}>
+                <StripeCustomCheckout />
+              </Elements>
+            )) :
+            <button onClick={createPaymentIntent} className="bg-stripe-purple text-white font-semibold w-full py-2 rounded drop-shadow mt-8">Proceed to Payment</button>
+          }
         </div>
       </div>
     </section>

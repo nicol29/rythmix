@@ -33,7 +33,7 @@ export default function LicenseCard({
     addItemToCart({ 
       ...beat, 
       chosenLicense: { 
-        licenseType: name, 
+        licenseType: name.toLowerCase() as "basic" | "premium" | "exclusive", 
         licenseTerms, 
         licensePrice: license.price 
       } 

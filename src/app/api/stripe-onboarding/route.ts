@@ -4,7 +4,7 @@ import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 
-const stripe = require('stripe')('sk_test_51Ow59cIoHbkQst2eofJmJDPN36VtirlFj8otKFZrnQCzZ9QJ68nAvwCnMwov6g7TgKqBzwsdl2UbiSjqS1z8DFwF002catJhqA');
+const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 
 export async function GET() {
@@ -27,7 +27,7 @@ export async function GET() {
         return_url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/settings/payouts`,
         type: 'account_onboarding',
       });
-      
+
 
       return Response.redirect(accountLink.url);
     } else {
