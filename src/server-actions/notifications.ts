@@ -19,7 +19,6 @@ export const getNotifications = async () => {
       select: "profilePicture userName profileUrl"
     }).sort({ createdAt: -1 });
 
-
     return { success: true, notifications: JSON.parse(JSON.stringify(notifications)) }
   } catch (error) {
     throw error

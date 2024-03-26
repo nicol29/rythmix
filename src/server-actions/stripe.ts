@@ -81,14 +81,16 @@ export const createCheckoutSession = async (
       return {
         productId: beat._id,
         sellerId: beat.producer._id,
-        price: chosenLicensePrice,
+        price: chosenLicensePrice * 100,
         contract: createContract(
           chosenLicenseTerms, 
           beat.producer.userName, 
           signedInUser?.user.userName,
           beat.title,
-          chosenLicensePrice
+          chosenLicensePrice,
+          cartItems[index].chosenLicense
         ),
+        licenseType: cartItems[index].chosenLicense,
         licenseTerms: chosenLicenseTerms,
       }
     });
@@ -110,7 +112,7 @@ export const createCheckoutSession = async (
       buyerId: signedInUser?.user.id,
       transferGroup: paymentIntent.transfer_group
     });
-
+    
     return { 
       success: true, 
       clientSecret: JSON.parse(JSON.stringify(paymentIntent.client_secret))

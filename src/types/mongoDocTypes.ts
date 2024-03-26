@@ -94,14 +94,37 @@ export interface UserDocumentInterface {
 }
 
 export interface CustomerOrdersInterface {
+  _id: ObjectId;
   totalAmount: number;
   paymentIntentId: string;
   items: [{
     productId: ObjectId;
     sellerId: ObjectId;
     price: number;
+    contract: string;
+    licenseType: string;
+    licenseTerms: Object;
   }],
   buyerId: ObjectId;
   status: string;
+  transferGroup: string;
+  address: ObjectId;
+  createdAt: Date;
+}
+
+export interface SellerPayoutInterface {
+  _id: ObjectId;
+  sellerId: ObjectId;
+  totalAmount: number;
+  paymentIntentId: string;
+  transferId: number;
+  productId: ObjectId;
+  contract: string;
+  licenseType: string;
+  licenseTerms: ObjectId;
+  buyerId: ObjectId;
+  status: string;
+  transferGroup: string;
+  buyerAddress: Object;
   createdAt: Date;
 }

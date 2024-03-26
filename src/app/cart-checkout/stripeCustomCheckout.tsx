@@ -57,7 +57,6 @@ export default function StripeCustomCheckout() {
         return_url: `${process.env.NEXT_PUBLIC_APP_BASE_URL}/your-order`,
       },
     });
-    
     if (error.type === "card_error" || error.type === "validation_error") {
       if (error.message) setMessage(error.message);
     } else {

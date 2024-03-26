@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
 import getElapsedTime from "@/utils/getElapsedTime";
-import uniqid from "uniqid";
 
 
 export default function NotificationsTab({
@@ -23,7 +22,7 @@ export default function NotificationsTab({
   useEffect(() => {
     (async () => {
       const res = await getNotifications();
-      
+      console.log(res);
       if (res.success) setNotifications(res.notifications);
     })();
   }, []);
@@ -92,11 +91,13 @@ export default function NotificationsTab({
           <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>
           <Link href="/settings/notifications"><SettingsIcon className="h-5 w-5" /></Link>
         </div>
-        <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
-          { notifications.map(notification => (
-              notificationHandler(notification)
-          ))}
-        </div>
+        { notifications &&
+          <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
+            { notifications.map(notification => (
+                notificationHandler(notification)
+            ))}
+          </div>
+        }
       </div>
     </div>
   )

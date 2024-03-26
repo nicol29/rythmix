@@ -7,6 +7,7 @@ export const createContract = (
   artistUserName: string,
   beatTitle: string,
   beatPrice: number,
+  activeLicense: "basic" | "premium" | "exclusive",
 ) => {
   const dayjs = require('dayjs');
   
@@ -23,7 +24,7 @@ WHEREAS, Licensee wishes to obtain certain rights to use the Beat in accordance 
 
 NOW, THEREFORE, in consideration of the mutual promises contained herein and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the parties agree as follows:
 
-License Grant: Licensor hereby grants to Licensee a non-exclusive, worldwide license to use the Beat subject to the terms and conditions of this Agreement. This license permits the Licensee to:
+License Grant: Licensor hereby grants to Licensee a ${activeLicense !== "exclusive" ? "non-exclusive" : "exclusive"}, worldwide license to use the Beat subject to the terms and conditions of this Agreement. This license permits the Licensee to:
 
 a. Distribute up to ${licenseTerms.distributionCopies} copies of the Beat as part of a song or audio project.
 
