@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import Stripe from "stripe";
 
 
 interface AssetInterface {
@@ -105,11 +106,14 @@ export interface CustomerOrdersInterface {
     licenseType: string;
     licenseTerms: Object;
   }],
-  buyerId: ObjectId;
   status: string;
   transferGroup: string;
-  address: ObjectId;
   createdAt: Date;
+  customerDetails: {
+    customerId: ObjectId,
+    billingAddress: Stripe.PaymentMethod.BillingDetails,
+    email: string,
+  },
 }
 
 export interface SellerPayoutInterface {

@@ -13,10 +13,13 @@ const customerOrdersSchema = new mongoose.Schema({
     licenseType: { type: String, required: true },
     licenseTerms: { type: Object, required: true },
   }],
-  buyerId: { type: ObjectId, ref: 'Users', required: true },
   status: { type: String, enum: ['pending', 'completed', 'failed'], default: "pending", },
   transferGroup: { type: String, required: true, unique: true },
-  address: { type: Object, },
+  customerDetails: {
+    customerId: { type: ObjectId, ref: 'Users', required: true },
+    billingAddress: { type: Object, },
+    email: { type: String },
+  },
   createdAt: { type: Date, default: Date.now, },
 });
 

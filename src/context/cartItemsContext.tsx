@@ -32,7 +32,9 @@ export default function CartItemsContextProvider({ children }: { children: React
   }
 
   const deleteItemFromCart = (itemToRemove: CartItemInterface) => {
-    const updatedItems = cartItems.filter(item => item._id !== itemToRemove._id);
+    const updatedItems = cartItems.filter(item => item._id !== itemToRemove._id || 
+      item.chosenLicense.licenseType !== itemToRemove.chosenLicense.licenseType
+    );
 
     localStorage.setItem("cartItems", JSON.stringify(updatedItems));
     setCartItems(updatedItems);

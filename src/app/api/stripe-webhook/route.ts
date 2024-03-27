@@ -18,7 +18,6 @@ export async function POST(request: NextRequest) {
     try {
       event = stripe.webhooks.constructEvent(await request.text(), sig, endpointSecret);
     } catch (err: any) {
-      console.log("error")
       return Response.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
     }
 
@@ -36,23 +35,19 @@ export async function POST(request: NextRequest) {
         break;
       case 'payment_intent.canceled':
         const paymentIntentCanceled = event.data.object;
-        // Then define and call a function to handle the event payment_intent.canceled
         break;
       case 'payment_intent.payment_failed':
         const paymentIntentPaymentFailed = event.data.object;
-        // Then define and call a function to handle the event payment_intent.payment_failed
         break;
       case 'payment_intent.succeeded':
         const paymentIntentSucceeded = event.data.object;
 
-        const updatedOrderDoc = await updateOrderStatus(paymentIntentSucceeded.id);
-        console.log(updatedOrderDoc)
+        const updatedOrderDoc = await updateOrderStatus(paymentIntentSucceeded);
+
         if (updatedOrderDoc) {
           await createSeperateTransfers(paymentIntentSucceeded, updatedOrderDoc);
         }
-        // Then define and call a function to handle the event payment_intent.succeeded
         break;
-      // ... handle other event types
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
@@ -78,12 +73,14 @@ const updateUserStripeStatus = async (account: Stripe.Account) => {
   }
 }
 
-const updateOrderStatus = async (paymentIntentId: string) => {
+const updateOrderStatus = async (paymentIntent: Stripe.PaymentIntent) => {
   try {
     const orderFromDB = await Customer_Orders.findOneAndUpdate({ 
-      "paymentIntentId": paymentIntentId 
+      "paymentIntentId": paymentIntent.id 
     }, { $set: {
-      "status": "completed"
+      "status": "completed",
+      "customerDetails.billingAddress": await retrieveBillingAddress(paymentIntent),
+      "customerDetails.email": paymentIntent.receipt_email,
     }}, { new: true }) as CustomerOrdersInterface;
 
     return orderFromDB;
@@ -117,8 +114,14 @@ const createSeperateTransfers = async (
       contract: item.contract,
       licenseType: item.licenseType,
       licenseTerms: item.licenseTerms,
-      buyerId: updatedOrderDoc.buyerId,
+      buyerId: updatedOrderDoc.customerDetails.customerId,
       transferGroup: updatedOrderDoc.transferGroup,
     });
   });
+}
+
+const retrieveBillingAddress = async (paymentIntent: Stripe.PaymentIntent) => {
+  const paymentMethod = await stripe.paymentMethods.retrieve(paymentIntent.payment_method);
+
+  return paymentMethod.billing_details;
 }

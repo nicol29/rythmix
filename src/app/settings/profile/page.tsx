@@ -11,7 +11,6 @@ export default async function ProfileSettings() {
 
   await connectMongoDB();
   const userFromDB = await Users.findOne({ _id: signedInUser?.user.id });
-
   
   return (
     <main className="min-h-screen pt-14">

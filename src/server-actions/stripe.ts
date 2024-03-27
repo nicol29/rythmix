@@ -63,37 +63,36 @@ export const createCheckoutSession = async (
     if (cartItems.length === 0) return;
     if (!signedInUser?.user.id) return;
 
-    const beatIds = cartItems.map(beatInCart => beatInCart.beatId);
-    
-    await connectMongoDB();
-    const beatsFromDB = await Beats.find({ 
-      "_id": { $in: beatIds } 
-    }) as BeatDocumentInterface[];
-
     let totalPrice = 0;
 
-    const itemsOrderedByBuyer = beatsFromDB.map((beat, index) => {
-      const chosenLicensePrice = beat.licenses[cartItems[index].chosenLicense].price;
-      const chosenLicenseTerms = beat.licenseTerms[cartItems[index].chosenLicense];
+    await connectMongoDB();
 
-      totalPrice = totalPrice + chosenLicensePrice;
-
-      return {
-        productId: beat._id,
-        sellerId: beat.producer._id,
-        price: chosenLicensePrice * 100,
-        contract: createContract(
-          chosenLicenseTerms, 
-          beat.producer.userName, 
-          signedInUser?.user.userName,
-          beat.title,
-          chosenLicensePrice,
-          cartItems[index].chosenLicense
-        ),
-        licenseType: cartItems[index].chosenLicense,
-        licenseTerms: chosenLicenseTerms,
+    const itemsOrderedByBuyer = await Promise.all(cartItems.map(async beat => {
+      const beatFromDB = await Beats.findById(beat.beatId);
+  
+      if (beatFromDB) {
+        const chosenLicensePrice = beatFromDB.licenses[beat.chosenLicense].price;
+        const chosenLicenseTerms = beatFromDB.licenseTerms[beat.chosenLicense];
+  
+        totalPrice += chosenLicensePrice; 
+  
+        return {
+          productId: beatFromDB._id,
+          sellerId: beatFromDB.producer._id,
+          price: chosenLicensePrice * 100,
+          contract: createContract(
+            chosenLicenseTerms, 
+            beatFromDB.producer.userName, 
+            signedInUser?.user.userName,
+            beatFromDB.title,
+            chosenLicensePrice,
+            beat.chosenLicense
+          ),
+          licenseType: beat.chosenLicense,
+          licenseTerms: chosenLicenseTerms,
+        };
       }
-    });
+    }));
 
     const finalPriceWithFees = (Math.round(totalPrice * 5) / 100) + totalPrice;
     const totalPriceInCents = finalPriceWithFees * 100;
@@ -103,16 +102,22 @@ export const createCheckoutSession = async (
       currency: 'eur',
       transfer_group: uniqid(),
       payment_method_types: ["card"],
+      shipping_address_collection: {
+        allowed_countries: [],
+      },
     });
 
     await Customer_Orders.create({
       totalAmount: totalPriceInCents,
       paymentIntentId: paymentIntent.id,
       items: itemsOrderedByBuyer,
+      customerDetails: {
+        customerId: signedInUser?.user.id,
+      },
       buyerId: signedInUser?.user.id,
       transferGroup: paymentIntent.transfer_group
     });
-    
+
     return { 
       success: true, 
       clientSecret: JSON.parse(JSON.stringify(paymentIntent.client_secret))

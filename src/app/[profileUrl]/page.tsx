@@ -11,6 +11,7 @@ import Plays from "@/models/Plays";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 
 export default async function Profile({ params }: { params: { profileUrl: string } }) {
@@ -22,11 +23,13 @@ export default async function Profile({ params }: { params: { profileUrl: string
     profileUrl: params.profileUrl 
   }, { password: 0 });
 
+  if (!producer) redirect("/");
+
   const beats = await Beats.find({
     "producer._id": producer?._id,
     "status": "published"
   });
-  console.log(producer?.country)
+
   const totalPlays = await Plays.countDocuments({ producer: producer?._id });
 
   return (
