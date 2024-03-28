@@ -2,12 +2,12 @@ import { LicenseTermsInterface } from "@/types/mongoDocTypes";
 
 
 export const createContract = (
-  licenseTerms: LicenseTermsInterface, 
-  producerUserName: string, 
-  artistUserName: string,
-  beatTitle: string,
-  beatPrice: number,
-  activeLicense: "basic" | "premium" | "exclusive",
+  licenseTerms: any, 
+  producerUserName?: string, 
+  artistUserName?: string,
+  beatTitle?: string,
+  beatPrice?: number,
+  activeLicense?: "basic" | "premium" | "exclusive",
 ) => {
   const dayjs = require('dayjs');
   
@@ -16,9 +16,9 @@ export const createContract = (
   return `
 BEAT LICENSE AGREEMENT
 
-This Beat License Agreement ("Agreement") is entered into as of ${currentDate} ("Effective Date"), between ${producerUserName}, herein referred to as the "Licensor," and ${artistUserName}, herein referred to as the "Licensee."
+This Beat License Agreement ("Agreement") is entered into as of ${currentDate ? currentDate: ``} ("Effective Date"), between ${producerUserName ? producerUserName : ``}, herein referred to as the "Licensor," and ${artistUserName ? artistUserName : ``}, herein referred to as the "Licensee."
 
-WHEREAS, Licensor owns and controls the rights to the instrumental music track titled ${beatTitle} ("Beat"); and
+WHEREAS, Licensor owns and controls the rights to the instrumental music track titled ${beatTitle ? beatTitle: ``} ("Beat"); and
 
 WHEREAS, Licensee wishes to obtain certain rights to use the Beat in accordance with the terms and conditions of this Agreement;
 
@@ -38,13 +38,13 @@ e. ${licenseTerms.allowProfitPerformances ? "Conduct live performances with the 
 
 Territory: The rights granted to the Licensee shall apply globally, unless the country is specifically excluded in the terms of this Agreement.
 
-Credit: Licensee agrees to credit the Licensor in any written description accompanying the published song in the format: "Produced by ${producerUserName}."
+Credit: Licensee agrees to credit the Licensor in any written description accompanying the published song in the format: "Produced by ${producerUserName ? producerUserName : ``}."
 
 Restrictions: The Licensee shall not sell, lease, license, or sub-license the Beat, except as part of a musical composition. The Beat remains the intellectual property of the Licensor.
 
 Term: The rights granted to the Licensee under this Agreement shall commence on the Effective Date and shall continue perpetually unless otherwise terminated in accordance with this Agreement.
 
-Payment: Licensee agrees to pay Licensor a one-time fee of ${beatPrice} for the rights granted under this Agreement. The payment shall be made in full before the Beat is used by the Licensee.
+Payment: Licensee agrees to pay Licensor a one-time fee of ${beatPrice ? beatPrice : `["price"]`} for the rights granted under this Agreement. The payment shall be made in full before the Beat is used by the Licensee.
 
 Warranties and Representations: Licensor warrants that they have the right and authority to enter into this Agreement and grant the rights herein.
 
@@ -55,10 +55,10 @@ Governing Law: This Agreement shall be governed by the laws of [State/Country].
 IN WITNESS WHEREOF, the parties hereto have executed this Agreement as of the Effective Date.
 
 
-Name: ${producerUserName}
+Name: ${producerUserName ? producerUserName : `["producer name"]`}
 Date: ${currentDate}
 
-Name: ${artistUserName}
+Name: ${artistUserName ? artistUserName : `["artist name"]`}
 Date: ${currentDate}
 `
 }

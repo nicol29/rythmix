@@ -8,6 +8,7 @@ interface CartItemsContextInterface {
   cartItems: CartItemInterface[]; 
   addItemToCart: (itemToAdd: CartItemInterface) => void;
   deleteItemFromCart: (itemToRemove: CartItemInterface) => void;
+  emptyCart: () => void;
 }
 
 export const CartItemsContext = createContext<CartItemsContextInterface>({} as CartItemsContextInterface);
@@ -40,12 +41,19 @@ export default function CartItemsContextProvider({ children }: { children: React
     setCartItems(updatedItems);
   }
 
+  const emptyCart = () => {
+    localStorage.clear();
+    
+    setCartItems([]);
+  }
+
   return (
     <CartItemsContext.Provider 
       value={{
         cartItems,
         addItemToCart,
-        deleteItemFromCart
+        deleteItemFromCart,
+        emptyCart
       }}
     >
       {children}

@@ -21,7 +21,7 @@ export default function LicenseSettingsForm({
   licenseTerms: LicenseTermsInterface;
   userId: string;
 }) {
-  const { handleSubmit, register, formState: { errors } } = useForm<TLicenseSettingsSchema>({
+  const { handleSubmit, register, formState: { errors }, getValues } = useForm<TLicenseSettingsSchema>({
     resolver: zodResolver(licenseSettingsSchema),
     defaultValues: {
       distributionCopies: licenseTerms.distributionCopies ?? "",
@@ -32,6 +32,7 @@ export default function LicenseSettingsForm({
       country: licenseTerms.country ?? "",
     }
   });
+
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,7 +112,7 @@ export default function LicenseSettingsForm({
             <CloseIcon onClick={() => setIsModalOpen(false)} className="h-4 w-4" />
           </div>
           <div className="overflow-y-auto max-h-[400px]">
-            <pre className="whitespace-pre-wrap break-words text-sm">{previewContract()}</pre>
+            <pre className="whitespace-pre-wrap break-words text-sm">{createContract(getValues())}</pre>
           </div>
         </div>
       </Modal>
