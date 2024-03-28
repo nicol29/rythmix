@@ -1,7 +1,13 @@
 import FilterPanel from "./filterPanel";
 import { getSearchResults } from "@/server-actions/getSearchResults";
 import BeatResultCards from "./beatResultCards";
+import { Metadata } from 'next';
+import Header from "@/components/Header/header";
+import Footer from "@/components/Footer/footer";
 
+export const metadata: Metadata = {
+  title: "Search | Rythmix",
+}
 
 export default async function Search({ 
   searchParams 
@@ -27,21 +33,25 @@ export default async function Search({
   if (searchParams.searchString) beats = await getSearchResults(searchParams.searchString, filters, sortFilter);
   
   return (
-    <main className="mt-14 min-h-screen">
-      <section className="relative bg-neutral-925 flex justify-center py-10 lg:py-0 lg:h-[250px]">
-        <div className="w-5/6 max-w-[400px] lg:w-fit lg:max-w-none lg:absolute lg:top-[150px]">
-          <h1 className="text-2xl mb-4">{`Search results for "${searchParams.searchString}"`}</h1>
-          <FilterPanel />
-        </div>
-      </section>
-      <section className="flex justify-center py-12 lg:mt-[100px]">
-        <BeatResultCards 
-          beats={beats?.beats}
-          searchString={searchParams.searchString}
-          filters={filters}
-          sortFilter={sortFilter}
-        />
-      </section>
-    </main>
+    <>
+      <Header />
+      <main className="mt-14 min-h-screen">
+        <section className="relative bg-neutral-925 flex justify-center py-10 lg:py-0 lg:h-[250px]">
+          <div className="w-5/6 max-w-[400px] lg:w-fit lg:max-w-none lg:absolute lg:top-[150px]">
+            <h1 className="text-2xl mb-4">{`Search results for "${searchParams.searchString}"`}</h1>
+            <FilterPanel />
+          </div>
+        </section>
+        <section className="flex justify-center py-12 lg:mt-[100px]">
+          <BeatResultCards 
+            beats={beats?.beats}
+            searchString={searchParams.searchString}
+            filters={filters}
+            sortFilter={sortFilter}
+          />
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }

@@ -22,7 +22,7 @@ export default function NotificationsTab({
   useEffect(() => {
     (async () => {
       const res = await getNotifications();
-      console.log(res);
+      
       if (res.success) setNotifications(res.notifications);
     })();
   }, []);

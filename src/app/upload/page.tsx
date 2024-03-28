@@ -1,4 +1,3 @@
-import Header from "@/components/Header/header";
 import addBeatEntry from "@/server-actions/addBeatEntry";
 import { InventoryIcon, AudioFileIcon } from "@/assets/icons";
 import { getServerSession } from "next-auth";
@@ -7,6 +6,13 @@ import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import Link from "next/link";
+import { Metadata } from 'next';
+import Header from "@/components/Header/header";
+import Footer from "@/components/Footer/footer";
+
+export const metadata: Metadata = {
+  title: "Upload | Rythmix",
+}
 
 
 export default async function Upload () {
@@ -47,6 +53,7 @@ export default async function Upload () {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   )
 }

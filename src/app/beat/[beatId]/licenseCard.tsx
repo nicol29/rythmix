@@ -53,7 +53,7 @@ export default function LicenseCard({
           </div>
           <div className="flex items-end gap-3">
             <p onClick={() => setIsModalOpen(true)} className="text-sm font-semibold text-orange-500 cursor-pointer">View license terms</p>
-            <button onClick={handleAddToCart} className="default-orange-button w-11 h-11 flex items-center justify-center">
+            <button aria-label="Add to cart button" onClick={handleAddToCart} className="default-orange-button w-11 h-11 flex items-center justify-center">
               <TrolleyIcon className="h-6 w-6" />
             </button>
           </div>

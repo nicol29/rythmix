@@ -3,7 +3,11 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: "Register account | Rythmix",
+}
 
 export default async function Register() {
   const session = await getServerSession(authOptions);

@@ -51,8 +51,24 @@ export default function Header() {
       <div className="px-2 h-14 flex gap-3 items-center border-b border-neutral-750 relative lg:gap-6">
         <MenuIcon className="text-neutral-400 h-7 cursor-pointer shrink-0" onClick={() => manageSideMenu()} data-testid="menu-icon"/>
         <div className="flex-shrink-0">
-          <img className="h-6 mt-1 cursor-pointer hidden sm:block" src="/transparentRythmix.png" onClick={() => changeToHomePage()} />
-          <img className="h-6 mt-1 cursor-pointer block sm:hidden" src="/transparentRythmixLogo.png" onClick={() => changeToHomePage()} />
+          <Image
+            src="/transparentRythmix.png"
+            className="h-6 w-auto mt-1 cursor-pointer hidden sm:block"
+            alt="Rythmix Logo"
+            width={1024}
+            height={246}
+            priority
+            onClick={changeToHomePage}
+          />
+          <Image
+            src="/transparentRythmixLogo.png"
+            className="h-6 w-auto mt-1 cursor-pointer block sm:hidden"
+            alt="Rythmix Logo"
+            width={1024}
+            height={1024}
+            priority
+            onClick={changeToHomePage}
+          />
         </div>
         <button className="block sm:hidden" onClick={() => setSearchToggled(!searchToggled)} aria-label="Open searchbar">
           <SearchIcon className="text-neutral-400 h-6"/>
@@ -121,8 +137,14 @@ export default function Header() {
         <div onClick={() => manageSideMenu()} className={menuToggled ? "top-0 left-0 h-screen w-full bg-black opacity-45 absolute" : "hidden"}></div>
         <div className={menuToggled ? "h-screen w-5/6 absolute top-0 left-0 bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]" : "h-screen w-5/6 absolute top-0 left-0 -translate-x-full bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]"} aria-hidden={!menuToggled} aria-label="menu">
           <div className="h-14 border-b border-neutral-750 px-2 flex gap-3 items-center">
-            <CloseIcon className="h-7 cursor-pointer text-neutral-400" onClick={() => manageSideMenu()} />
-            <img className="h-7 mt-1" src="/transparentRythmix.png" alt="Rythmix logo" />
+            <CloseIcon className="h-7 cursor-pointer text-neutral-400 flex-shrink-0" onClick={() => manageSideMenu()} />
+            <Image
+              src="/transparentRythmix.png"
+              className="h-7 w-auto mt-1"
+              alt="Rythmix Logo"
+              width={1024}
+              height={246}
+            />
           </div>
         </div>
       </div>

@@ -5,6 +5,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Beats from "@/models/Beats";
 import { redirect } from "next/navigation";
+import { Metadata } from 'next';
+
+
+export const metadata: Metadata = {
+  title: "Upload track | Rythmix",
+}
 
 
 export default async function Upload ({ params }: { params: { beatId: string } }) {

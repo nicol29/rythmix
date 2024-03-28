@@ -38,7 +38,7 @@ export default function SearchBar() {
   return (
     <form onSubmit={(e) => handleSubmit(e)} className={`relative w-4/5 bg-neutral-750 h-9 border border-neutral-600 flex items-center justify-between px-3 sm:w-[300px] md:w-[400px] ${searchResults.length > 0 ? "rounded-tl-[18px] rounded-tr-[18px]" : "rounded-full"}`}>
       <input onChange={(e) => setSearchQuery(e.target.value)} value={searchQuery} type="text" placeholder="Search" className="bg-transparent outline-none w-5/6"/>
-      <button>
+      <button aria-label="Search">
         <SearchIcon className="text-neutral-400 h-6 cursor-pointer" />
       </button>
       { searchResults.length > 0 &&

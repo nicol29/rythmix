@@ -1,4 +1,5 @@
 import Header from '@/components/Header/header';
+import Footer from '@/components/Footer/footer';
 import Hero from '@/components/Hero/hero';
 import Beats from '@/models/Beats';
 import BeatCard from '@/components/BeatCard/beatCard';
@@ -10,7 +11,11 @@ import Plays from '@/models/Plays';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { GenreIcon, TrendingIcon, NewReleasesIcon } from '@/assets/icons';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: "Homepage | Rythmix",
+}
 
 export default async function Home() {
   const genres = [
@@ -80,6 +85,7 @@ export default async function Home() {
   
   return (
     <>
+      <Header />
       <Hero />
       <main className="min-h-screen flex flex-col">
         <section className="py-14 px-4 bg-neutral-850">
@@ -149,6 +155,7 @@ export default async function Home() {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   )
 }

@@ -7,15 +7,13 @@ import CartItemsContextProvider from '@/context/cartItemsContext';
 import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
 import PlayBar from '@/components/PlayBar/playBar';
-import Footer from '@/components/Footer/footer';
-import Header from '@/components/Header/header';
 import ProgressBarProvider from '@/utils/progressBarProvider';
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  
+  description: "Discover and purchase unique beats from the world's most talented producers at Ryhtmix. Whether you're looking for hip-hop, electronic, or rock beats, find the perfect sound to elevate your music project today. Explore our curated collections, latest drops, and exclusive releases. Join our community of artists and producers and start your musical journey with us."
 }
 
 export default async function RootLayout({
@@ -30,10 +28,10 @@ export default async function RootLayout({
       <SessionProvider session={session}>
         <CartItemsContextProvider>
           <AudioPlayerContextProvider>
-            <ProgressBarProvider>
               <body className={sourceSans3.className}>
-                <Header />
-                {children}
+                <ProgressBarProvider>
+                  {children}
+                </ProgressBarProvider>
                 <Toaster 
                   toastOptions={{
                     unstyled: true,
@@ -47,10 +45,8 @@ export default async function RootLayout({
                     },
                   }}
                 />
-                <Footer />
                 <PlayBar />
               </body>
-            </ProgressBarProvider>
           </AudioPlayerContextProvider>
         </CartItemsContextProvider>
       </SessionProvider>
