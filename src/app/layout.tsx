@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
 import PlayBar from '@/components/PlayBar/playBar';
 import ProgressBarProvider from '@/utils/progressBarProvider';
+import { authOptions } from './api/auth/[...nextauth]/route';
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   
   return (
     <html lang="en">

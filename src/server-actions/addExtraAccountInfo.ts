@@ -13,15 +13,15 @@ interface AuthenticatedUserData {
 const addExtraAccountInfo = async (data: TCompleteAccountSchema, userProperties: AuthenticatedUserData) => {
   try {
     const { userName, userType }: TCompleteAccountSchema = completeAccountSchema.parse(data);
-
+    console.log(userProperties)
     if (!userProperties.isProfileCompleted) {
       await connectMongoDB();
-
-      await Users.findByIdAndUpdate(userProperties.id, {
+      console.log("sdkjvnsdvkjnn")
+      await Users.findByIdAndUpdate(userProperties.id, { $set: {
         userName,
         userType,
         isProfileCompleted: true,
-      });
+      }});
     }
 
     return {success: true, message: "Account updated successfully"};

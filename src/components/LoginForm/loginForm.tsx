@@ -8,6 +8,7 @@ import { useState } from "react";
 import { GoogleIcon } from "@/assets/icons";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 
 export default function LoginForm() {
@@ -16,6 +17,9 @@ export default function LoginForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const callbackFromUrl = searchParams.get("callbackUrl");
 
   const processForm = async (formData: TLogInSchema) => {
     setIsSubmitting(true);
@@ -33,12 +37,19 @@ export default function LoginForm() {
     } else {
       reset();
       toast.success("Logged in successfully");
-      router.push("/register/complete-account");
+
+      if (callbackFromUrl) {
+        console.log(callbackFromUrl)
+        router.push(`${callbackFromUrl}`);
+      } else {
+        router.push("/register/complete-account");
+      }
     }
   }
 
   const handleGoogleLogin = async () => {
-    await signIn("google", { callbackUrl: '/register/complete-account' });
+    await signIn("google", { callbackUrl: `${callbackFromUrl ? callbackFromUrl: ``}` });
+
     toast.success("Logged in successfully");
   }
 

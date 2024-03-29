@@ -20,11 +20,11 @@ export default async function PayoutSettings() {
   await connectMongoDB();
   const userFromDB = await Users.findOne({ _id: signedInUser?.user.id });
   const userFromDBJSON: UserDocumentInterface = JSON.parse(JSON.stringify(userFromDB));
-  
+  console.log(userFromDBJSON)
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-14">
+      <main className="min-h-screen pt-14 pb-24">
         <section className="relative bg-neutral-925 drop-shadow flex justify-center items-center py-10 lg:py-0 lg:h-[200px]">
           <div className="w-5/6 lg:full">
             <h1 className="text-3xl">Account Settings</h1>
@@ -47,7 +47,7 @@ export default async function PayoutSettings() {
                   />
                 </div>
                 <div>
-                  <StripeOnboardSection onBoardStatus={userFromDBJSON.stripeDetails.onBoardStatus} />
+                  <StripeOnboardSection onBoardStatus={userFromDBJSON?.stripeDetails?.onBoardStatus} />
                   <p className="mt-4 text-neutral-400">To sell your beats on Rythmix and receive payments securely, you need to set up your payout information through Stripe, our payment processing partner.</p>
                 </div>
               </div>

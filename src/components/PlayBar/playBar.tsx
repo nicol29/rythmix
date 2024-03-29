@@ -13,7 +13,20 @@ import { useRouter } from "next/navigation";
 
 
 export default function PlayBar() {
-  const { isPlaying, playOrPauseTrack, playList, setIsPlaying, track, volume, setVolume, activeIndex, nextTrack, prevTrack, isPlayBarActive } = useContext(AudioPlayerContext);
+  const { 
+    isPlaying, 
+    playOrPauseTrack, 
+    playList, 
+    setIsPlaying, 
+    track, 
+    volume, 
+    setVolume, 
+    activeIndex, 
+    nextTrack, 
+    prevTrack, 
+    isPlayBarActive 
+  } = useContext(AudioPlayerContext);
+  
   const { status } = useSession();
   const router = useRouter();
 

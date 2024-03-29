@@ -117,7 +117,7 @@ export default async function Home() {
             { hottestBeats?.map(beat => (
               <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(hottestBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }
-            <Link href={"/"} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
+            <Link href={"/search?searchString="} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
           </div>
         </section>
         <section className='flex justify-center bg-neutral-950 py-10'>
@@ -129,7 +129,7 @@ export default async function Home() {
             <div className=''>
               <div className='grid grid-cols-2 grid-rows-3 gap-4 lg:grid-cols-6 lg:grid-rows-1'>
                 {genres.map(item => (
-                  <Link className="group relative aspect-square w-full" href={`/`} key={uniqid()}>
+                  <Link className="group relative aspect-square w-full" href={`/search?searchString=&genre=${item.genre === "R&B" ? "R%26B": item.genre}`} key={uniqid()}>
                     <Image className="object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={item.src} alt="Track art" />
                     <div className="absolute h-full w-full inset-0 bg-gradient-to-b from-transparent to-neutral-850 opacity-100 rounded"></div>
                     <h3 className='absolute bottom-2 left-2 text-shadow text-xl sm:transition-all sm:group-hover:-translate-y-3'>{item.genre}</h3>
@@ -138,7 +138,7 @@ export default async function Home() {
               </div>
             </div>
             <div className='flex justify-end mt-4'>
-              <Link href={"/"} className='bg-neutral-700 px-3 min-w-fit rounded-full drop-shadow text-sm'>See more</Link>
+              <Link href={"/search?searchString="} className='bg-neutral-700 px-3 min-w-fit rounded-full drop-shadow text-sm'>See more</Link>
             </div>
           </div>
         </section>
@@ -151,7 +151,7 @@ export default async function Home() {
             { newBeats?.map(beat => (
               <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(newBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }
-            <Link href={"/"} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
+            <Link href={"/search?searchString="} className='bg-neutral-700 self-center px-3 min-w-fit cursor-pointer rounded-full drop-shadow'>See more</Link>
           </div>
         </section>
       </main>

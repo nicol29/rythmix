@@ -1,9 +1,10 @@
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 import Image from "next/image";
 import uniqid from "uniqid";
-import { TrolleyIcon, ListensIcon, LikesIcon } from "@/assets/icons";
+import { ListensIcon, LikesIcon } from "@/assets/icons";
 import Link from "next/link";
 import BeatRouteControls from "./beatRouteControls";
+import PurchaseButton from "./purchaseButton";
 
 
 export default function TrackDisplayCard({ beat, totalLikes, totalPlays }: { beat: BeatDocumentInterface; totalLikes: number; totalPlays: number } ) {
@@ -31,10 +32,7 @@ export default function TrackDisplayCard({ beat, totalLikes, totalPlays }: { bea
         <div className="h-4 w-[1px] bg-neutral-700"></div>
         <div className="flex items-center gap-2"><LikesIcon className="h-4 w-4 text-orange-500" />{totalLikes} likes</div>
       </div>
-      <a href="#licenses" className="default-orange-button w-5/6 h-9 flex gap-3 items-center justify-center justify-self-center self-center mx-auto mb-5 sm:row-start-1 sm:col-start-4 sm:w-[115px] sm:mb-auto sm:mr-0">
-        <p>Purchase</p>
-        <TrolleyIcon className="h-5 w-5 " />
-      </a>
+      <PurchaseButton />
     </section>
   )
 }

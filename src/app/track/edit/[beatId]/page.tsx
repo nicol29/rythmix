@@ -30,7 +30,7 @@ export default async function Edit ({ params }: { params: { beatId: string } }) 
   return (
     <>
       <Header />
-      <main className="mt-14 pt-12 pb-20">
+      <main className="mt-14 pt-12 pb-24">
         <div className="flex justify-center">
           
         <BeatUploadForm 

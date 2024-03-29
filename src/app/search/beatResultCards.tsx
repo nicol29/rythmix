@@ -54,8 +54,6 @@ export default function BeatResultCards({
   }
 
   const getMoreBeats = async () => {
-    if (!searchString) return;
-
     const moreBeats = await getSearchResults(searchString, filters, sortFilter, queryPos);
 
     if (moreBeats.beats.length < 1) {
@@ -92,7 +90,7 @@ export default function BeatResultCards({
     setBeatsPlaylist(beats);
     setQueryPos(0);
 
-    beats.length < 1 ? setLastDocs(false) : setLastDocs(false);
+    beats?.length < 1 ? setLastDocs(false) : setLastDocs(false);
 
   }, [beats]);
 
@@ -112,7 +110,7 @@ export default function BeatResultCards({
         <div key={beat._id.toString()} className="bg-neutral-850 rounded flex gap-3 p-2">
           <div className="relative h-full aspect-square flex justify-center items-center">
             <Image className="absolute object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat?.assets.artwork.url} alt="Track art" />
-            <div onClick={() => playTrack(beat)} className="cursor-pointer hover:bg-transparent-d-black bg-transparent-l-black absolute w-8 h-8 rounded-full self-center">
+            <div onClickCapture={() => playTrack(beat)} className="cursor-pointer hover:bg-transparent-d-black bg-transparent-l-black absolute w-8 h-8 rounded-full self-center">
               { track?._id === beat._id ?
                 (isPlaying ? 
                   <PauseAudioIcon className="w-full h-full text-neutral-300" /> :

@@ -1,4 +1,3 @@
-import addBeatEntry from "@/server-actions/addBeatEntry";
 import { InventoryIcon, AudioFileIcon } from "@/assets/icons";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
@@ -9,6 +8,7 @@ import Link from "next/link";
 import { Metadata } from 'next';
 import Header from "@/components/Header/header";
 import Footer from "@/components/Footer/footer";
+import CreateBeatEntryForm from "./createBeatEntryForm";
 
 export const metadata: Metadata = {
   title: "Upload | Rythmix",
@@ -38,9 +38,7 @@ export default async function Upload () {
               <AudioFileIcon className="h-36 w-36 text-neutral-600" />
               <p className="text-center text-neutral-400">Production tracks are music files designed for licensing by recording artists and songwriters. These files can range from simple beats to complex compositions with choruses, complete song structures, and vocal tracks.</p>
               <p className="text-center text-neutral-400">Typically, these tracks are crafted by individuals such as music producers, beat-makers, musicians, and vocalists.</p>
-              <form action={addBeatEntry} className="w-full mt-auto">
-                <button disabled={onBoardStatus !== "complete"} className={`w-full default-orange-button py-1 ${onBoardStatus !== "complete" && "opacity-20 hover:bg-orange-500"}`}>Upload Beat</button>
-              </form>
+              <CreateBeatEntryForm onBoardStatus={onBoardStatus} />
               { onBoardStatus !== "complete" && <Link href="/settings/payouts" className="font-semibold text-orange-500 text-sm">Setup payout method to upload</Link>}
             </div>
             <div className="flex flex-col items-center gap-4 max-w-[350px] bg-neutral-925 p-6 rounded border border-neutral-850 h-[590px]">

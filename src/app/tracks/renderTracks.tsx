@@ -66,7 +66,7 @@ export default function RenderTracks({
         )}
       </ul>
       { userPublishedBeats.length === 0 &&
-          <span className="mt-16 text-neutral-500 font-medium text-lg">{`It's empty in here, start by uploading some tracks`}</span>
+          <span className="mt-16 text-neutral-500 font-medium text-sm">{`It's empty in here, start by uploading some tracks`}</span>
       }
       <Modal 
         isModalOpen={isDeleteModalActive.isOpen}

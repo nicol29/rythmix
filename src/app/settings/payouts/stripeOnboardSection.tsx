@@ -13,8 +13,8 @@ export default function StripeOnboardSection({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleForm = async () => {
-    await onBoardUser();
     setIsLoading(true);
+    await onBoardUser();
   }
 
   return (

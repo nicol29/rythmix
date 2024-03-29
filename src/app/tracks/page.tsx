@@ -14,7 +14,7 @@ export default async function Tracks() {
   return (
     <>
       <Header />
-      <main className="min-h-screen mt-14">
+      <main className="min-h-screen mt-14 pb-16">
         <section className="relative bg-neutral-925 flex justify-center pt-10 sm:pt-16">
           <div className="w-5/6 sm:max-w-[1300px]">
             <div className="flex justify-between items-center">

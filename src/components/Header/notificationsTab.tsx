@@ -79,29 +79,28 @@ export default function NotificationsTab({
   }
 
   return (
-    authenticationStatus === "authenticated" &&
-      <div ref={notiRef} className="sm:relative">
-        <div onClick={() => manageDropDowns("notifications")} className="flex items-center cursor-pointer gap-0.5">
-          <div className="relative">
-            <NotificationsIcon className={"text-neutral-400 h-6"} />
-            <div className={`${isNotiRead ? `hidden` : `absolute w-[6px] h-[6px] bg-red-400 rounded-full top-0 right-0`}`}></div>
-          </div>
-          <ExpandIcon className={activeDropDown === "notifications" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
+    <div ref={notiRef} className={`sm:relative ${authenticationStatus !== "authenticated" && `hidden`}`}>
+      <div onClick={() => manageDropDowns("notifications")} className="flex items-center cursor-pointer gap-0.5">
+        <div className="relative">
+          <NotificationsIcon className={"text-neutral-400 h-6"} />
+          <div className={`${isNotiRead ? `hidden` : `absolute w-[6px] h-[6px] bg-red-400 rounded-full top-0 right-0`}`}></div>
         </div>
-        <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 right-2 mt-1 w-5/6 sm:min-w-[400px] sm:right-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
-          <div className="flex items-center gap-3 p-2 border-b border-neutral-700">
-            <span className="text-lg">Notifications</span>
-            <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>
-            <Link href="/settings/notifications"><SettingsIcon className="h-5 w-5" /></Link>
-          </div>
-          { notifications &&
-            <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
-              { notifications.map(notification => (
-                  notificationHandler(notification)
-              ))}
-            </div>
-          }
-        </div>
+        <ExpandIcon className={activeDropDown === "notifications" ? "text-neutral-400 h-5 rotate-180 transition" : "text-neutral-400 h-5 transition"} />
       </div>
+      <div className={activeDropDown === "notifications" ? "absolute bg-neutral-850 border rounded border-neutral-750 right-2 mt-1 w-5/6 sm:min-w-[400px] sm:right-1" : "hidden"} aria-hidden={activeDropDown === "cart"} aria-label="cart">
+        <div className="flex items-center gap-3 p-2 border-b border-neutral-700">
+          <span className="text-lg">Notifications</span>
+          <span onClick={markAsRead} className={`text-red-400 text-sm font-bold ml-auto cursor-pointer ${isNotiRead ? `opacity-40` : `opacity-100`}`}>mark as read</span>
+          <Link href="/settings/notifications"><SettingsIcon className="h-5 w-5" /></Link>
+        </div>
+        { notifications &&
+          <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
+            { notifications.map(notification => (
+                notificationHandler(notification)
+            ))}
+          </div>
+        }
+      </div>
+    </div>
   )
 }

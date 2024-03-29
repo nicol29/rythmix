@@ -67,7 +67,7 @@ export default async function OrderConfirmation({
                 <div className="w-full h-[1px] bg-neutral-700"></div>
                 <div>
                   <h2 className="font-semibold text-lg mb-2">Your order has been confirmed</h2>
-                  <p className="text-neutral-400">We've accepted your order, find your files attached below</p>
+                  <p className="text-neutral-400">{`We've accepted your order, find your files attached below`}</p>
                 </div>
                 <div className="w-full h-[1px] bg-neutral-700"></div>
                 <div>

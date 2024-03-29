@@ -38,7 +38,7 @@ export default function BeatCard({ beatList, beat, option }: { beatList: BeatDoc
         <Link className="relative aspect-square w-[220px]" href={`/beat/${beat.urlIdentifier}`}>
           <Image className="object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat.assets.artwork.url} alt="Track art" />
         </Link>
-        <div onClick={() => playTrack()} className="sm:hidden cursor-pointer hover:bg-transparent-d-black group-hover:block bg-transparent-l-black absolute w-12 h-12 rounded-full self-center">
+        <div onClickCapture={() => playTrack()} className="sm:hidden cursor-pointer hover:bg-transparent-d-black group-hover:block bg-transparent-l-black absolute w-12 h-12 rounded-full self-center">
           { track?._id === beat._id ?
             (isPlaying ? 
               <PauseAudioIcon className="w-full h-full text-neutral-300" /> :

@@ -14,14 +14,12 @@ export default async function Search({
 }: { 
   searchParams: { [key: string]: string | undefined }
 }) {
-
   const bpmToInt = searchParams.bpm ? parseInt(searchParams.bpm) : undefined;
   let sortFilter;
 
   if (searchParams.sortBy) {
     sortFilter = searchParams.sortBy === "Newest" ? -1 : 1;
   }
-
   const filters = {
     ...(searchParams.genre ? { genre: searchParams.genre } : {}),
     ...(searchParams.mood ? { mood: searchParams.mood } : {}),
@@ -29,8 +27,11 @@ export default async function Search({
     ...(bpmToInt ? { bpm: bpmToInt } : {}),
   }
 
-  let beats;
-  if (searchParams.searchString) beats = await getSearchResults(searchParams.searchString, filters, sortFilter);
+  const beats = await getSearchResults(
+    searchParams.searchString, 
+    filters, 
+    sortFilter
+  );
   
   return (
     <>

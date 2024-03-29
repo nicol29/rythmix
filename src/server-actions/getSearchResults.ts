@@ -5,7 +5,7 @@ import connectMongoDB from "@/config/mongoDBConnection";
 
 
 export const getSearchResults = async (
-  searchString: string, 
+  searchString: string | undefined, 
   filters?: { [key: string]: string | number }, 
   sortFilter?: number,
   queryPos?: number
@@ -15,25 +15,33 @@ export const getSearchResults = async (
 
     await connectMongoDB();
 
-    let mongoPipeline: any = [{
-      "$search": {
-        "index": "title-auto-complete",
-        "autocomplete": {
-          "query": `${searchString}`,
-          "path": "title",
-          "fuzzy": {
-            "maxEdits": 2,
-            "prefixLength": 3
-          }
-        }
-      },
-    }, { 
-      "$match": { 
-        ...filters,
-        "status": "published"
-      } 
-    },];
+    let mongoPipeline: any = [];
 
+    if (searchString) {
+      mongoPipeline.push({
+          "$search": {
+              "index": "title-auto-complete",
+              "autocomplete": {
+                  "query": `${searchString}`,
+                  "path": "title",
+                  "fuzzy": {
+                      "maxEdits": 2,
+                      "prefixLength": 3
+                  }
+              }
+          }
+      });
+    }
+
+    // This $match stage applies to all scenarios.
+    mongoPipeline.push({ 
+      "$match": { 
+          ...filters,
+          "status": "published"
+      }
+    });
+
+    // Sorting
     if (sortFilter) {
       mongoPipeline.push({ "$sort": { "createdAt": sortFilter} });
     }

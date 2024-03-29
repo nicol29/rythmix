@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 
 
@@ -13,6 +14,8 @@ export default function AudioPlayerContextProvider({ children }: any) {
   const [track, setTrack] = useState<null | BeatDocumentInterface>(null);
   const [playList, setPlaylist] = useState<BeatDocumentInterface[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const pathName = usePathname();
 
 
   const openPlayBar = () => !isPlayBarActive ? setIsPlayBarActive(true) : null;
@@ -43,6 +46,20 @@ export default function AudioPlayerContextProvider({ children }: any) {
     setActiveIndex(activeIndex + 1);
     setIsPlaying(true);
   }
+
+  useEffect(() => {
+    const destroyPaths = ["/login", "/register"];
+
+    destroyPaths.forEach(path => {
+      if (path === pathName) {
+        setIsPlayBarActive(false);
+        setIsPlaying(false);
+        setTrack(null);
+        setPlaylist([]);
+        setActiveIndex(0);
+      }
+    });
+  }, [pathName]);
 
   return (
     <AudioPlayerContext.Provider 
