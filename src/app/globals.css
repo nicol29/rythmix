@@ -19,23 +19,11 @@ input::-webkit-inner-spin-button {
 }
 
 :root {
-  /* background-color: #1c1c1c; */
   background-color: #1c1a1a;
   color: #bababa;
   @apply bg-neutral-900 
 }
 
-html {
-  /* background-color: #00000055; */
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
 
 .default-input-field {
   @apply  bg-neutral-750 
@@ -77,7 +65,7 @@ html {
   background-image: linear-gradient(to right, rgb(21, 21, 21) 33%, transparent 100%);
 }
 
-@media (min-width: 640px) { /* sm: */
+@media (min-width: 640px) {
   .custom-grid-layout {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

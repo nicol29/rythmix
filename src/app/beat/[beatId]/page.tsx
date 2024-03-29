@@ -24,6 +24,8 @@ export async function generateMetadata({
     urlIdentifier: params.beatId,
     status: "published"
   });
+
+  if (!res) redirect("/");
   
   return {
     title: res.title,

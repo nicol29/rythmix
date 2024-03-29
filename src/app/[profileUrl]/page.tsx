@@ -14,6 +14,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header/header";
 import Footer from "@/components/Footer/footer";
+import WorkInProgressPrompt from "./workInProgressPrompt";
 
 import type { Metadata } from 'next';
  
@@ -26,6 +27,8 @@ export async function generateMetadata({
   const producer = await Users.findOne({ 
     profileUrl: params.profileUrl 
   }, { password: 0 });
+
+  if (!producer) redirect("/");
 
   return {
     title: `${producer.userName} | Rythmix Profile`,
@@ -55,7 +58,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
     <>
       <Header />
       <main className="min-h-screen px-4 my-14 flex justify-center pt-14">
-        <div>
+        <div className="w-full max-w-[484px] lg:min-w-[794px]">
           <section className="w-full flex flex-col items-center mb-12 lg:flex-row lg:gap-6 lg:items-start lg:mb-14">
             <div className="relative w-5/12 aspect-square lg:max-w-[200px]">
               <Image className="object-cover rounded border border-neutral-750" fill sizes="w-full h-full" src={returnProfilePicture(producer?.profilePicture)} alt="Track art" />
@@ -75,7 +78,7 @@ export default async function Profile({ params }: { params: { profileUrl: string
               </div>
               { signedInUser?.user.profileUrl === params.profileUrl ?
                 <Link href="/settings/profile" className="default-orange-button text-center w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Edit Profile</Link> :
-                <button className="default-orange-button w-5/6 py-1 lg:w-[150px] lg:absolute lg:top-0 lg:right-0">Follow</button>
+                <WorkInProgressPrompt />
               }
               <div className="flex flex-col items-center mt-8 lg:flex-row lg:justify-between lg:w-full lg:mt-auto">
                 <span className="flex items-center gap-1"><ListensIcon className="h-5 w-5" />{totalPlays} plays</span>

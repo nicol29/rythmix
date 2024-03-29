@@ -5,10 +5,9 @@ import Users from "@/models/Users";
 import SettingsSideNavBar from "../settingsSideNavBar";
 import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import Image from "next/image";
-import { onBoardUser } from "@/server-actions/stripe";
-import { CheckMarkIcon } from "@/assets/icons";
 import { Metadata } from 'next';
 import Header from "@/components/Header/header";
+import StripeOnboardSection from "./stripeOnboardSection";
 
 export const metadata: Metadata = {
   title: "Payout settings | Rythmix",
@@ -48,20 +47,7 @@ export default async function PayoutSettings() {
                   />
                 </div>
                 <div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between">
-                    <h3 className="text-xl">Connect Stripe Account</h3>
-                    { userFromDBJSON.stripeDetails.onBoardStatus === "complete" ?
-                      <span className="text-stripe-purple font-medium flex items-center gap-2">
-                        Connected
-                        <CheckMarkIcon className="h-5 w-5" />
-                      </span> :
-                      <form action={onBoardUser}>
-                        <button className="bg-stripe-purple text-sm text-white self-end px-3 py-1 rounded">
-                          { userFromDBJSON.stripeDetails.onBoardStatus === "unstarted" ? "Connect Stripe" : "Finish Connecting Stripe" }
-                        </button>
-                      </form>
-                    }
-                  </div>
+                  <StripeOnboardSection onBoardStatus={userFromDBJSON.stripeDetails.onBoardStatus} />
                   <p className="mt-4 text-neutral-400">To sell your beats on Rythmix and receive payments securely, you need to set up your payout information through Stripe, our payment processing partner.</p>
                 </div>
               </div>

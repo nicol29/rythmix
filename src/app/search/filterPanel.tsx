@@ -118,7 +118,7 @@ export default function FilterPanel() {
             </select>
           </div>
           <div className="default-field-container lg:w-[150px]">
-            <label className="mb-2" htmlFor="sortBy">Bpm</label>
+            <label className="mb-2" htmlFor="bpm">Bpm</label>
             <div className="flex items-center gap-3">
               <span>0</span>
               <input 

@@ -94,7 +94,7 @@ export default function StripeCustomCheckout() {
       <PaymentElement id="payment-element" options={paymentElementOptions as any} />
       <button className="w-full py-2 default-orange-button mt-6" disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? "Processing" : "Pay now"}
         </span>
       </button>
       {/* Show any error or success messages */}

@@ -24,6 +24,7 @@ const config: Config = {
         'transparent-l-black': '#00000075',
         'transparent-d-black': '#00000097',
         'stripe-purple': '#6772e5',
+        'stripe-light-purple': '#888FD8',
       }
     },
   },

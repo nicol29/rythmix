@@ -93,7 +93,7 @@ export default function ProfileSettingsForm({
         </div>
         <div className="default-field-container">
           <label htmlFor="biography">Biography</label>
-          <textarea className="dark-input-field resize-none min-h-[200px]" id="email" {...register("biography")} />
+          <textarea className="dark-input-field resize-none min-h-[200px]" id="biography" {...register("biography")} />
           {errors.biography && <p className="text-red-400 text-sm">{`${errors.biography.message}`}</p>}
         </div>
         <button type="submit" aria-disabled={isSubmitting} className="bg-orange-500 text-orange-100 w-full rounded h-10 mt-6 font-semibold hover:bg-orange-400 lg:w-fit lg:px-6 lg:self-end">

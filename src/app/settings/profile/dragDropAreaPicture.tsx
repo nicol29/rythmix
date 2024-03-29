@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from 'react-dropzone';
-import { DropIcon, CloudUploadIcon } from "@/assets/icons";
+import { DropIcon, CloudUploadIcon, Spinner } from "@/assets/icons";
 import { addProfilePicture } from "@/server-actions/addProfilePicture";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -49,7 +49,6 @@ export default function DragDropAreaProfilePicture({
     accept: {
       'image/png': ['.png', '.jpeg', '.jpg'],
     },
-    maxSize: 3 * 1024 * 1024,
     minSize: 200 * 200,
   });
 

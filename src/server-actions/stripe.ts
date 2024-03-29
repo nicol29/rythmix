@@ -73,13 +73,13 @@ export const createCheckoutSession = async (
       if (beatFromDB) {
         const chosenLicensePrice = beatFromDB.licenses[beat.chosenLicense].price;
         const chosenLicenseTerms = beatFromDB.licenseTerms[beat.chosenLicense];
-  
+        
         totalPrice += chosenLicensePrice; 
   
         return {
           productId: beatFromDB._id,
           sellerId: beatFromDB.producer._id,
-          price: chosenLicensePrice * 100,
+          price: Math.round(chosenLicensePrice * 100),
           contract: createContract(
             chosenLicenseTerms, 
             beatFromDB.producer.userName, 
@@ -94,11 +94,8 @@ export const createCheckoutSession = async (
       }
     }));
 
-    const finalPriceWithFees = (Math.round(totalPrice * 5) / 100) + totalPrice;
-    const totalPriceInCents = finalPriceWithFees * 100;
-
     const paymentIntent: Stripe.PaymentIntent = await stripe.paymentIntents.create({
-      amount: totalPriceInCents,
+      amount: calculateFinalStripePriceInCents(totalPrice),
       currency: 'eur',
       transfer_group: uniqid(),
       payment_method_types: ["card"],
@@ -108,7 +105,7 @@ export const createCheckoutSession = async (
     });
 
     await Customer_Orders.create({
-      totalAmount: totalPriceInCents,
+      totalAmount: calculateFinalStripePriceInCents(totalPrice),
       paymentIntentId: paymentIntent.id,
       items: itemsOrderedByBuyer,
       customerDetails: {
@@ -126,4 +123,14 @@ export const createCheckoutSession = async (
     console.log(error)
     return { success: false, error }
   }
+}
+
+const calculateFinalStripePriceInCents = (totalPrice: number) => {
+  const feePercentage = 5;
+
+  const feeAmount = (totalPrice * feePercentage) / 100;
+  const finalPriceWithFees = totalPrice + feeAmount;
+  const totalPriceInCents = Math.round(finalPriceWithFees * 100); 
+
+  return totalPriceInCents;
 }

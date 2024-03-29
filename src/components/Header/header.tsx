@@ -86,6 +86,7 @@ export default function Header() {
           notiRef={notiRef}
           manageDropDowns={manageDropDowns}
           activeDropDown={activeDropDown}
+          authenticationStatus={status}
         />
         <div ref={profileRef} className="relative">
           { status === "authenticated" ?

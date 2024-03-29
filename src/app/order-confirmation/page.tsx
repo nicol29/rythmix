@@ -106,12 +106,12 @@ export default async function OrderConfirmation({
                               <div className="grid grid-cols-3 gap-6 mt-auto">
                                 <div className="flex flex-col">
                                   <span>MP3</span>
-                                  <a href={`${item.productId.assets.mp3.url.replace('/upload/', '/upload/fl_attachment/')}`} download data-disable-nprogress={true} className="bg-orange-500 text-center text-white rounded text-sm">Download</a>
+                                  <a href={`${item.productId.assets.mp3.url.replace('/upload/', '/upload/fl_attachment/')}`} aria-label="Download mp3 file" download data-disable-nprogress={true} className="bg-orange-500 text-center text-white rounded text-sm">Download</a>
                                 </div>
                                 {item.licenseType !== "basic" &&
                                   <div className="flex flex-col">
                                     <span>WAV</span>
-                                    <a href={`${item.productId.assets.wav.url.replace('/upload/', '/upload/fl_attachment/')}`} download data-disable-nprogress={true} className="bg-orange-500 text-center text-white rounded text-sm">Download</a>
+                                    <a href={`${item.productId.assets.wav.url.replace('/upload/', '/upload/fl_attachment/')}`} aria-label="Download wav file" download data-disable-nprogress={true} className="bg-orange-500 text-center text-white rounded text-sm">Download</a>
                                   </div>
                                 }
                               </div>
