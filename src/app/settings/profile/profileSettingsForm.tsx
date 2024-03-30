@@ -10,6 +10,7 @@ import DragDropAreaProfilePicture from "./dragDropAreaPicture";
 import { CloseIcon } from "@/assets/icons";
 import { useSession } from "next-auth/react";
 import { updateProfileInfo } from "@/server-actions/settings";
+import returnProfilePicture from "@/utils/returnUserProfilePicture";
 
 
 export default function ProfileSettingsForm({
@@ -62,16 +63,14 @@ export default function ProfileSettingsForm({
     <>
       <div className="flex justify-between">
         <div className="relative h-24 aspect-square bg-neutral-800 rounded">
-          { session?.user.image &&
-            <Image 
-              src={`${session.user.image ?? ""}`} 
-              priority 
-              fill 
-              sizes="w-full h-full" 
-              className="h-full w-full object-cover rounded" 
-              alt="User uploaded image"
-            />
-          }
+          <Image 
+            src={`${returnProfilePicture(session?.user.image)}`} 
+            priority 
+            fill 
+            sizes="w-full h-full" 
+            className="h-full w-full object-cover rounded" 
+            alt="User uploaded image"
+          />
         </div>
         <button onClick={() => setIsModalOpen(true)} className="default-orange-button self-end px-2 py-1">Change Profile Image</button>
       </div>

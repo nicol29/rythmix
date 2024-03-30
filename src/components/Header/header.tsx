@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
-import { MenuIcon, SearchIcon, CloseIcon, AccountCircleIcon, LogOutIcon, CartIcon, ExpandIcon, RegisterIcon, LogInIcon } from "@/assets/icons"
+import { MenuIcon, SearchIcon, CloseIcon, AccountCircleIcon, LogOutIcon, ExpandIcon, RegisterIcon, LogInIcon } from "@/assets/icons"
 import Image from "next/image";
 import Link from "next/link";
 import returnProfilePicture from "@/utils/returnUserProfilePicture";
@@ -11,6 +11,7 @@ import { useRouter, usePathname } from "next/navigation";
 import SearchBar from "./searchBar";
 import NotificationsTab from "./notificationsTab";
 import CartTab from "./cartTab";
+import SideMenu from "./sideMenu";
 
 
 export default function Header() {
@@ -28,8 +29,9 @@ export default function Header() {
   const notiRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    menuToggled ? document.body.style.overflow = "hidden" : document.body.style.overflow = "scroll";
     setActiveDropdown(null);
-  }, [path]);
+  }, [path, menuToggled]);
 
   useDetectOutsideClick([cartRef, profileRef, notiRef], () => setActiveDropdown(null));
 
@@ -99,11 +101,11 @@ export default function Header() {
               </div>
               <div className={activeDropDown === "profile" ? "absolute bg-neutral-850 border rounded border-neutral-750 min-w-[250px] right-1 p-2 mt-1" : "hidden"} aria-hidden={activeDropDown === "profile"} aria-label="profile menu">
                 <div className="flex gap-3 border-b border-neutral-750 pb-2 mb-2">
-                  <div className="relative w-9 h-9 self-center">
+                  <Link href={`/${session.user.profileUrl}`} className="relative w-9 h-9 self-center">
                     <Image className="rounded-full object-cover" src={returnProfilePicture(session.user.image)} priority fill sizes="w-full h-full" alt="User profile picture" />
-                  </div>
+                  </Link>
                   <div>
-                    <div className="text-orange-500 font-semibold">{session.user.userName}</div>
+                    <Link href={`/${session.user.profileUrl}`} className="text-orange-500 font-semibold">{session.user.userName}</Link>
                     <div className="font-light text-sm">{session.user.email}</div>
                   </div>
                 </div>
@@ -135,19 +137,12 @@ export default function Header() {
             </>
           }
         </div>
-        <div onClick={() => manageSideMenu()} className={menuToggled ? "top-0 left-0 h-screen w-full bg-black opacity-45 absolute" : "hidden"}></div>
-        <div className={menuToggled ? "h-screen w-5/6 absolute top-0 left-0 bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]" : "h-screen w-5/6 absolute top-0 left-0 -translate-x-full bg-neutral-850 border-r border-neutral-750 transition-all max-w-[350px]"} aria-hidden={!menuToggled} aria-label="menu">
-          <div className="h-14 border-b border-neutral-750 px-2 flex gap-3 items-center">
-            <CloseIcon className="h-7 cursor-pointer text-neutral-400 flex-shrink-0" onClick={() => manageSideMenu()} />
-            <Image
-              src="/transparentRythmix.png"
-              className="h-7 w-auto mt-1"
-              alt="Rythmix Logo"
-              width={1024}
-              height={246}
-            />
-          </div>
-        </div>
+        <SideMenu 
+          menuToggled={menuToggled} 
+          manageSideMenu={manageSideMenu}
+          session={session}
+          authStatus={status}
+        />
       </div>
     </header>
   )

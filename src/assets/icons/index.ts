@@ -36,3 +36,7 @@ export { default as NotificationsIcon } from "./notifications_FILL0_wght400_GRAD
 export { default as CheckMarkIcon } from "./task_alt_FILL0_wght400_GRAD0_opsz24.svg";
 export { default as InventoryIcon } from "./inventory_2_FILL0_wght100_GRAD0_opsz24.svg";
 export { default as AudioFileIcon } from "./audio_file_FILL0_wght100_GRAD0_opsz24.svg";
+export { default as HomeIcon } from "./home_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as PersonIcon } from "./person_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as PianoIcon } from "./piano_FILL0_wght400_GRAD0_opsz24.svg";
+export { default as DashboardIcon } from "./bar_chart_4_bars_FILL0_wght400_GRAD0_opsz24.svg";

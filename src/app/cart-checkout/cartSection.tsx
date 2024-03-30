@@ -51,6 +51,11 @@ export default function CartSection() {
   }
 
   const createPaymentIntent = async () => {
+    if (cartItems.length === 0 || !cartItems) {
+      toast.error("Cannot checkout with an empty cart");
+
+      return;
+    }
     setLoading(true);
 
     if (signedInStatus === "authenticated") {

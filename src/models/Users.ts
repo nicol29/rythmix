@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
       type: String, enum: ["unstarted", "incomplete", "complete"], 
       default: "unstarted",
     },
-    
   }
 });
 
