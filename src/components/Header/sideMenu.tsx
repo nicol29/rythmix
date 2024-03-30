@@ -2,6 +2,9 @@ import Image from "next/image";
 import { CloseIcon, DashboardIcon, HomeIcon, PersonIcon, PianoIcon, SearchIcon, SettingsIcon } from "@/assets/icons";
 import Link from "next/link";
 import { Session } from "next-auth";
+import { openStripeDashBoard } from "@/server-actions/openStripeDashboard";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 export default function SideMenu({ 
@@ -15,6 +18,19 @@ export default function SideMenu({
   session: Session | null;
   authStatus: string;
 }) {
+  const router = useRouter();
+
+  const handleDashboard = async () => {
+    const res = await openStripeDashBoard();
+
+    if (res?.error === "Must onboarded with Stripe") {
+      toast.error(res.error);
+      router.push("/settings/payouts");
+    } else {
+      router.push(res.url);
+    }
+  }
+
   return (
     <>
       <div onClick={() => manageSideMenu()} className={menuToggled ? "top-0 left-0 h-screen w-full bg-black opacity-45 absolute" : "hidden"}></div>
@@ -64,11 +80,11 @@ export default function SideMenu({
                 <PianoIcon className="h-6 w-6 text-neutral-400" />
                 <span>My Tracks</span>
               </Link>
-              <Link href="/search?searchString=" className="px-4 py-3 flex gap-4 items-center hover:bg-neutral-800">
+              <button onClick={handleDashboard} className="px-4 py-3 flex gap-4 items-center w-full hover:bg-neutral-800">
                 <DashboardIcon className="h-6 w-6 text-neutral-400" />
-                <span>Dashboard</span>
-              </Link>
-              <Link href="/settings/profile" className="px-4 text-orange-500 py-3 mt-6 flex gap-4 items-center hover:bg-neutral-700">
+                <span>Stripe Dashboard</span>
+              </button>
+              <Link href="/settings/profile" className="px-4 text-orange-500 py-3 mt-6 flex gap-4 items-center hover:bg-neutral-800">
                 <SettingsIcon className="h-6 w-6" />
                 <span className="font-semibold">Edit Account</span>
               </Link>

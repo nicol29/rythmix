@@ -36,7 +36,11 @@ export default function PlayBar() {
   const [like, setLike] = useState<null | any>(null);
 
   const refreshLike = async (action: "add" | "remove") => {
-    if (status === "unauthenticated") router.push('/login');
+    if (status === "unauthenticated") {
+      router.push('/login');
+      
+      return;
+    }
 
     if (action === "add") {
       await createAssetNotification("like", track.producer._id, track.urlIdentifier.toString());
