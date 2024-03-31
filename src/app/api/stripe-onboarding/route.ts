@@ -4,7 +4,7 @@ import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 
-const stripe = require('stripe')(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
 export async function GET() {
