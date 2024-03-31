@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 import Stripe from "stripe";
 
 const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
-const webhookSecret = `${process.env.STRIPE_WEBHOOK_SECRET}`;
+const webhookSecret = `${process.env.STRIPE_ACCOUNTS_WEBHOOK_SECRET}`;
 
 
 export async function POST(request: NextRequest) {
