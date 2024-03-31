@@ -92,6 +92,7 @@ export interface UserDocumentInterface {
     accountId: string;
     onBoardStatus: "unstarted" | "incomplete" | "complete";
   }
+  testUser: boolean;
 }
 
 export interface CustomerOrdersInterface {

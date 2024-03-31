@@ -5,7 +5,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectMongoDB from "@/config/mongoDBConnection";
 import cloudinary from "@/config/cloudinaryConfig";
-import { revalidatePath } from "next/cache";
 
 
 export const addProfilePicture = async (file: any) => {

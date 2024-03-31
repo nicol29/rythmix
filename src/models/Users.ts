@@ -45,7 +45,8 @@ const userSchema = new mongoose.Schema({
       type: String, enum: ["unstarted", "incomplete", "complete"], 
       default: "unstarted",
     },
-  }
+  },
+  testUser: { type: Boolean, default: true, }
 });
 
 const Users = mongoose.models.Users || mongoose.model('Users', userSchema);
