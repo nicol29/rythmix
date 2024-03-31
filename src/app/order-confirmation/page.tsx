@@ -111,7 +111,7 @@ export default async function OrderConfirmation({
                                 {item.licenseType !== "basic" &&
                                   <div className="flex flex-col">
                                     <span>WAV</span>
-                                    <a href={`${item.productId.assets.wav.url.replace('/upload/', '/upload/fl_attachment/')}`} aria-label="Download wav file" download data-disable-nprogress={true} className="bg-orange-500 text-center text-white rounded text-sm">Download</a>
+                                    <a href={`${item.productId.assets.wav.url.replace('/upload/', '/upload/fl_attachment/')}`} aria-label="Download wav file" download data-disable-nprogress={true} className="max-w-[100px] bg-orange-500 text-center text-white rounded text-sm">Download</a>
                                   </div>
                                 }
                               </div>
