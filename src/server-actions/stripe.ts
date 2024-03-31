@@ -4,7 +4,7 @@ import Users from "@/models/Users";
 import Customer_Orders from "@/models/CustomerOrders";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { BeatDocumentInterface, UserDocumentInterface } from "@/types/mongoDocTypes";
+import { UserDocumentInterface } from "@/types/mongoDocTypes";
 import { createContract } from "@/utils/createContract";
 import { redirect } from "next/navigation";
 import connectMongoDB from "@/config/mongoDBConnection";

@@ -7,6 +7,8 @@ import { CustomerOrdersInterface } from "@/types/mongoDocTypes";
 import Seller_Payouts from "@/models/SellerPayouts";
 
 const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
+const webhookSecret = `${process.env.STRIPE_WEBHOOK_SECRET}`;
+
 
 
 export async function POST(request: NextRequest) {
@@ -16,7 +18,7 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(await request.text(), sig, endpointSecret);
+      event = stripe.webhooks.constructEvent(await request.text(), sig, webhookSecret);
     } catch (err: any) {
       return Response.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
     }
