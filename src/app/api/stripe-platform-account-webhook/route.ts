@@ -10,7 +10,6 @@ const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`);
 const webhookSecret = `${process.env.STRIPE_WEBHOOK_SECRET}`;
 
 
-
 export async function POST(request: NextRequest) {
   try {
     const sig = request.headers.get('stripe-signature');
@@ -24,23 +23,6 @@ export async function POST(request: NextRequest) {
     }
 
     switch (event.type) {
-      case 'account.updated':
-        const accountUpdated = event.data.object;
-
-        await updateUserStripeStatus(accountUpdated);
-        break;
-      case 'account.external_account.deleted':
-        const accountExternalAccountDeleted = event.data.object;
-        break;
-      case 'account.external_account.updated':
-        const accountExternalAccountUpdated = event.data.object;
-        break;
-      case 'payment_intent.canceled':
-        const paymentIntentCanceled = event.data.object;
-        break;
-      case 'payment_intent.payment_failed':
-        const paymentIntentPaymentFailed = event.data.object;
-        break;
       case 'payment_intent.succeeded':
         const paymentIntentSucceeded = event.data.object;
 
@@ -61,22 +43,10 @@ export async function POST(request: NextRequest) {
 }
 
 
-const updateUserStripeStatus = async (account: Stripe.Account) => {
-  try {
-    if (account.charges_enabled && account.details_submitted && account.payouts_enabled) {
-      await connectMongoDB();
-      
-      await Users.findOneAndUpdate({ "stripeDetails.accountId": account.id }, { $set: {
-        "stripeDetails.onBoardStatus": "complete"
-      }});
-    }
-  } catch (error) {
-    return Response.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
-
 const updateOrderStatus = async (paymentIntent: Stripe.PaymentIntent) => {
   try {
+    await connectMongoDB();
+
     const orderFromDB = await Customer_Orders.findOneAndUpdate({ 
       "paymentIntentId": paymentIntent.id 
     }, { $set: {
