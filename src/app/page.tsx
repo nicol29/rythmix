@@ -113,7 +113,7 @@ export default async function Home() {
             <h2 className='text-3xl'>Hottest Tracks</h2>
             <TrendingIcon className="h-10 w-10 text-orange-500" />
           </div>
-          <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
+          <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll hide-scrollbar sm:p-6'>
             { hottestBeats?.map(beat => (
               <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(hottestBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }
@@ -147,7 +147,7 @@ export default async function Home() {
             <h2 className='text-3xl'>Latest Tracks</h2>
             <NewReleasesIcon className="h-8 w-8 text-orange-500" />
           </div>
-          <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll sm:p-6'>
+          <div className='bg-neutral-850 p-4 rounded-bl-2xl rounded-tl-2xl flex gap-6 overflow-x-scroll hide-scrollbar sm:p-6'>
             { newBeats?.map(beat => (
               <BeatCard key={uniqid()} beatList={JSON.parse(JSON.stringify(newBeats))} beat={JSON.parse(JSON.stringify(beat))} />
             )) }

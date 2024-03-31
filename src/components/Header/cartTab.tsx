@@ -31,7 +31,7 @@ export default function CartTab({
           <span className="text-lg">Cart ({cartItems.length})</span>
           <Link href="/cart-checkout" className="text-orange-500 font-bold text-sm">view cart</Link>
         </div>
-        <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
+        <div className="max-h-[350px] min-h-[350px] overflow-y-scroll hide-scrollbar">
           { cartItems.length !== 0 ?
             ( cartItems.map(item => (
               <div key={item._id.toString()} className="flex items-center">

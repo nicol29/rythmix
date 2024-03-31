@@ -29,7 +29,7 @@ export default function Header() {
   const notiRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    menuToggled ? document.body.style.overflow = "hidden" : document.body.style.overflow = "scroll";
+    menuToggled ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
     setActiveDropdown(null);
   }, [path, menuToggled]);
 
@@ -40,7 +40,7 @@ export default function Header() {
   }
 
   const manageSideMenu = () => {
-    menuToggled ? document.body.style.overflow = "scroll" : document.body.style.overflow = "hidden";
+    menuToggled ? document.body.style.overflow = "auto" : document.body.style.overflow = "hidden";
     setMenuToggled(!menuToggled);
   }
 
@@ -76,7 +76,7 @@ export default function Header() {
           <button className="block sm:hidden" onClick={() => setSearchToggled(!searchToggled)} aria-label="Open searchbar">
             <SearchIcon className="text-neutral-400 h-6"/>
           </button>
-          <div className={searchToggled ? "bg-neutral-800 w-screen absolute top-full left-0 mt-px h-12 flex justify-center items-center scale-100 opacity-100 transition-all sm:static sm:w-auto sm:h-auto sm:bg-neutral-850" : "scale-0 opacity-0 sm:scale-100 sm:opacity-100 sm:block sm:static sm:w-auto sm:h-auto sm:bg-neutral-850"}>
+          <div className={searchToggled ? "bg-neutral-800 w-full absolute top-full left-0 mt-px h-12 flex justify-center items-center scale-100 opacity-100 transition-all sm:static sm:w-auto sm:h-auto sm:bg-neutral-850" : "scale-0 opacity-0 sm:scale-100 sm:opacity-100 sm:block sm:static sm:w-auto sm:h-auto sm:bg-neutral-850"}>
             <SearchBar />
             <CloseIcon className="h-5 w-5 absolute right-3 text-neutral-500 cursor-pointer sm:hidden" onClick={() => setSearchToggled(!searchToggled)}/>
           </div>

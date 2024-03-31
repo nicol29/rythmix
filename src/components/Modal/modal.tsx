@@ -16,7 +16,7 @@ export default function Modal({
 }) {
 
   useEffect(() => {
-    isModalOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "scroll";
+    isModalOpen ? document.body.style.overflow = "hidden" : document.body.style.overflow = "auto";
 
     return () => {
       document.body.style.overflow = "unset";

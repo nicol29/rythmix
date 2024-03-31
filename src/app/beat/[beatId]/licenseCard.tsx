@@ -59,7 +59,7 @@ export default function LicenseCard({
           </div>
         </div>
         <div className="h-[1px] w-full bg-neutral-700 my-4"></div>
-        <Modal
+        {/* <Modal
           isModalOpen={isModalOpen}
           closeModal={() => setIsModalOpen(false)}
           styles="w-fit"
@@ -84,7 +84,7 @@ export default function LicenseCard({
               </div>
             </div>
           </div>
-        </Modal>
+        </Modal> */}
       </>
     )
   }

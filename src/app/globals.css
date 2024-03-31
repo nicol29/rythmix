@@ -24,6 +24,16 @@ input::-webkit-inner-spin-button {
   @apply bg-neutral-900 
 }
 
+@layer utilities {
+  .hide-scrollbar {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer and Edge */
+    &::-webkit-scrollbar {
+      display: none; /* Webkit */
+    }
+  }
+}
 
 .default-input-field {
   @apply  bg-neutral-750 

@@ -94,7 +94,7 @@ export default function NotificationsTab({
           <Link href="/settings/notifications"><SettingsIcon className="h-5 w-5" /></Link>
         </div>
         { notifications &&
-          <div className="max-h-[350px] min-h-[350px] overflow-y-scroll">
+          <div className="max-h-[350px] min-h-[350px] overflow-y-scroll hide-scrollbar">
             { notifications.map(notification => (
                 notificationHandler(notification)
             ))}

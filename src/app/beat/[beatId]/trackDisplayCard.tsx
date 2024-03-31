@@ -11,8 +11,8 @@ export default function TrackDisplayCard({ beat, totalLikes, totalPlays }: { bea
   const artworkUrl = beat.assets.artwork.url;
 
   return (
-    <section className="custom-grid-layout w-screen bg-neutral-850 relative drop-shadow-md sm:border sm:border-neutral-700 sm:w-11/12 sm:max-w-[900px] sm:max-h-[300px] sm:p-4 sm:rounded-lg sm:absolute sm:top-[200px]">
-      <div className="relative w-screen aspect-square drop-shadow sm:w-full sm:row-span-3">
+    <section className="custom-grid-layout w-full bg-neutral-850 relative drop-shadow-md sm:border sm:border-neutral-700 sm:w-11/12 sm:max-w-[900px] sm:max-h-[300px] sm:p-4 sm:rounded-lg sm:absolute sm:top-[200px]">
+      <div className="relative w-full aspect-square drop-shadow sm:w-full sm:row-span-3">
         <Image src={artworkUrl} priority fill sizes="w-full h-full" alt="Track artwork" className="w-full h-full object-cover sm:rounded-lg" />
         <div className="absolute h-full w-full inset-0 bg-gradient-to-b from-transparent to-neutral-600 opacity-100 sm:hidden"></div>
       </div>
