@@ -3,7 +3,7 @@
 import Likes from "@/models/Likes";
 import connectMongoDB from "@/config/mongoDBConnection";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 
 
 export const addLike = async (beatId: string) => {

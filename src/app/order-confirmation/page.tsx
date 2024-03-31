@@ -5,7 +5,7 @@ import Customer_Orders from "@/models/CustomerOrders";
 import uniqid from "uniqid";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import EmptyCartOnClient from "./emptyCartOnClient";
 import { Metadata } from 'next';
 import Header from "@/components/Header/header";

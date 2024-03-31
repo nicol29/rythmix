@@ -2,7 +2,7 @@
 
 import Users from "@/models/Users";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import connectMongoDB from "@/config/mongoDBConnection";
 import cloudinary from "@/config/cloudinaryConfig";
 

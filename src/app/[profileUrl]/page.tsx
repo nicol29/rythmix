@@ -9,7 +9,7 @@ import { LocationIcon, ListensIcon } from "@/assets/icons";
 import dayjs from "dayjs";
 import Plays from "@/models/Plays";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Header from "@/components/Header/header";

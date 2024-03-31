@@ -2,7 +2,7 @@ import Header from "@/components/Header/header";
 import BeatUploadForm from "@/components/BeatUploadForm/beatUploadForm";
 import connectMongoDB from "@/config/mongoDBConnection";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import Beats from "@/models/Beats";
 import { redirect } from "next/navigation";
 import { Metadata } from 'next';

@@ -1,6 +1,6 @@
 import { InventoryIcon, AudioFileIcon } from "@/assets/icons";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Users from "@/models/Users";
 import { UserDocumentInterface } from "@/types/mongoDocTypes";

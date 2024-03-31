@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import connectMongoDB from "@/config/mongoDBConnection";
 import Beats from "@/models/Beats";
 import { getServerSession } from "next-auth";

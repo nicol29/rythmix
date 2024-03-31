@@ -8,7 +8,7 @@ import { getServerSession } from 'next-auth';
 import { Toaster } from 'sonner';
 import PlayBar from '@/components/PlayBar/playBar';
 import ProgressBarProvider from '@/utils/progressBarProvider';
-import { authOptions } from './api/auth/[...nextauth]/route';
+import { authOptions } from "@/utils/authOptions";
 
 
 const sourceSans3 = Source_Sans_3({ subsets: ['latin'] })

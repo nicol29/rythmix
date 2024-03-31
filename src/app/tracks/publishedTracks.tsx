@@ -1,7 +1,7 @@
 import RenderTracks from "./renderTracks";
 import connectMongoDB from "@/config/mongoDBConnection";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 import { BeatDocumentInterface } from "@/types/mongoDocTypes";
 import Beats from "@/models/Beats";
 

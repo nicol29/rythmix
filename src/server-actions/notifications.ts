@@ -3,7 +3,7 @@
 import connectMongoDB from "@/config/mongoDBConnection";
 import Notifications from "@/models/Notifications";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions";
 
 
 export const getNotifications = async () => {
