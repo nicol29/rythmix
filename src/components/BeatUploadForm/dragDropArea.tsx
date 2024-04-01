@@ -54,20 +54,22 @@ export default function DragDropArea({
     formData.append('overwrite', 'true');
 
     try {
-      const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/video/upload`, {
+      const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, {
         method: 'POST',
         body: formData,
       });
-      
       const data = await uploadResponse.json();
 
-      await uploadFileDetailsToDB(
-        beatID, 
-        data.secure_url, 
-        data.public_id, 
-        data.original_filename,
-        fileName
-      );
+      console.log(data)
+      if (data.secure_url) {
+        await uploadFileDetailsToDB(
+          beatID, 
+          data.secure_url, 
+          data.public_id, 
+          data.original_filename,
+          fileName
+        );
+      }
 
       return { success: true, asset: { url: data.secure_url, publicId: data.public_id, fileName: data.original_filename }}
     } catch (error) {

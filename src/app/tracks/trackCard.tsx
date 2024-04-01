@@ -19,7 +19,7 @@ export default function TrackCard({
       <span className="text-neutral-500">{index + 1}</span>
       <div className="bg-neutral-850 rounded p-2 w-full flex items-center gap-4">
         <div className="relative h-12 aspect-square bg-neutral-700 rounded">
-          { beat.assets?.artwork.url &&
+          { beat.assets?.artwork?.url &&
             <Image className="absolute object-cover rounded border border-neutral-750 cursor-pointer" fill sizes="w-full h-full" src={beat.assets.artwork.url} alt="Track art" />
           }
         </div>
