@@ -37,6 +37,7 @@ export default async function Edit ({ params }: { params: { beatId: string } }) 
           slug={params.beatId} 
           currentBeat={beat}
           formType="edit" 
+          beatID={res._id.toString()}
         />
         </div>
       </main>
