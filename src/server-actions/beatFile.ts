@@ -117,7 +117,7 @@ export const addBeatFileV2 = async (file: any, beatUrlId: string, fileName: stri
         public_id: fileName,
         overwrite: true,
         invalidate: true,
-        resource_type: "auto"
+        resource_type: "video"
       }, (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
         if (error) {
           console.log(error);
