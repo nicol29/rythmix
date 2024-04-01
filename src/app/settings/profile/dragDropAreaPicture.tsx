@@ -2,8 +2,8 @@
 
 import { useCallback, useState } from "react";
 import { useDropzone } from 'react-dropzone';
-import { DropIcon, CloudUploadIcon, Spinner } from "@/assets/icons";
-import { addProfilePicture } from "@/server-actions/addProfilePicture";
+import { DropIcon, CloudUploadIcon } from "@/assets/icons";
+import { addProfilePictureV2 } from "@/server-actions/addProfilePicture";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ export default function DragDropAreaProfilePicture({
       const filesFormData = new FormData();
       filesFormData.append("profilePicture", acceptedFiles[0]);
 
-      const res = await addProfilePicture(filesFormData);
+      const res = await addProfilePictureV2(filesFormData);
 
       setIsAssetUploading(false);
       if (res?.success) {

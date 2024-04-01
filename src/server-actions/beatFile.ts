@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authOptions";
 import connectMongoDB from "@/config/mongoDBConnection";
 import cloudinary from "@/config/cloudinaryConfig";
+import { UploadApiResponse, UploadApiErrorResponse } from 'cloudinary';
 
 
 export const addBeatFile = async (file: any, beatUrlId: string, fileName: string) => {
@@ -20,8 +21,8 @@ export const addBeatFile = async (file: any, beatUrlId: string, fileName: string
 
     const fileToUpload = { 
       file: buffer,
-      url: null,
-      publicId: null,
+      url: "",
+      publicId: "",
       fileName: transformedFile.name,
     }
 
@@ -31,12 +32,15 @@ export const addBeatFile = async (file: any, beatUrlId: string, fileName: string
         resource_type: "auto",
         public_id: `${fileName}`,
         overwrite: true
-      }, (error: any, result: any) => {
+      }, (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
         if (error) {
+          console.log(error);
           reject(error); 
         } else {
-          fileToUpload.url = result.secure_url;
-          fileToUpload.publicId = result.public_id;
+          if (result) {
+            fileToUpload.url = result.secure_url;
+            fileToUpload.publicId = result.public_id;
+          }
           
           resolve(result); 
         }
@@ -79,6 +83,67 @@ export const removeBeatFile = async (beatUrlId: string, fileName: string, fileTy
     }});
 
     if (response) return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error };
+  }
+}
+
+export const addBeatFileV2 = async (file: any, beatUrlId: string, fileName: string) => {
+  try {
+    await connectMongoDB();
+
+    const signedInUser = await getServerSession(authOptions);
+    const currentBeat = await Beats.findOne({ urlIdentifier: beatUrlId });
+
+    const transformedFile = file.get(fileName) as File
+    const arrayBuffer = await transformedFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const mime = transformedFile.type;
+    const encoding = 'base64';
+    const base64Data = buffer.toString(encoding);
+    const fileUri = 'data:' + mime + ';' + encoding + ',' + base64Data;
+
+    const fileToUpload = { 
+      file: buffer,
+      url: "",
+      publicId: "",
+      fileName: transformedFile.name,
+    }
+
+    await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload(fileUri, {
+        folder: `users/${signedInUser?.user.id}/beats/${currentBeat._id.toString()}`,
+        public_id: fileName,
+        overwrite: true,
+        invalidate: true,
+        resource_type: "auto"
+      }, (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+        if (error) {
+          console.log(error);
+          reject(error); 
+        } else {
+          if (result) {
+            fileToUpload.url = result.secure_url;
+            fileToUpload.publicId = result.public_id;
+          }
+
+          resolve(result); 
+        }
+      });
+    });
+
+    const fieldPathToUpdate = `assets.${fileName}`;
+    const response = await Beats.findOneAndUpdate({ urlIdentifier: beatUrlId }, {
+      [fieldPathToUpdate]: {
+        url: fileToUpload.url,
+        publicId: fileToUpload.publicId,
+        fileName: fileToUpload.fileName,
+      }
+    }, { new: true });
+
+    const updatedAsset = JSON.parse(JSON.stringify(response));
+    if (response) return { success: true, asset: updatedAsset.assets[fileName] };
   } catch (error) {
     console.log(error);
     return { success: false, error };

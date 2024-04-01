@@ -6,7 +6,7 @@ import { DragDropAreaProps } from "@/types/uploadBeatFormTypes";
 import { DropIcon, CloseIcon, CloudUploadIcon } from "@/assets/icons";
 import {  } from "@/assets/icons";
 import Image from "next/image";
-import { addBeatFile, removeBeatFile } from "@/server-actions/beatFile";
+import { addBeatFileV2, removeBeatFile } from "@/server-actions/beatFile";
 
 
 export default function DragDropArea({ 
@@ -27,7 +27,7 @@ export default function DragDropArea({
       const filesFormData = new FormData();
       filesFormData.append(dropZoneName, acceptedFiles[0]);
 
-      const res = await addBeatFile(filesFormData, beatUrl, dropZoneName);
+      const res = await addBeatFileV2(filesFormData, beatUrl, dropZoneName);
       setIsAssetUploading(false);
 
       if (res?.success) dispatch({ type: "SET_ACCEPTED_FILE", payload: { dropzone: dropZoneName, acceptedFile: { ...res.asset } }});
