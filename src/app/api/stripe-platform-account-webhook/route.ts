@@ -65,31 +65,35 @@ const createSeperateTransfers = async (
   paymentIntent: Stripe.PaymentIntent, 
   updatedOrderDoc: CustomerOrdersInterface
 ) => {
-  updatedOrderDoc.items.forEach(async (item) => {
-    const seller = await Users.findById(item.sellerId, { 
-      "stripeDetails.accountId": 1 
+  try {
+    updatedOrderDoc.items.forEach(async (item) => {
+      const seller = await Users.findById(item.sellerId, { 
+        "stripeDetails.accountId": 1 
+      });
+  
+      const transfer: Stripe.Transfer = await stripe.transfers.create({
+        amount: item.price,
+        currency: 'eur',
+        destination: seller.stripeDetails.accountId,
+        transfer_group: updatedOrderDoc.transferGroup,
+      });
+  
+      await Seller_Payouts.create({
+        sellerId: item.sellerId,
+        totalAmount: item.price,
+        paymentIntentId: paymentIntent.id,
+        transferId: transfer.id,
+        productId: item.productId,
+        contract: item.contract,
+        licenseType: item.licenseType,
+        licenseTerms: item.licenseTerms,
+        buyerId: updatedOrderDoc.customerDetails.customerId,
+        transferGroup: updatedOrderDoc.transferGroup,
+      });
     });
-
-    const transfer: Stripe.Transfer = await stripe.transfers.create({
-      amount: item.price,
-      currency: 'eur',
-      destination: seller.stripeDetails.accountId,
-      transfer_group: updatedOrderDoc.transferGroup,
-    });
-
-    await Seller_Payouts.create({
-      sellerId: item.sellerId,
-      totalAmount: item.price,
-      paymentIntentId: paymentIntent.id,
-      transferId: transfer.id,
-      productId: item.productId,
-      contract: item.contract,
-      licenseType: item.licenseType,
-      licenseTerms: item.licenseTerms,
-      buyerId: updatedOrderDoc.customerDetails.customerId,
-      transferGroup: updatedOrderDoc.transferGroup,
-    });
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const retrieveBillingAddress = async (paymentIntent: Stripe.PaymentIntent) => {
