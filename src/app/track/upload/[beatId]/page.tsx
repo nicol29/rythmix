@@ -37,6 +37,7 @@ export default async function Upload ({ params }: { params: { beatId: string } }
           slug={params.beatId} 
           currentBeat={beat}
           formType="upload" 
+          beatID={res._id.toString()}
         />
         </div>
       </main>

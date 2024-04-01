@@ -35,6 +35,7 @@ export interface DragDropAreaProps {
     maxSize: number;
     minSize: number;
   };
+  beatID: string;
 }
 
 export interface FormDataWithFiles {
@@ -47,4 +48,5 @@ export interface BeatUploadFormPropsInterface {
   slug: string;
   currentBeat: BeatDocumentInterface; 
   formType: "upload" | "edit";
+  beatID: string;
 }

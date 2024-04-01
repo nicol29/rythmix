@@ -6,7 +6,9 @@ import { DragDropAreaProps } from "@/types/uploadBeatFormTypes";
 import { DropIcon, CloseIcon, CloudUploadIcon } from "@/assets/icons";
 import {  } from "@/assets/icons";
 import Image from "next/image";
-import { addBeatFileV2, removeBeatFile } from "@/server-actions/beatFile";
+import { removeBeatFile } from "@/server-actions/beatFile";
+import { generateCloudinarySecret, uploadFileDetailsToDB } from "@/server-actions/beatFile";
+import { useSession } from "next-auth/react";
 
 
 export default function DragDropArea({ 
@@ -15,24 +17,63 @@ export default function DragDropArea({
   styles, 
   beatUrl, 
   dropZoneName, 
-  dropZoneOptions 
+  dropZoneOptions,
+  beatID
 }: DragDropAreaProps) {
+  const { data: session } = useSession();
   const [isAssetUploading, setIsAssetUploading] = useState(false);
+
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (acceptedFiles.length) {
       if (filesState.errorMsg) dispatch({ type: "REMOVE_ERROR", payload: { dropzone: dropZoneName }});
       setIsAssetUploading(true);
 
-      const filesFormData = new FormData();
-      filesFormData.append(dropZoneName, acceptedFiles[0]);
-
-      const res = await addBeatFileV2(filesFormData, beatUrl, dropZoneName);
+      const res = await uploadBeatFile(dropZoneName, acceptedFiles[0]);
       setIsAssetUploading(false);
 
       if (res?.success) dispatch({ type: "SET_ACCEPTED_FILE", payload: { dropzone: dropZoneName, acceptedFile: { ...res.asset } }});
     } 
-  }, [dropZoneName, filesState.errorMsg, dispatch, beatUrl]);
+  }, [dropZoneName, filesState.errorMsg, dispatch]);
+
+  const uploadBeatFile = async (fileName: string, fileToUpload: File) => {
+    const response = await generateCloudinarySecret(beatID, fileName);
+
+    if (!response?.success) return;
+
+    const { signature, timestamp, api_key, cloud_name } = response.info;
+
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    formData.append('api_key', api_key);
+    formData.append('timestamp', timestamp);
+    formData.append('signature', signature);
+
+    formData.append('folder', `users/${session?.user.id}/beats/${beatID}`);
+    formData.append('public_id', fileName);
+    formData.append('overwrite', 'true');
+
+    try {
+      const uploadResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/video/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await uploadResponse.json();
+
+      await uploadFileDetailsToDB(
+        beatID, 
+        data.secure_url, 
+        data.public_id, 
+        data.original_filename,
+        fileName
+      );
+
+      return { success: true, asset: { url: data.secure_url, publicId: data.public_id, fileName: data.original_filename }}
+    } catch (error) {
+      console.error('Upload failed', error);
+    }
+  }
 
   const { getRootProps, getInputProps, open, isDragActive, fileRejections } = useDropzone({
     onDrop,

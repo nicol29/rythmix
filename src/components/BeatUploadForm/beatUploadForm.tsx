@@ -16,7 +16,7 @@ import { CloseIcon } from "@/assets/icons";
 import { useRouter } from "next/navigation";
 
 
-export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUploadFormPropsInterface) {
+export default function BeatUploadForm({ slug, currentBeat, formType, beatID }: BeatUploadFormPropsInterface) {
   const router = useRouter();
 
   const returnFileOrNull = (name: "artwork" | "mp3" | "wav") => {
@@ -175,6 +175,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
               maxSize: 3 * 1024 * 1024,
               minSize: 200 * 200,
             }}
+            beatID={beatID}
           />
           {fileState.artwork.errorMsg && <p className="text-red-400 text-sm">{`${fileState.artwork.errorMsg}`}</p>}
         </div>
@@ -193,6 +194,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
               maxSize: 7000000,  
               minSize: 1500000,
             }}
+            beatID={beatID}
           />
           {fileState.mp3.errorMsg && <p className="text-red-400 text-sm">{`${fileState.mp3.errorMsg}`}</p>}
         </div>
@@ -211,6 +213,7 @@ export default function BeatUploadForm({ slug, currentBeat, formType }: BeatUplo
               maxSize: 80000000,  
               minSize: 10000000, 
             }}
+            beatID={beatID}
           />
           {fileState.wav.errorMsg && <p className="text-red-400 text-sm">{`${fileState.wav.errorMsg}`}</p>}
         </div>
