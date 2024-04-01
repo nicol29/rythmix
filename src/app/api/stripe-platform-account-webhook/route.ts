@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         const paymentIntentSucceeded = event.data.object;
 
         const updatedOrderDoc = await updateOrderStatus(paymentIntentSucceeded);
-
+        console.log("updatedOrderDoc", updatedOrderDoc);
         if (updatedOrderDoc) {
           await createSeperateTransfers(paymentIntentSucceeded, updatedOrderDoc);
         }
@@ -66,18 +66,18 @@ const createSeperateTransfers = async (
   updatedOrderDoc: CustomerOrdersInterface
 ) => {
   try {
-    updatedOrderDoc.items.forEach(async (item) => {
-      const seller = await Users.findById(item.sellerId, { 
-        "stripeDetails.accountId": 1 
+    for (const item of updatedOrderDoc.items) {
+      const seller = await Users.findById(item.sellerId, {
+        "stripeDetails.accountId": 1,
       });
-  
+      console.log("seller", seller)
       const transfer: Stripe.Transfer = await stripe.transfers.create({
         amount: item.price,
         currency: 'eur',
         destination: seller.stripeDetails.accountId,
         transfer_group: updatedOrderDoc.transferGroup,
       });
-  
+      console.log("transfer", transfer)
       await Seller_Payouts.create({
         sellerId: item.sellerId,
         totalAmount: item.price,
@@ -90,7 +90,7 @@ const createSeperateTransfers = async (
         buyerId: updatedOrderDoc.customerDetails.customerId,
         transferGroup: updatedOrderDoc.transferGroup,
       });
-    });
+    }
   } catch (error) {
     console.log(error);
   }
