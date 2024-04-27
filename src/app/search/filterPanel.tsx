@@ -21,16 +21,16 @@ export default function FilterPanel() {
 
 
   const addQueryStringToUrl = useCallback((name: string, action: "add" | "remove", value?: string,) => {
-      const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams.toString());
 
-      if (action === "add" && value) {
-        params.set(name, value);
-      } else if (action === "remove") {
-        params.delete(name);
-      }
- 
-      return params.toString();
-    },[searchParams])
+    if (action === "add" && value) {
+      params.set(name, value);
+    } else if (action === "remove") {
+      params.delete(name);
+    }
+
+    return params.toString();
+  },[searchParams])
 
   const addFilterToUrl = (setState: any, inputValue: string | number, filterName: string) => {
     setState(inputValue);

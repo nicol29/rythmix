@@ -19,6 +19,20 @@ jest.mock("next-auth/react", () => {
   };
 });
 
+jest.mock('next/navigation', () => {
+  return {
+    __esModule: true,
+    useRouter: () => ({
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn()
+    }),
+    useSearchParams: () => ({
+      get: () => {}
+    })
+  }
+})
+
 describe('LogInForm', () => {
   it('renders the complete account form', () => {
     render(<LoginForm />);
